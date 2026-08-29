@@ -101,8 +101,28 @@ def main():
                            JOIN autor a ON a.sq_candidato = d.sq_candidato
                            WHERE d.situacao LIKE 'ELEITO%'""")["c"]
         print(f"{el}/513 deputados federais eleitos com autoria de emenda identificada")
+        sem_autoria(con)
     revisar(con, args.limite)
     return 0
+
+
+def sem_autoria(con):
+    """Eleitos sem nenhuma emenda casada. Alguns são corretos (ministério,
+    cassação, mandato não exercido); outros são falha de casamento. A lista
+    fica visível justamente para que ninguém confunda as duas coisas."""
+    with con.cursor() as cur:
+        cur.execute("""
+            SELECT d.nome_urna, d.uf, d.partido
+            FROM deputado d LEFT JOIN autor a ON a.sq_candidato = d.sq_candidato
+            WHERE d.situacao LIKE 'ELEITO%' AND a.cod_autor IS NULL
+            ORDER BY d.uf, d.nome_urna
+        """)
+        linhas = cur.fetchall()
+    if linhas:
+        print(f"\neleitos SEM autoria de emenda identificada ({len(linhas)}) — "
+              f"conferir um a um antes de publicar qualquer coisa sobre eles:")
+        for r in linhas:
+            print(f"    {r['nome_urna'][:26]:26s} {r['uf']}  {r['partido']}")
 
 
 if __name__ == "__main__":

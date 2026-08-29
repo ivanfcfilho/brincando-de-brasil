@@ -24,10 +24,13 @@ pipeline/
   atualizar.py           O JOB: checa, baixa o que mudou, ingere, resume
   ingest_tse.py          votação por município → banco (1× por eleição)
   ingest_emendas.py      emendas + execução → banco, com diff
+  ingest_municipios.py   IBGE: ponte TSE↔IBGE + centroides (a distância em km)
+  ingest_camara.py       registro da Câmara: id, nome civil e parlamentar
   vincular.py            autor de emenda ↔ deputado, com fila de revisão
   consulta.py            CEP → município → deputados → destino da verba
   cruzamento.py          relatório por UF (lê do banco)
   conferir.py            invariantes do banco (roda no fim do job)
+tests/                 testes; cada caso de nome é uma regressão real
 deploy/                systemd service + timer do job diário
 data/raw/              dumps oficiais (não versionados, ~800 MB)
 relatorio/             relatórios legíveis (Markdown)
@@ -48,10 +51,17 @@ credencial vem de `CT_DSN`, no `.env`, que não vai para o git.
 
 ```bash
 python3.13 pipeline/atualizar.py --fonte tse_munzona_2022   # baixa se faltar
-python3.13 pipeline/ingest_tse.py --uf TODAS                # ~15 min
+python3.13 pipeline/ingest_tse.py --uf TODAS                # ~9 min
+python3.13 pipeline/ingest_municipios.py                    # IBGE + centroides
+python3.13 pipeline/ingest_camara.py                        # registro da Câmara
 python3.13 pipeline/atualizar.py                            # emendas + diff
 python3.13 pipeline/vincular.py                             # + fila de revisão
+python3.13 pipeline/conferir.py                             # invariantes
 ```
+
+A ordem importa: `ingest_municipios` precisa do TSE já carregado (para casar os
+códigos), e `ingest_emendas` precisa dos municípios (para resolver o código
+IBGE do favorecido, de onde sai a distância).
 
 ## Uso diário
 
@@ -62,6 +72,7 @@ python3.13 pipeline/atualizar.py --resumo 7 # o que mudou na semana
 python3.13 pipeline/consulta.py --cep 49010-000
 python3.13 pipeline/cruzamento.py --uf SE
 python3.13 pipeline/conferir.py             # invariantes (sai != 0 se falhar)
+python3.13 -m unittest discover -s tests    # testes
 ```
 
 `conferir.py` existe porque um bug real passou silencioso: o ZIP do TSE traz
@@ -126,11 +137,35 @@ que geraram cada número.
   aparece no log, match errado aparece no relatório. Hoje **459 dos 513
   eleitos** têm autoria identificada, e todo vínculo por token entra na fila de
   revisão de `vincular.py`. Confirmar marca `conferido`, e nenhuma reingestão
-  sobrescreve decisão humana. O definitivo é casar por id da Câmara.
-- **Municípios por nome, não por código.** O TSE usa código próprio, as
-  emendas usam IBGE. A tabela `municipio` (ponte TSE↔IBGE + coordenadas) está
-  criada e **vazia**: enquanto estiver, não há distância em km — e prometer
-  "a 500 km daqui" sem ela seria inventar.
+  sobrescreve decisão humana.
+  O registro da Câmara (`ingest_camara.py`) fecha o resto: ele traz nome civil
+  e nome parlamentar na mesma linha, o que liga casos em que o TSE e a CGU
+  divergem ('DEPUTADO DAL' × 'DAL BARRETO'), e distingue quem está em
+  exercício, o que resolve homônimo entre eleito e suplente (eleito vence:
+  quem apresenta emenda é quem exerce o mandato). Com isso, **500 dos 513**.
+  Os 13 restantes estão listados por `vincular.py` e são, em boa parte,
+  corretos: Marina Silva, Sônia Guajajara e Luiz Marinho assumiram ministérios
+  sem exercer o mandato, e Deltan Dallagnol teve o mandato cassado — não têm
+  emenda individual, e forçar um casamento aí seria inventar.
+- **As APIs da Câmara e do TSE discriminam por cliente.** Ambas respondem em
+  ~0,2 s a um navegador e estouram o tempo com `urllib`; as duas usam
+  `curl_cffi` com impersonation. A da Câmara ainda devolve 100 itens por
+  página indefinidamente, repetindo registros: a paginação segue o link
+  `rel=next` e deduplica por id, com teto de páginas.
+- **Uma chave, uma verdade.** As colunas de texto `UF` e `Município` da CGU
+  discordam do `Código Município IBGE` em algumas linhas. Classificar usando
+  as duas juntas colocava a mesma linha em duas classes, e as parcelas somavam
+  mais que o total. UF e nome de município vêm sempre da tabela `municipio`,
+  via código.
+- **Distância é entre centroides de território, não entre sedes.** A tabela
+  `municipio` casa os 5.570 municípios do TSE com o IBGE (grafia tolerante a
+  apóstrofo e preposição, mais 22 apelidos por código para renomeações como
+  Boa Saúde→Januário Cicco e Açu→Assú) e guarda o centroide calculado da malha
+  oficial. Em município de área grande a diferença para a sede é de dezenas de
+  km: Manaus tem centroide a ~50 km do centro da cidade. A distância publicada
+  precisa dizer o que mede.
+- **Um município sem coordenada**: Boa Esperança do Norte (MT) foi criado
+  depois de 2022, não está na malha daquele ano e não tem código do TSE.
 - **Empenhado ≠ pago.** O relatório usa valor empenhado (compromisso firmado);
   anos recentes têm pagamento em aberto por natureza.
 - **Emendas de relator/comissão (RP8/RP9)** não têm autor individual. No
@@ -157,8 +192,7 @@ que geraram cada número.
 
 ## Próximos passos
 
-- [ ] Popular `municipio` (IBGE + correspondência TSE) → distância voto↔verba
-- [ ] Casar autoria por id da Câmara × SQ_CANDIDATO (elimina o nome do circuito)
-- [ ] Percorrer a fila de `vincular.py` (69 vínculos) antes de qualquer publicação
+- [ ] Percorrer a fila de `vincular.py` (47 vínculos) antes de qualquer publicação
 - [ ] Granularidade por seção eleitoral (`votacao_secao_<ano>_<UF>.zip`) → CEP real
 - [ ] API HTTP sobre `consulta.py` + a landing como shell
+- [ ] Coordenada da SEDE municipal (hoje é o centroide do território)

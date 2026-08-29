@@ -12,12 +12,16 @@ import re
 import unicodedata
 
 ALIASES_PATH = os.path.join(os.path.dirname(__file__), "aliases.json")
+ALIASES_MUN_PATH = os.path.join(os.path.dirname(__file__), "aliases_municipios.json")
 
 
 def norm(s):
     """Maiúsculas, sem acento, sem espaço duplicado."""
     s = unicodedata.normalize("NFD", s or "")
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    # Ponto e vírgula viram espaço: 'MARIO NEGROMONTE JR.' na CGU x
+    # 'MARIO NEGROMONTE JR' no TSE são a mesma pessoa.
+    s = re.sub(r"[.,;]", " ", s)
     return re.sub(r"\s+", " ", s).strip().upper()
 
 
@@ -28,6 +32,22 @@ def parse_valor(s):
         return float(s)
     except ValueError:
         return 0.0
+
+
+PREPOSICOES = re.compile(r"\b(DE|DA|DO|DAS|DOS|D)\b")
+
+
+def chave_municipio(nome):
+    """Chave tolerante para casar nomes de município entre TSE, IBGE e CGU.
+
+    As bases divergem em pontuação e preposição para o mesmo lugar:
+    'ALTA FLORESTA D OESTE' (TSE) x "Alta Floresta D'Oeste" (IBGE),
+    'AMPARO DE SAO FRANCISCO' x 'Amparo do São Francisco'. Ignorar apóstrofo,
+    hífen e preposição resolve 59 dos 66 casos; o resto é renomeação oficial e
+    vai em aliases_municipios.json, por código IBGE.
+    """
+    s = norm(nome).replace("'", " ").replace("-", " ").replace(".", " ")
+    return re.sub(r"\s+", "", PREPOSICOES.sub(" ", s))
 
 
 def carregar_aliases():
@@ -44,19 +64,48 @@ def carregar_aliases():
         return {norm(k): norm(v) for k, v in json.load(f).items()}
 
 
-def indice_por_nome(candidatos):
-    """{nome_norm: sq_candidato}; nomes ambíguos (homônimos) são descartados.
+def carregar_aliases_municipios():
+    """{"UF|NOME": cod_ibge} — nomes que não casam nem pela chave tolerante.
+    Chaves iniciadas por '_' são comentário do arquivo."""
+    if not os.path.exists(ALIASES_MUN_PATH):
+        return {}
+    with open(ALIASES_MUN_PATH, encoding="utf-8") as f:
+        return {k: v for k, v in json.load(f).items() if not k.startswith("_")}
 
-    `candidatos` é um iterável de (sq_candidato, nome, nome_urna).
+
+def indice_por_nome(candidatos):
+    """{nome_norm: sq_candidato}, com desempate por exercício do mandato.
+
+    `candidatos` é um iterável de (sq, nome, urna) ou, na forma completa,
+    (sq, nome, urna, nome_parlamentar, eleito).
+
+    Homônimo entre um ELEITO e um SUPLENTE deixou de ser descartado: quem
+    apresenta emenda é quem exerce o mandato, e descartar custava vínculos
+    legítimos (ALEX SANTANA, BACELAR e RICARDO MAIA ficavam sem autor por
+    causa de suplentes de mesmo nome em outros estados). Empate entre dois
+    ELEITOS continua sendo descartado — aí não há como decidir.
     """
-    idx = {}
-    for sq, nome, urna in candidatos:
-        for chave in {norm(nome), norm(urna)}:
-            if chave in idx and idx[chave] != sq:
-                idx[chave] = None  # ambíguo: melhor nenhum match que o errado
-            else:
-                idx[chave] = sq
-    return {k: v for k, v in idx.items() if v}
+    idx = {}   # chave -> (sq, eleito)
+    for c in candidatos:
+        if len(c) == 3:
+            sq, nome, urna = c
+            extras, eleito = (), True
+        else:
+            sq, nome, urna, parlamentar, eleito = c
+            extras = (parlamentar,)
+        for bruto in (nome, urna, *extras):
+            chave = norm(bruto or "")
+            if not chave:
+                continue
+            atual = idx.get(chave)
+            if atual is None or atual[0] == sq:
+                idx[chave] = (sq, eleito)
+            elif eleito and not atual[1]:
+                idx[chave] = (sq, True)        # eleito ganha do suplente
+            elif eleito and atual[1]:
+                idx[chave] = (None, True)      # dois eleitos: ambíguo
+            # suplente contra eleito já registrado: mantém o eleito
+    return {k: v[0] for k, v in idx.items() if v[0]}
 
 
 def _compativel(autor_toks, alvo_toks):

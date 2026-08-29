@@ -50,40 +50,67 @@ def eleitos(con, uf):
 
 
 def votos_por_municipio(con, sq):
+    """Votos por município, já resolvidos para o código IBGE.
+
+    A chave de tudo neste relatório é o cod_ibge, nunca o nome: o TSE grafa
+    'POCO REDONDO' e o IBGE 'Poço Redondo', e cruzar por texto perderia
+    silenciosamente todo município acentuado.
+    """
     with con.cursor() as cur:
-        cur.execute("SELECT municipio_norm, votos FROM voto_municipio "
-                    "WHERE sq_candidato=%s ORDER BY votos DESC", (sq,))
+        cur.execute("""
+            SELECT m.cod_ibge, upper(m.nome) AS municipio, v.votos
+            FROM voto_municipio v
+            JOIN municipio m ON m.cod_tse = v.cod_municipio_tse
+            WHERE v.sq_candidato = %s ORDER BY v.votos DESC
+        """, (sq,))
         return [dict(r) for r in cur.fetchall()]
 
 
 def emendas_por_destino(con, sq, uf, ano):
-    """Classes de destino, na mesma taxonomia do piloto original:
+    """Classes de destino, na taxonomia do piloto original:
     DENTRO (município da UF), FORA (município de outra UF),
-    ESTADO (a UF, sem município definido), AMPLO (nacional/múltiplo)."""
+    ESTADO (a UF, sem município definido), AMPLO (nacional/múltiplo).
+
+    Município e UF vêm da tabela `municipio` via cod_ibge, nunca das colunas
+    de texto da CGU: as duas discordam em algumas linhas, e usar as duas
+    juntas colocava a mesma linha em duas classes.
+    """
     with con.cursor() as cur:
         cur.execute("""
             SELECT CASE
-                     WHEN municipio NOT IN %(sem)s AND uf = %(uf)s THEN 'DENTRO'
-                     WHEN municipio NOT IN %(sem)s                 THEN 'FORA'
-                     WHEN uf = %(uf)s                              THEN 'ESTADO'
+                     WHEN m.uf = %(uf)s        THEN 'DENTRO'
+                     WHEN m.cod_ibge IS NOT NULL THEN 'FORA'
+                     WHEN e.uf = %(uf)s        THEN 'ESTADO'
                      ELSE 'AMPLO' END AS classe,
-                   CASE WHEN municipio NOT IN %(sem)s AND uf <> %(uf)s
-                        THEN municipio || ' (' || uf || ')' ELSE municipio END AS destino,
-                   SUM(empenhado) AS valor
-            FROM vw_emenda_deputado
-            WHERE sq_candidato = %(sq)s AND ano >= %(ano)s AND empenhado <> 0
-            GROUP BY 1,2 ORDER BY 3 DESC
-        """, {"sem": SEM_MUNICIPIO, "uf": uf, "sq": sq, "ano": ano})
+                   CASE
+                     WHEN m.uf = %(uf)s        THEN upper(m.nome)
+                     WHEN m.cod_ibge IS NOT NULL THEN upper(m.nome) || ' (' || m.uf || ')'
+                     WHEN e.uf = %(uf)s        THEN 'ESTADO — MÚLTIPLO/SEM MUNICÍPIO DEFINIDO'
+                     ELSE 'NACIONAL / MÚLTIPLO / OUTRA UF SEM MUNICÍPIO'
+                   END AS destino,
+                   m.cod_ibge,
+                   SUM(e.empenhado) AS valor
+            FROM vw_emenda_deputado e
+            LEFT JOIN municipio m ON m.cod_ibge = e.cod_ibge
+            WHERE e.sq_candidato = %(sq)s AND e.ano >= %(ano)s AND e.empenhado <> 0
+            GROUP BY 1,2,3 ORDER BY 4 DESC
+        """, {"uf": uf, "sq": sq, "ano": ano})
         return [dict(r) for r in cur.fetchall()]
 
 
-def recebido_por_municipio(con, sq, ano):
+def recebido_por_municipio(con, sq, ano, origem_uf):
+    """Execução por município do favorecido, já com a distância até a capital
+    do estado do deputado — a referência mais próxima de 'até onde o dinheiro
+    foi' num relatório estadual."""
     with con.cursor() as cur:
         cur.execute("""
-            SELECT uf_favorecido AS uf, municipio_favorecido AS municipio,
-                   SUM(valor_recebido) AS valor
-            FROM vw_favorecido_deputado
-            WHERE sq_candidato=%s AND ano >= %s AND valor_recebido <> 0
+            SELECT COALESCE(m.uf, f.uf_favorecido) AS uf,
+                   COALESCE(upper(m.nome), f.municipio_favorecido) AS municipio,
+                   SUM(f.valor_recebido) AS valor,
+                   MAX(m.cod_ibge) AS cod_ibge
+            FROM vw_favorecido_deputado f
+            LEFT JOIN municipio m ON m.cod_ibge = f.cod_ibge_favorecido
+            WHERE f.sq_candidato=%s AND f.ano >= %s AND f.valor_recebido <> 0
             GROUP BY 1,2 ORDER BY 3 DESC
         """, (sq, ano))
         return [dict(r) for r in cur.fetchall()]
@@ -116,17 +143,23 @@ def main():
                     "votos", "pct_votos", "valor_empenhado", "pct_emendas"])
         for d in deps:
             sq, tot_v = d["sq_candidato"], d["total_votos"]
-            votos = {r["municipio_norm"]: r["votos"] for r in votos_por_municipio(con, sq)}
+            vm = votos_por_municipio(con, sq)
+            votos = {r["cod_ibge"]: r["votos"] for r in vm}
+            nomes = {r["cod_ibge"]: r["municipio"] for r in vm}
             dest = emendas_por_destino(con, sq, uf, ano)
             tot_e = sum(float(r["valor"]) for r in dest)
-            dentro = {r["destino"]: float(r["valor"]) for r in dest if r["classe"] == "DENTRO"}
+            dentro = {r["cod_ibge"]: float(r["valor"]) for r in dest
+                      if r["classe"] == "DENTRO"}
+            nomes.update({r["cod_ibge"]: r["destino"] for r in dest
+                          if r["classe"] == "DENTRO"})
             por_classe = {c: sum(float(r["valor"]) for r in dest if r["classe"] == c)
                           for c in ("DENTRO", "FORA", "ESTADO", "AMPLO")}
 
             universo = set(votos) | set(dentro)
-            for m in sorted(universo, key=lambda m: -votos.get(m, 0)):
-                v, e = votos.get(m, 0), dentro.get(m, 0.0)
-                w.writerow([d["nome_urna"], d["partido"], m, "DENTRO", v,
+            for cod in sorted(universo, key=lambda c: -votos.get(c, 0)):
+                v, e = votos.get(cod, 0), dentro.get(cod, 0.0)
+                w.writerow([d["nome_urna"], d["partido"], nomes.get(cod, cod),
+                            "DENTRO", v,
                             round(100 * v / tot_v, 2) if tot_v else 0,
                             round(e, 2), round(100 * e / tot_e, 2) if tot_e else 0])
             for r in dest:
@@ -145,21 +178,23 @@ def main():
                 continue
             md.append(f"- **Emendas empenhadas {ano}–2026:** {brl(tot_e)}")
             md.append(
-                f"- **Destino:** {100*por_classe['DENTRO']/tot_e:.0f}% municípios do estado · "
-                f"{100*por_classe['ESTADO']/tot_e:.0f}% estado sem município definido · "
-                f"{100*por_classe['FORA']/tot_e:.0f}% outros estados · "
-                f"{100*por_classe['AMPLO']/tot_e:.0f}% nacional/múltiplo")
+                f"- **Destino:** {100*por_classe['DENTRO']/tot_e:.1f}% municípios do estado · "
+                f"{100*por_classe['ESTADO']/tot_e:.1f}% estado sem município definido · "
+                f"{100*por_classe['FORA']/tot_e:.1f}% outros estados · "
+                f"{100*por_classe['AMPLO']/tot_e:.1f}% nacional/múltiplo")
             md.append("\n| Município (top-5 em votos) | % dos votos | % das emendas |")
             md.append("|---|---:|---:|")
-            for m, v in sorted(votos.items(), key=lambda kv: -kv[1])[:5]:
-                e = dentro.get(m, 0.0)
-                md.append(f"| {m.title()} | {100*v/tot_v:.1f}% | {100*e/tot_e:.1f}% |")
+            for cod, v in sorted(votos.items(), key=lambda kv: -kv[1])[:5]:
+                e = dentro.get(cod, 0.0)
+                md.append(f"| {nomes.get(cod, cod).title()} | {100*v/tot_v:.1f}% "
+                          f"| {100*e/tot_e:.2f}% |")
             if dentro:
                 md.append("\n| Maior destino de emenda no estado | Valor | % das emendas |")
                 md.append("|---|---:|---:|")
-                for m, e in sorted(dentro.items(), key=lambda kv: -kv[1])[:3]:
-                    md.append(f"| {m.title()} | {brl(e)} | {100*e/tot_e:.1f}% |")
-            rc = recebido_por_municipio(con, sq, ano)
+                for cod, e in sorted(dentro.items(), key=lambda kv: -kv[1])[:3]:
+                    md.append(f"| {nomes.get(cod, cod).title()} | {brl(e)} "
+                              f"| {100*e/tot_e:.2f}% |")
+            rc = recebido_por_municipio(con, sq, ano, uf)
             tot_r = sum(float(r["valor"]) for r in rc)
             if tot_r:
                 dentro_r = sum(float(r["valor"]) for r in rc if r["uf"] == uf)

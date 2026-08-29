@@ -166,17 +166,32 @@ CREATE TABLE IF NOT EXISTS emenda_favorecido (
     tipo_favorecido      TEXT,
     uf_favorecido        TEXT,
     municipio_favorecido TEXT,
+    -- A CGU dá o código IBGE no destino planejado, mas só o nome no
+    -- favorecido. Resolvemos na ingestão, com a mesma chave tolerante do
+    -- casamento TSE↔IBGE, para que a distância em km seja um join por código.
+    cod_ibge_favorecido  INTEGER,
     valor_recebido       NUMERIC(18,2) NOT NULL DEFAULT 0,
     snapshot_id          BIGINT REFERENCES snapshot(id)
 );
+-- Migrações: este arquivo é reaplicado a cada `db.py --init`, e
+-- CREATE TABLE IF NOT EXISTS não alcança tabela que já existe. Toda coluna
+-- acrescentada depois da primeira versão precisa aparecer aqui também.
+ALTER TABLE emenda_favorecido ADD COLUMN IF NOT EXISTS cod_ibge_favorecido INTEGER;
+
 CREATE INDEX IF NOT EXISTS ix_fav_autor ON emenda_favorecido(cod_autor, ano);
 CREATE INDEX IF NOT EXISTS ix_fav_mun   ON emenda_favorecido(uf_favorecido, municipio_favorecido);
+CREATE INDEX IF NOT EXISTS ix_fav_ibge  ON emenda_favorecido(cod_ibge_favorecido);
 
 -- -------------------------------------------------------------------- mudança
 
+-- Uma linha aqui é uma TRANSIÇÃO entre dois snapshots, não um fato do
+-- snapshot de destino. Guardar só o destino fazia uma reingestão do mesmo
+-- arquivo (que produz diff vazio, porque o banco já é aquele estado) apagar
+-- o histórico verdadeiro da transição anterior.
 CREATE TABLE IF NOT EXISTS mudanca (
-    id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    detectado_em TIMESTAMPTZ NOT NULL DEFAULT now(),
+    id                 BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    detectado_em       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    snapshot_anterior  BIGINT REFERENCES snapshot(id),
     snapshot_id  BIGINT NOT NULL REFERENCES snapshot(id),
     tabela       TEXT NOT NULL,
     chave        TEXT NOT NULL,
@@ -188,22 +203,33 @@ CREATE TABLE IF NOT EXISTS mudanca (
     uf           TEXT,
     municipio    TEXT
 );
+ALTER TABLE mudanca ADD COLUMN IF NOT EXISTS snapshot_anterior BIGINT
+    REFERENCES snapshot(id);
+
 CREATE INDEX IF NOT EXISTS ix_mudanca_data  ON mudanca(detectado_em DESC);
+CREATE INDEX IF NOT EXISTS ix_mudanca_par   ON mudanca(snapshot_anterior, snapshot_id);
 CREATE INDEX IF NOT EXISTS ix_mudanca_autor ON mudanca(cod_autor, detectado_em DESC);
 
 -- ---------------------------------------------------------------------- vistas
+--
+-- DROP + CREATE em vez de CREATE OR REPLACE: as vistas usam SELECT *, e
+-- acrescentar uma coluna na tabela muda a ordem das colunas da vista, o que
+-- o REPLACE recusa.
 
-CREATE OR REPLACE VIEW vw_votos_totais AS
+DROP VIEW IF EXISTS vw_votos_totais CASCADE;
+CREATE VIEW vw_votos_totais AS
 SELECT sq_candidato, uf, ano_eleicao, SUM(votos) AS total_votos
 FROM voto_municipio GROUP BY sq_candidato, uf, ano_eleicao;
 
-CREATE OR REPLACE VIEW vw_emenda_deputado AS
+DROP VIEW IF EXISTS vw_emenda_deputado CASCADE;
+CREATE VIEW vw_emenda_deputado AS
 SELECT e.*, a.sq_candidato, d.uf AS uf_deputado, d.nome_urna, d.partido
 FROM emenda e
 JOIN autor a    ON a.cod_autor = e.cod_autor
 JOIN deputado d ON d.sq_candidato = a.sq_candidato;
 
-CREATE OR REPLACE VIEW vw_favorecido_deputado AS
+DROP VIEW IF EXISTS vw_favorecido_deputado CASCADE;
+CREATE VIEW vw_favorecido_deputado AS
 SELECT f.*, a.sq_candidato, d.uf AS uf_deputado, d.nome_urna, d.partido
 FROM emenda_favorecido f
 JOIN autor a    ON a.cod_autor = f.cod_autor

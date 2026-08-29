@@ -66,6 +66,57 @@ def conferir(con):
                       WHERE s.id IS NULL""")["c"]
     checar("toda emenda aponta para um snapshot", n == 0, f"{n} órfãs")
 
+    # --- município: a ponte que sustenta a distância em km ---
+    n = bd.um(con, "SELECT COUNT(*) AS c FROM municipio")["c"]
+    checar("5.570 municípios do IBGE carregados", n >= 5570, f"{n} no banco")
+
+    n = bd.um(con, "SELECT COUNT(*) AS c FROM municipio WHERE lat IS NULL")["c"]
+    checar("todo município com coordenada", n <= 1, f"{n} sem centroide")
+
+    n = bd.um(con, """SELECT COUNT(*) AS c FROM voto_municipio v
+                      LEFT JOIN municipio m ON m.cod_tse = v.cod_municipio_tse
+                      WHERE m.cod_ibge IS NULL""")["c"]
+    checar("todo município do TSE resolve para o IBGE", n == 0,
+           f"{n} linhas de voto sem correspondência")
+
+    r = bd.um(con, """SELECT round(100.0 * SUM(valor_recebido) FILTER (
+                          WHERE cod_ibge_favorecido IS NOT NULL)
+                          / NULLIF(SUM(valor_recebido),0), 1) AS pct
+                      FROM emenda_favorecido""")
+    pct = float(r["pct"] or 0)
+    checar("≥99% do valor executado tem município identificado", pct >= 99,
+           f"{pct}% do valor")
+
+    # --- as classes de destino têm que particionar o total ---
+    # Percentual acima de 100% no ar é munição contra o projeto, e o erro é
+    # silencioso: só aparece quando alguém soma as parcelas na tela.
+    r = bd.um(con, """
+        WITH base AS (
+          SELECT e.sq_candidato, d.uf AS uf_dep, e.empenhado, m.cod_ibge, m.uf AS uf_mun
+          FROM vw_emenda_deputado e
+          JOIN deputado d ON d.sq_candidato = e.sq_candidato
+          LEFT JOIN municipio m ON m.cod_ibge = e.cod_ibge
+          WHERE d.situacao LIKE 'ELEITO%'
+        )
+        SELECT COUNT(*) AS fora FROM (
+          SELECT sq_candidato,
+                 SUM(empenhado) AS total,
+                 SUM(empenhado) FILTER (WHERE uf_mun = uf_dep) AS a,
+                 SUM(empenhado) FILTER (WHERE cod_ibge IS NOT NULL AND uf_mun <> uf_dep) AS b,
+                 SUM(empenhado) FILTER (WHERE cod_ibge IS NULL) AS c
+          FROM base GROUP BY 1
+        ) x WHERE abs(total - (COALESCE(a,0)+COALESCE(b,0)+COALESCE(c,0))) > 0.01
+    """)
+    checar("classes de destino somam o total, deputado a deputado",
+           r["fora"] == 0, f"{r['fora']} deputados com parcelas fora do total")
+
+    n = bd.um(con, """SELECT COUNT(DISTINCT d.sq_candidato) AS c FROM deputado d
+                      JOIN autor a ON a.sq_candidato = d.sq_candidato
+                      WHERE d.situacao LIKE 'ELEITO%'""")["c"]
+    checar("≥495 dos 513 eleitos com autoria identificada", n >= 495,
+           f"{n}/513 (os que faltam assumiram ministério, "
+           f"tiveram mandato cassado ou não apresentaram emenda)")
+
     with con.cursor() as cur:
         cur.execute("""SELECT fonte_id, COUNT(*) AS c FROM snapshot
                        WHERE ingerido_em IS NOT NULL GROUP BY 1""")

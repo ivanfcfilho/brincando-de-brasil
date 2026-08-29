@@ -24,7 +24,8 @@ from collections import Counter, defaultdict
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import db as bd
 from fontes import FONTES, caminho
-from nomes import carregar_aliases, casar_autor, indice_por_nome, norm, parse_valor
+from nomes import (carregar_aliases, carregar_aliases_municipios, casar_autor,
+                   chave_municipio, indice_por_nome, norm, parse_valor)
 
 COLS_EMENDA = ("chave codigo_emenda ano tipo cod_autor numero localidade cod_ibge "
                "municipio uf cod_funcao nome_funcao cod_subfuncao nome_subfuncao "
@@ -33,7 +34,23 @@ COLS_EMENDA = ("chave codigo_emenda ano tipo cod_autor numero localidade cod_ibg
 
 COLS_FAV = ("chave codigo_emenda cod_autor numero tipo ano_mes ano cod_favorecido "
             "favorecido natureza_juridica tipo_favorecido uf_favorecido "
-            "municipio_favorecido valor_recebido snapshot_id").split()
+            "municipio_favorecido cod_ibge_favorecido valor_recebido "
+            "snapshot_id").split()
+
+
+def mapa_municipios(con):
+    """(UF, chave tolerante) → código IBGE, para resolver o município do
+    favorecido, que a CGU só entrega por nome."""
+    with con.cursor() as cur:
+        cur.execute("SELECT cod_ibge, nome, uf FROM municipio")
+        mapa = {(r["uf"], chave_municipio(r["nome"])): r["cod_ibge"]
+                for r in cur.fetchall()}
+    # Os apelidos entram pela mesma chave, para que renomeação oficial
+    # (Açu→Assú, Embu→Embu das Artes) resolva aqui também.
+    for k, cod in carregar_aliases_municipios().items():
+        uf, nome = k.split("|", 1)
+        mapa[(uf, chave_municipio(nome))] = cod
+    return mapa
 
 
 def chave(partes, ocorrencias):
@@ -82,7 +99,7 @@ def ler_planejado(z, snap_id, autores):
                    parse_valor(g("Valor Restos A Pagar Pagos")), snap_id)
 
 
-def ler_favorecidos(z, snap_id, autores):
+def ler_favorecidos(z, snap_id, autores, mapa, faltantes):
     ocorr = Counter()
     with z.open("EmendasParlamentares_PorFavorecido.csv") as fh:
         r = csv.DictReader(io.TextIOWrapper(fh, encoding="latin-1"), delimiter=";")
@@ -94,16 +111,21 @@ def ler_favorecidos(z, snap_id, autores):
             am = (g("Ano/Mês") or "").strip()
             k = chave((g("Código da Emenda"), am, g("Código do Favorecido"),
                        g("UF Favorecido"), g("Município Favorecido")), ocorr)
+            uf_fav = norm(g("UF Favorecido"))
+            mun_fav = norm(g("Município Favorecido"))
+            cod_ibge = mapa.get((uf_fav, chave_municipio(mun_fav)))
+            if cod_ibge is None and mun_fav and mun_fav not in ("MULTIPLO", "SEM INFORMACAO"):
+                faltantes[(uf_fav, mun_fav)] += 1
             yield (k, g("Código da Emenda"), cod_autor, g("Número da emenda"),
                    g("Tipo de Emenda"), am,
                    int(am[:4]) if am[:4].isdigit() else None,
                    g("Código do Favorecido"), g("Favorecido"),
                    g("Natureza Jurídica"), g("Tipo Favorecido"),
-                   norm(g("UF Favorecido")), norm(g("Município Favorecido")),
+                   uf_fav, mun_fav, cod_ibge,
                    parse_valor(g("Valor Recebido")), snap_id)
 
 
-def diff(con, tabela, stg, campos_valor, snap_id, uf_col, mun_col):
+def diff(con, tabela, stg, campos_valor, snap_id, uf_col, mun_col, snap_ant):
     """Escreve em `mudanca` o que entrou, saiu e mudou de valor.
 
     A carga inicial não gera feed: numa tabela vazia todas as 848 mil linhas
@@ -114,35 +136,41 @@ def diff(con, tabela, stg, campos_valor, snap_id, uf_col, mun_col):
     if bd.contar(con, tabela) == 0:
         return 0
     with con.cursor() as cur:
+        # Idempotência por PAR de snapshots: reingerir o mesmo arquivo
+        # reescreve só a transição (N→N), sem tocar na (N-1→N) verdadeira.
+        cur.execute("DELETE FROM mudanca WHERE snapshot_anterior IS NOT DISTINCT FROM %s "
+                    "AND snapshot_id=%s AND tabela=%s", (snap_ant, snap_id, tabela))
         cur.execute(f"""
-            INSERT INTO mudanca (snapshot_id, tabela, chave, tipo, campo,
-                                 valor_antes, valor_depois, cod_autor, uf, municipio)
-            SELECT %s, %s, n.chave, 'nova', %s, 0, n.{principal},
+            INSERT INTO mudanca (snapshot_anterior, snapshot_id, tabela, chave, tipo,
+                                 campo, valor_antes, valor_depois, cod_autor, uf, municipio)
+            SELECT %s, %s, %s, n.chave, 'nova', %s, 0, n.{principal},
                    n.cod_autor, n.{uf_col}, n.{mun_col}
             FROM {stg} n LEFT JOIN {tabela} a USING (chave)
             WHERE a.chave IS NULL AND n.{principal} <> 0
-        """, (snap_id, tabela, principal))
+        """, (snap_ant, snap_id, tabela, principal))
         cur.execute(f"""
-            INSERT INTO mudanca (snapshot_id, tabela, chave, tipo, campo,
-                                 valor_antes, valor_depois, cod_autor, uf, municipio)
-            SELECT %s, %s, a.chave, 'removida', %s, a.{principal}, 0,
+            INSERT INTO mudanca (snapshot_anterior, snapshot_id, tabela, chave, tipo,
+                                 campo, valor_antes, valor_depois, cod_autor, uf, municipio)
+            SELECT %s, %s, %s, a.chave, 'removida', %s, a.{principal}, 0,
                    a.cod_autor, a.{uf_col}, a.{mun_col}
             FROM {tabela} a LEFT JOIN {stg} n USING (chave)
             WHERE n.chave IS NULL
-        """, (snap_id, tabela, principal))
+        """, (snap_ant, snap_id, tabela, principal))
         # Um registro por campo monetário que mexeu.
         for campo in campos_valor:
             cur.execute(f"""
-                INSERT INTO mudanca (snapshot_id, tabela, chave, tipo, campo,
-                                     valor_antes, valor_depois, cod_autor, uf, municipio)
-                SELECT %s, %s, n.chave, 'alterada', %s, a.{campo}, n.{campo},
+                INSERT INTO mudanca (snapshot_anterior, snapshot_id, tabela, chave, tipo,
+                                     campo, valor_antes, valor_depois, cod_autor, uf, municipio)
+                SELECT %s, %s, %s, n.chave, 'alterada', %s, a.{campo}, n.{campo},
                        n.cod_autor, n.{uf_col}, n.{mun_col}
                 FROM {stg} n JOIN {tabela} a USING (chave)
                 WHERE a.{campo} IS DISTINCT FROM n.{campo}
-            """, (snap_id, tabela, campo))
-        cur.execute("SELECT COUNT(*) AS c FROM mudanca WHERE snapshot_id=%s AND tabela=%s",
-                    (snap_id, tabela))
+            """, (snap_ant, snap_id, tabela, campo))
+        cur.execute("SELECT COUNT(*) AS c FROM mudanca WHERE "
+                    "snapshot_anterior IS NOT DISTINCT FROM %s AND snapshot_id=%s "
+                    "AND tabela=%s", (snap_ant, snap_id, tabela))
         return cur.fetchone()["c"]
+
 
 
 def substituir(con, tabela, stg, cols):
@@ -173,12 +201,23 @@ def sincronizar_autores(con, autores):
 def vincular_autores(con):
     """Casa cod_autor → sq_candidato e persiste. Respeita conferido = TRUE."""
     with con.cursor() as cur:
-        cur.execute("SELECT sq_candidato, nome, nome_urna FROM deputado")
-        cands = [(r["sq_candidato"], r["nome"], r["nome_urna"]) for r in cur.fetchall()]
+        # O nome parlamentar da Câmara entra como terceira grafia conhecida.
+        # É justamente ele que costuma bater com o autor da emenda na CGU
+        # quando o TSE diverge ('DEPUTADO DAL' no TSE x 'DAL BARRETO' na CGU).
+        cur.execute("""
+            SELECT d.sq_candidato, d.nome, d.nome_urna, c.nome_eleitoral,
+                   d.situacao LIKE 'ELEITO%' AS eleito
+            FROM deputado d
+            LEFT JOIN nome_camara c ON c.id_camara = d.id_camara
+        """)
+        linhas = cur.fetchall()
+    cands = [(r["sq_candidato"], r["nome"], r["nome_urna"]) for r in linhas]
     total = bd.contar(con, "autor")
     if not cands:
         return 0, total
-    idx = indice_por_nome(cands)
+    idx = indice_por_nome(
+        (r["sq_candidato"], r["nome"], r["nome_urna"], r["nome_eleitoral"],
+         r["eleito"]) for r in linhas)
     aliases = carregar_aliases()
     with con.cursor() as cur:
         cur.execute("SELECT cod_autor, nome_norm FROM autor WHERE NOT conferido")
@@ -196,6 +235,8 @@ def vincular_autores(con):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--zip", default=caminho(FONTES["cgu_emendas"]))
+    ap.add_argument("--forcar", action="store_true",
+                    help="reingere mesmo que o snapshot já conste ingerido")
     args = ap.parse_args()
 
     if not os.path.exists(args.zip):
@@ -207,13 +248,22 @@ def main():
     fonte = FONTES["cgu_emendas"]
     bd.registrar_fonte(con, fonte)
     snap, ja = bd.registrar_snapshot(con, fonte.id, args.zip)
-    if ja and snap["ingerido_em"]:
-        print(f"snapshot {snap['id']} (sha {snap['sha256'][:12]}) já ingerido — nada a fazer")
+    if ja and snap["ingerido_em"] and not args.forcar:
+        print(f"snapshot {snap['id']} (sha {snap['sha256'][:12]}) já ingerido "
+              f"— nada a fazer (use --forcar)")
         return 0
     print(f"snapshot {snap['id']} sha={snap['sha256'][:12]} "
           f"publicado={snap['publicado_em'] or '—'}")
 
+    # O snapshot anterior é o que carimbou as linhas hoje no banco.
+    ant_e = bd.um(con, "SELECT MAX(snapshot_id) AS s FROM emenda")["s"]
+    ant_f = bd.um(con, "SELECT MAX(snapshot_id) AS s FROM emenda_favorecido")["s"]
     autores = defaultdict(Counter)
+    faltantes = Counter()
+    mapa = mapa_municipios(con)
+    if not mapa:
+        print("  aviso: tabela `municipio` vazia — o município do favorecido "
+              "ficará sem código IBGE (rode ingest_municipios.py e reingira)")
     with zipfile.ZipFile(args.zip) as z, con.cursor() as cur:
         cur.execute("CREATE TEMP TABLE stg_emenda (LIKE emenda) ON COMMIT DROP")
         cur.execute("CREATE TEMP TABLE stg_fav (LIKE emenda_favorecido) ON COMMIT DROP")
@@ -222,17 +272,21 @@ def main():
         n_e = bd.copiar(con, "stg_emenda", COLS_EMENDA,
                         ler_planejado(z, snap["id"], autores))
         m_e = diff(con, "emenda", "stg_emenda", ("empenhado", "pago"),
-                   snap["id"], "uf", "municipio")
+                   snap["id"], "uf", "municipio", ant_e)
         substituir(con, "emenda", "stg_emenda", COLS_EMENDA)
         print(f"      {n_e:,} linhas, {m_e:,} mudanças".replace(",", "."))
 
         print("[2/4] execução por favorecido …", flush=True)
         n_f = bd.copiar(con, "stg_fav", COLS_FAV,
-                        ler_favorecidos(z, snap["id"], autores))
+                        ler_favorecidos(z, snap["id"], autores, mapa, faltantes))
         m_f = diff(con, "emenda_favorecido", "stg_fav", ("valor_recebido",),
-                   snap["id"], "uf_favorecido", "municipio_favorecido")
+                   snap["id"], "uf_favorecido", "municipio_favorecido", ant_f)
         substituir(con, "emenda_favorecido", "stg_fav", COLS_FAV)
         print(f"      {n_f:,} linhas, {m_f:,} mudanças".replace(",", "."))
+        if faltantes:
+            top = ", ".join(f"{m}/{u}" for (u, m), _ in faltantes.most_common(8))
+            print(f"      {len(faltantes)} municípios de favorecido sem código "
+                  f"IBGE (ficam sem distância): {top}")
     con.commit()
 
     print("[3/4] catálogo de autores …", flush=True)

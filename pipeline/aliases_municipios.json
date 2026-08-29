@@ -1,0 +1,28 @@
+{
+  "_comentario": "Municípios cujo nome no TSE ou na CGU não casa com o do IBGE nem pela chave tolerante de nomes.py. Mapeados para o CÓDIGO IBGE, não para outro nome: o código é verificável e não volta a divergir. Causas: renomeação oficial (Boa Saúde→Januário Cicco, Açu→Assú, Augusto Severo→Campo Grande, Presidente Juscelino→Serra Caiada, Embu→Embu das Artes, Seridó→São Vicente do Seridó, Fortaleza do Tabocão→Tabocão), grafia histórica (Itapagé/Itapajé, Poxoréo/Poxoréu) e variação S/Z. Cada código foi conferido contra a lista do IBGE, não digitado de memória.",
+  "_nao_resolviveis": "SP|RIO DE JANEIRO e RO|BOA VISTA são erros da fonte (município que não existe na UF declarada); '|INVALIDO' é literal na base da CGU. Ficam sem código e sem distância, de propósito.",
+
+  "RN|BOA SAUDE": 2405306,
+  "BA|CAMACA": 2905602,
+  "MG|DONA EUSEBIA": 3122900,
+  "PA|SANTA ISABEL DO PARA": 1506500,
+  "SP|SAO LUIS DO PARAITINGA": 3550001,
+  "RR|SAO LUIZ": 1400605,
+  "MG|SAO THOME DAS LETRAS": 3165206,
+
+  "SE|GRACHO CARDOSO": 2802601,
+  "RJ|TRAJANO DE MORAIS": 3305901,
+  "BA|SANTA TERESINHA": 2928505,
+  "PE|IGUARACI": 2606903,
+  "MT|POXOREO": 5107008,
+  "MG|BRASOPOLIS": 3108909,
+  "SP|FLORINIA": 3516101,
+  "PB|SERIDO": 2515401,
+  "CE|ITAPAGE": 2306306,
+  "SP|EMBU": 3515004,
+  "RN|ARES": 2401206,
+  "TO|FORTALEZA DO TABOCAO": 1708254,
+  "RN|ACU": 2400208,
+  "RN|AUGUSTO SEVERO": 2401305,
+  "RN|PRESIDENTE JUSCELINO": 2410306
+}

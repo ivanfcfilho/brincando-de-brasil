@@ -22,7 +22,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import db as bd
-from nomes import norm
+from nomes import chave_municipio, norm
 
 VIACEP = "https://viacep.com.br/ws/{}/json/"
 # Cada valor publicado precisa apontar para o documento oficial de origem.
@@ -46,10 +46,31 @@ def municipio_por_cep(cep):
         d = json.load(r)
     if d.get("erro"):
         raise ValueError(f"CEP não encontrado: {cep}")
-    return norm(d["localidade"]), d["uf"], d.get("bairro") or ""
+    # O ViaCEP devolve o código IBGE: com ele o resto da consulta é join por
+    # código, sem nenhum casamento por nome no caminho.
+    cod = d.get("ibge")
+    return (norm(d["localidade"]), d["uf"], d.get("bairro") or "",
+            int(cod) if cod and cod.isdigit() else None)
 
 
-def deputados_do_municipio(con, municipio, uf, limite=10):
+def resolver_municipio(con, cod_ibge=None, nome=None, uf=None):
+    """Devolve a linha de `municipio`. Aceita código IBGE (preferido) ou
+    nome+UF, casando pela chave tolerante."""
+    if cod_ibge:
+        r = bd.um(con, "SELECT * FROM municipio WHERE cod_ibge=%s", (cod_ibge,))
+        if r:
+            return r
+    if nome and uf:
+        with con.cursor() as cur:
+            cur.execute("SELECT * FROM municipio WHERE uf=%s", (uf.upper(),))
+            alvo = chave_municipio(nome)
+            achados = [r for r in cur.fetchall() if chave_municipio(r["nome"]) == alvo]
+        if len(achados) == 1:
+            return achados[0]
+    raise ValueError(f"município não encontrado: {nome or cod_ibge}/{uf or ''}")
+
+
+def deputados_do_municipio(con, cod_ibge, limite=10):
     """Quem recebeu votos neste município, e quanto o município pesou para
     cada um. As duas porcentagens respondem a perguntas diferentes:
 
@@ -61,7 +82,8 @@ def deputados_do_municipio(con, municipio, uf, limite=10):
             WITH aqui AS (
                 SELECT v.sq_candidato, v.votos
                 FROM voto_municipio v
-                WHERE v.uf = %s AND v.municipio_norm = %s
+                JOIN municipio m ON m.cod_tse = v.cod_municipio_tse
+                WHERE m.cod_ibge = %s
             ), total_municipio AS (
                 SELECT SUM(votos) AS t FROM aqui
             )
@@ -78,86 +100,139 @@ def deputados_do_municipio(con, municipio, uf, limite=10):
             WHERE d.situacao LIKE 'ELEITO%%'
             ORDER BY a.votos DESC
             LIMIT %s
-        """, (uf, municipio, limite))
+        """, (cod_ibge, limite))
         return [dict(r) for r in cur.fetchall()]
 
 
-def destino_das_emendas(con, sq_candidato, municipio, uf, mandato_inicio=2023):
-    """Para onde foi o dinheiro deste deputado, com o município em foco
-    destacado. Duas visões, porque elas discordam e a discordância é o achado:
+def destino_das_emendas(con, sq_candidato, origem, mandato_inicio=2023):
+    """Para onde foi o dinheiro deste deputado, medido a partir de `origem`
+    (a linha de `municipio` correspondente ao CEP consultado).
 
-      planejado — 'Localidade de aplicação' declarada no empenho. 70–95% vem
-                  como Múltiplo/Sem informação: a opacidade é o dado.
-      executado — município do favorecido que efetivamente recebeu. Ressalva:
-                  sede do favorecido ≠ local de aplicação (fundos estaduais e
-                  fornecedores concentram-se nas capitais).
+    Duas visões, porque elas discordam e a discordância é o achado:
+
+      planejado — 'Localidade de aplicação' declarada no empenho. A maior
+                  parte vem como Múltiplo/Sem informação: a opacidade é o dado.
+      executado — município do favorecido que efetivamente recebeu. Ressalva
+                  que não pode cair: sede do favorecido ≠ local de aplicação
+                  (fundos estaduais e fornecedores concentram-se nas capitais).
+
+    A distância é entre CENTROIDES DE TERRITÓRIO (IBGE), não entre as sedes —
+    em município de área grande, a diferença é de dezenas de km.
     """
-    out = {}
+    uf = origem["uf"]
+    par = {"cod": origem["cod_ibge"], "uf": uf, "sq": sq_candidato,
+           "ano": mandato_inicio}
+    out = {"origem": {"cod_ibge": origem["cod_ibge"], "nome": origem["nome"],
+                      "uf": uf}}
     with con.cursor() as cur:
-        # As quatro classes PARTICIONAM o total: toda linha cai em exatamente
-        # uma. Filtros sobrepostos aqui fariam as parcelas somarem mais que o
-        # todo — e um percentual acima de 100% no ar é munição contra o projeto.
+        # As classes PARTICIONAM o total: toda linha cai em exatamente uma.
+        # Filtros sobrepostos fariam as parcelas somarem mais que o todo, e
+        # percentual acima de 100% no ar é munição contra o projeto.
+        # A UF vem SEMPRE da tabela municipio, via cod_ibge — nunca da coluna
+        # de texto da CGU. As duas discordam em algumas linhas, e misturá-las
+        # colocava a mesma linha em duas classes (as parcelas somavam mais que
+        # o total). Uma chave, uma verdade.
         cur.execute("""
             SELECT COALESCE(SUM(e.empenhado),0) AS total,
                    COALESCE(SUM(e.empenhado) FILTER (
-                       WHERE e.municipio NOT IN %(sem)s
-                         AND e.uf = %(uf)s AND e.municipio = %(mun)s), 0) AS neste_municipio,
+                       WHERE e.cod_ibge = %(cod)s),0) AS neste_municipio,
                    COALESCE(SUM(e.empenhado) FILTER (
-                       WHERE e.municipio NOT IN %(sem)s
-                         AND e.uf = %(uf)s AND e.municipio <> %(mun)s), 0) AS outros_do_estado,
+                       WHERE m.cod_ibge IS NOT NULL AND m.cod_ibge <> %(cod)s
+                         AND m.uf = %(uf)s),0) AS outros_do_estado,
                    COALESCE(SUM(e.empenhado) FILTER (
-                       WHERE e.municipio NOT IN %(sem)s
-                         AND e.uf IS NOT NULL AND e.uf <> %(uf)s), 0) AS outros_estados,
+                       WHERE m.cod_ibge IS NOT NULL AND m.uf <> %(uf)s),0) AS outros_estados,
                    COALESCE(SUM(e.empenhado) FILTER (
-                       WHERE e.municipio IN %(sem)s OR e.municipio IS NULL
-                          OR e.uf IS NULL), 0) AS sem_municipio_definido
+                       WHERE m.cod_ibge IS NULL),0) AS sem_municipio_definido
             FROM vw_emenda_deputado e
+            LEFT JOIN municipio m ON m.cod_ibge = e.cod_ibge
             WHERE e.sq_candidato = %(sq)s AND e.ano >= %(ano)s
-        """, {"sem": SEM_MUNICIPIO, "uf": uf, "mun": municipio,
-              "sq": sq_candidato, "ano": mandato_inicio})
+        """, par)
         out["planejado"] = dict(cur.fetchone())
 
         cur.execute("""
             SELECT COALESCE(SUM(f.valor_recebido),0) AS total,
                    COALESCE(SUM(f.valor_recebido) FILTER (
-                       WHERE f.uf_favorecido = %(uf)s
-                         AND f.municipio_favorecido = %(mun)s),0) AS neste_municipio,
+                       WHERE f.cod_ibge_favorecido = %(cod)s),0) AS neste_municipio,
                    COALESCE(SUM(f.valor_recebido) FILTER (
-                       WHERE f.uf_favorecido = %(uf)s
-                         AND f.municipio_favorecido <> %(mun)s),0) AS outros_do_estado,
+                       WHERE m.cod_ibge IS NOT NULL AND m.cod_ibge <> %(cod)s
+                         AND m.uf = %(uf)s),0) AS outros_do_estado,
                    COALESCE(SUM(f.valor_recebido) FILTER (
-                       WHERE f.uf_favorecido IS NOT NULL
-                         AND f.uf_favorecido <> %(uf)s),0) AS outros_estados,
-                   -- 4.975 linhas (R$ 378 mi no país) não trazem UF do
-                   -- favorecido. Sem classe própria elas sumiriam da conta;
-                   -- a opacidade tem que aparecer, não ser absorvida.
+                       WHERE m.cod_ibge IS NOT NULL AND m.uf <> %(uf)s),0) AS outros_estados,
                    COALESCE(SUM(f.valor_recebido) FILTER (
-                       WHERE f.uf_favorecido IS NULL),0) AS sem_local_definido
+                       WHERE m.cod_ibge IS NULL),0) AS sem_local_definido
             FROM vw_favorecido_deputado f
+            LEFT JOIN municipio m ON m.cod_ibge = f.cod_ibge_favorecido
             WHERE f.sq_candidato = %(sq)s AND f.ano >= %(ano)s
-        """, {"uf": uf, "mun": municipio, "sq": sq_candidato, "ano": mandato_inicio})
+        """, par)
         out["executado"] = dict(cur.fetchone())
 
-        cur.execute("""
-            SELECT f.municipio_favorecido AS municipio, f.uf_favorecido AS uf,
-                   SUM(f.valor_recebido) AS valor
-            FROM vw_favorecido_deputado f
-            WHERE f.sq_candidato = %s AND f.ano >= %s
-            GROUP BY 1,2 ORDER BY 3 DESC LIMIT 5
-        """, (sq_candidato, mandato_inicio))
+        # Distância média ponderada pelo valor: o número da manchete.
+        #
+        # Agrega por município ANTES de ponderar, e usa o valor LÍQUIDO. A base
+        # traz estornos (linhas negativas); filtrar linha a linha por valor > 0
+        # inflava o total de um município e fazia a mesma cidade aparecer com
+        # dois valores diferentes na mesma tela. Um município é uma linha, e o
+        # que ele recebeu é o líquido.
+        cte = """
+            WITH por_municipio AS (
+                SELECT f.cod_ibge_favorecido AS cod,
+                       SUM(f.valor_recebido) AS valor
+                FROM vw_favorecido_deputado f
+                WHERE f.sq_candidato = %(sq)s AND f.ano >= %(ano)s
+                  AND f.cod_ibge_favorecido IS NOT NULL
+                GROUP BY 1 HAVING SUM(f.valor_recebido) > 0
+            ), com_distancia AS (
+                SELECT p.valor, m.nome AS municipio, m.uf,
+                       earth_distance(ll_to_earth(%(lat)s, %(lon)s),
+                                      ll_to_earth(m.lat, m.lon)) / 1000 AS km
+                FROM por_municipio p
+                JOIN municipio m ON m.cod_ibge = p.cod
+                WHERE m.lat IS NOT NULL
+            )
+        """
+        cur.execute(cte + """
+            SELECT SUM(valor * km) / NULLIF(SUM(valor),0) AS km_medio,
+                   SUM(valor) AS valor_com_local,
+                   COALESCE(SUM(valor) FILTER (WHERE km > 100),0) AS valor_acima_100km
+            FROM com_distancia
+        """, dict(par, lat=origem["lat"], lon=origem["lon"]))
+        out["distancia"] = dict(cur.fetchone())
+
+        cur.execute(cte + """
+            SELECT municipio, uf, valor, ROUND(km::numeric) AS km
+            FROM com_distancia ORDER BY valor DESC LIMIT 5
+        """, dict(par, lat=origem["lat"], lon=origem["lon"]))
         out["maiores_destinos"] = [dict(r) for r in cur.fetchall()]
 
         cur.execute("""
-            SELECT e.codigo_emenda, e.ano, e.municipio, e.uf, e.nome_funcao,
-                   e.empenhado
-            FROM vw_emenda_deputado e
-            WHERE e.sq_candidato = %s AND e.ano >= %s AND e.empenhado > 0
-            ORDER BY e.empenhado DESC LIMIT 5
-        """, (sq_candidato, mandato_inicio))
+            SELECT codigo_emenda, ano, municipio, uf, nome_funcao, empenhado
+            FROM vw_emenda_deputado
+            WHERE sq_candidato = %(sq)s AND ano >= %(ano)s AND empenhado > 0
+            ORDER BY empenhado DESC LIMIT 5
+        """, par)
         out["maiores_emendas"] = [
             dict(r, fonte=URL_EMENDA.format(r["codigo_emenda"])) for r in cur.fetchall()]
     _conferir_fechamento(out)
+    _conferir_coerencia(out, origem)
     return out
+
+
+def _conferir_coerencia(out, origem):
+    """O município consultado, quando aparece na lista de maiores destinos,
+    tem que trazer o MESMO valor da classe 'neste município'.
+
+    Foi assim que se descobriu que um filtro de valor > 0 excluía estornos de
+    um cálculo e não do outro: a mesma cidade aparecia com dois valores na
+    mesma tela. Dois números discordando lado a lado custam mais credibilidade
+    do que um número faltando.
+    """
+    for d in out["maiores_destinos"]:
+        se_origem = (d["municipio"].upper() == origem["nome"].upper()
+                     and d["uf"] == origem["uf"])
+        if se_origem and abs(float(d["valor"]) - float(out["executado"]["neste_municipio"])) > 0.01:
+            raise AssertionError(
+                f"{origem['nome']}: maiores destinos diz {d['valor']} mas a "
+                f"classe 'neste município' diz {out['executado']['neste_municipio']}")
 
 
 def _conferir_fechamento(out):
@@ -190,12 +265,13 @@ def proveniencia(con):
         return [dict(r) for r in cur.fetchall()]
 
 
-def responder(con, municipio, uf, bairro="", limite=5, mandato_inicio=2023):
-    deps = deputados_do_municipio(con, municipio, uf, limite)
+def responder(con, origem, bairro="", limite=5, mandato_inicio=2023):
+    deps = deputados_do_municipio(con, origem["cod_ibge"], limite)
     for d in deps:
-        d["emendas"] = destino_das_emendas(con, d["sq_candidato"], municipio, uf,
+        d["emendas"] = destino_das_emendas(con, d["sq_candidato"], origem,
                                            mandato_inicio)
-    return {"municipio": municipio, "uf": uf, "bairro": bairro,
+    return {"municipio": origem["nome"], "uf": origem["uf"],
+            "cod_ibge": origem["cod_ibge"], "bairro": bairro,
             "deputados": deps, "fontes": proveniencia(con)}
 
 
@@ -204,7 +280,9 @@ def brl(v):
 
 
 def imprimir(r):
-    print(f"\n{r['municipio']} / {r['uf']}" + (f" — bairro {r['bairro']}" if r["bairro"] else ""))
+    print(f"\n{r['municipio']} / {r['uf']}"
+          + (f" — bairro {r['bairro']}" if r["bairro"] else "")
+          + f"  [IBGE {r['cod_ibge']}]")
     if not r["deputados"]:
         print("  nenhum deputado federal eleito com votos registrados neste município")
         return
@@ -213,8 +291,9 @@ def imprimir(r):
         print(f"    votos aqui: {d['votos']:,}".replace(",", ".") +
               f"  ·  {d['pct_do_municipio']}% dos votos do município"
               f"  ·  {d['pct_do_deputado']}% da votação total dele")
-        p, e = d["emendas"]["planejado"], d["emendas"]["executado"]
-        if not p["total"]:
+        e = d["emendas"]
+        p, x, dist = e["planejado"], e["executado"], e["distancia"]
+        if not p["total"] and not x["total"]:
             print("    emendas: nenhuma casada com este parlamentar (ver ressalvas)")
             continue
         print(f"    emendas empenhadas (destino declarado): {brl(p['total'])}")
@@ -222,20 +301,32 @@ def imprimir(r):
               f"outros do estado {brl(p['outros_do_estado'])} · "
               f"outros estados {brl(p['outros_estados'])} · "
               f"sem município definido {brl(p['sem_municipio_definido'])}")
-        if e["total"]:
-            print(f"    valores recebidos (execução): {brl(e['total'])}")
-            print(f"      favorecidos neste município {brl(e['neste_municipio'])} · "
-                  f"no estado {brl(e['outros_do_estado'])} · "
-                  f"outros estados {brl(e['outros_estados'])} · "
-                  f"sem local declarado {brl(e['sem_local_definido'])}")
-        if d["emendas"]["maiores_destinos"]:
-            print("      maiores destinos:", ", ".join(
-                f"{m['municipio'].title()}/{m['uf']} {brl(m['valor'])}"
-                for m in d["emendas"]["maiores_destinos"][:3]))
+        if x["total"]:
+            print(f"    valores recebidos (execução): {brl(x['total'])}")
+            print(f"      favorecidos neste município {brl(x['neste_municipio'])} · "
+                  f"no estado {brl(x['outros_do_estado'])} · "
+                  f"outros estados {brl(x['outros_estados'])} · "
+                  f"sem local declarado {brl(x['sem_local_definido'])}")
+        if dist and dist["km_medio"] is not None:
+            cobertura = (100 * float(dist["valor_com_local"]) / float(x["total"])
+                         if x["total"] else 0)
+            acima = float(dist["valor_acima_100km"] or 0)
+            print(f"    distância média do dinheiro até aqui: "
+                  f"{float(dist['km_medio']):,.0f} km".replace(",", ".") +
+                  f" (ponderada por valor, sobre {cobertura:.0f}% do executado "
+                  f"que tem município identificado)")
+            if dist["valor_com_local"]:
+                print(f"      além de 100 km: {brl(acima)} "
+                      f"({100*acima/float(dist['valor_com_local']):.0f}% do que tem local)")
+        if e["maiores_destinos"]:
+            print("      maiores destinos: " + ", ".join(
+                f"{m['municipio']}/{m['uf']} {brl(m['valor'])} ({m['km']:.0f} km)"
+                for m in e["maiores_destinos"][:3]))
     print("\n  fontes:")
     for f in r["fontes"]:
         print(f"    {f['fonte_id']}: {f['arquivo']} "
               f"sha256={f['sha256'][:16]} baixado {f['baixado_em']:%Y-%m-%d}")
+    print("  distâncias entre centroides de território (IBGE), não entre sedes.")
 
 
 def main():
@@ -247,15 +338,16 @@ def main():
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args()
 
+    con = bd.conectar()
     if args.cep:
-        municipio, uf, bairro = municipio_por_cep(args.cep)
+        nome, uf, bairro, cod = municipio_por_cep(args.cep)
+        origem = resolver_municipio(con, cod_ibge=cod, nome=nome, uf=uf)
     elif args.municipio and args.uf:
-        municipio, uf, bairro = norm(args.municipio), args.uf.upper(), ""
+        origem, bairro = resolver_municipio(con, nome=args.municipio, uf=args.uf), ""
     else:
         ap.error("informe --cep ou (--municipio e --uf)")
 
-    con = bd.conectar()
-    r = responder(con, municipio, uf, bairro, args.limite)
+    r = responder(con, origem, bairro, args.limite)
     if args.json:
         print(json.dumps(r, ensure_ascii=False, indent=2, default=str))
     else:
