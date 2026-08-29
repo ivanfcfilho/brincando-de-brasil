@@ -1,84 +1,164 @@
-# O Código de Transição — estudo piloto
+# O Código de Transição — pipeline de dados
 
-Prova de conceito do cruzamento **origem do voto × destino da emenda**, a
-métrica central da plataforma "O Seu Dinheiro Não Chegou no Seu Bairro".
+Cruzamento **origem do voto (TSE) × destino da emenda (Portal da
+Transparência)**, a métrica central da plataforma "O Seu Dinheiro Não Chegou
+no Seu Bairro".
 
-Para cada deputado federal eleito no estado piloto, o pipeline responde:
+Para cada deputado federal, o pipeline responde:
 
 > De onde vieram os votos (TSE, urna por urna, agregado por município) e para
-> onde foram as emendas parlamentares do mandato (Portal da Transparência)?
+> onde foram as emendas parlamentares do mandato (CGU)?
+
+Os dados vivem num **Postgres** e são atualizados por um **job diário** que só
+baixa o que mudou. O que se acumula não é o dado bruto repetido, é o **diff**:
+"neste dia, este empenho subiu de A para B".
 
 ## Estrutura
 
 ```
-landing/index.html   protótipo da landing page (busca por CEP, dados simulados)
+db/schema.sql          proveniência + domínio + mudanças
 pipeline/
-  download_tse.py      votação por município/zona (TSE dados abertos)
-  download_emendas.py  base de emendas parlamentares (CGU dados abertos)
-  cruzamento.py        o cruzamento e o relatório
-data/raw/            dumps oficiais (não versionados — ~800 MB)
-data/out/            matriz deputado × município (CSV)
-relatorio/           relatório legível do piloto (Markdown)
+  fontes.py              registro das fontes: como checar e como baixar
+  db.py                  conexão, schema, snapshots, COPY em massa
+  nomes.py               normalização e casamento de nomes
+  atualizar.py           O JOB: checa, baixa o que mudou, ingere, resume
+  ingest_tse.py          votação por município → banco (1× por eleição)
+  ingest_emendas.py      emendas + execução → banco, com diff
+  vincular.py            autor de emenda ↔ deputado, com fila de revisão
+  consulta.py            CEP → município → deputados → destino da verba
+  cruzamento.py          relatório por UF (lê do banco)
+  conferir.py            invariantes do banco (roda no fim do job)
+deploy/                systemd service + timer do job diário
+data/raw/              dumps oficiais (não versionados, ~800 MB)
+relatorio/             relatórios legíveis (Markdown)
 ```
 
-## Como rodar
+## Instalação
 
 ```bash
-pip install curl_cffi              # só para o download do TSE (ver abaixo)
-python3.13 pipeline/download_tse.py --ano 2022
-python3 pipeline/download_emendas.py
-python3 pipeline/cruzamento.py --uf SE
+pip install psycopg2-binary curl_cffi      # curl_cffi só para o TSE
+cp .env.exemplo .env                       # e preencha o CT_DSN
+python3.13 pipeline/db.py --init
 ```
 
-O CDN do TSE (Akamai) bloqueia fingerprint TLS de ferramentas de linha de
-comando; `download_tse.py` usa `curl_cffi` com impersonation de Chrome e
-download por faixas com resume. O restante do pipeline é stdlib pura.
+O banco é **dedicado** (role e database próprios). Nada de senha no código: a
+credencial vem de `CT_DSN`, no `.env`, que não vai para o git.
+
+## Carga inicial
+
+```bash
+python3.13 pipeline/atualizar.py --fonte tse_munzona_2022   # baixa se faltar
+python3.13 pipeline/ingest_tse.py --uf TODAS                # ~15 min
+python3.13 pipeline/atualizar.py                            # emendas + diff
+python3.13 pipeline/vincular.py                             # + fila de revisão
+```
+
+## Uso diário
+
+```bash
+python3.13 pipeline/atualizar.py            # o ciclo (checa → baixa → ingere → resume)
+python3.13 pipeline/atualizar.py --dry-run  # só checa (custa ~1 KB)
+python3.13 pipeline/atualizar.py --resumo 7 # o que mudou na semana
+python3.13 pipeline/consulta.py --cep 49010-000
+python3.13 pipeline/cruzamento.py --uf SE
+python3.13 pipeline/conferir.py             # invariantes (sai != 0 se falhar)
+```
+
+`conferir.py` existe porque um bug real passou silencioso: o ZIP do TSE traz
+agregados nacionais (`_BR.csv`, `_BRASIL.csv`) além das 27 UFs, e ler um deles
+carimbou uma única UF em **91% das linhas de voto**. Nada quebrou — só as
+consultas por estado passaram a devolver quase nada. Erro que não grita é o
+perigoso, então as afirmações do projeto sobre os próprios dados (513
+deputados, bancada de cada UF, UF do voto = UF do deputado) viraram teste que
+roda em todo ciclo.
+
+Agendamento:
+
+```bash
+sudo cp deploy/codigo-transicao-atualizar.{service,timer} /etc/systemd/system/
+sudo systemctl enable --now codigo-transicao-atualizar.timer
+```
+
+A checagem é um `HEAD`: compara `ETag`/`Last-Modified`/tamanho com o último
+snapshot e só baixa se mudou. A votação do TSE de 2022 é estática e por isso
+tem periodicidade `eleicao` — o ciclo diário nem a consulta.
+
+## Proveniência
+
+Todo snapshot é identificado pelo **sha256 do arquivo oficial**, com data de
+download e o `Last-Modified` declarado pelo servidor. Rebaixar um arquivo
+idêntico não cria snapshot nem reingere nada. Toda checagem é registrada,
+inclusive as que não acharam mudança — "olhamos e nada mudou" também é uma
+afirmação que precisa de prova. Os relatórios trazem o sha256 dos snapshots
+que geraram cada número.
 
 ## Fontes (oficiais, públicas, sem autenticação)
 
-- **TSE — dados abertos**: `votacao_candidato_munzona_<ano>.zip`
-  (votos nominais por candidato, município e zona).
-- **Portal da Transparência / CGU**: `EmendasParlamentares.zip`
-  (autor, ano, município IBGE de destino, valores empenhado/liquidado/pago).
+- **TSE — dados abertos**: `votacao_candidato_munzona_<ano>.zip`.
+  O CDN (Akamai) bloqueia fingerprint TLS de linha de comando; o download usa
+  `curl_cffi` com impersonation de Chrome e faixas com resume.
+- **Portal da Transparência / CGU**: `EmendasParlamentares.zip` — três visões,
+  das quais usamos o destino planejado e a execução por favorecido.
+- **ViaCEP**: CEP → município, na consulta.
 
 ## Regras editoriais (inegociáveis)
 
 1. **Nenhuma inferência.** O pipeline nunca escreve "desviou" ou "abandonou":
    publica origem dos votos, destino da verba e o percentual de divergência.
    Emenda destinada a outro município **é legal** — a conclusão é do leitor.
-2. **Todo número rastreável à fonte.** Na plataforma real, cada valor linka o
-   documento oficial de origem.
+   Isso vale para o material de campanha também: uma peça que afirme o que os
+   dados não mostram destrói o projeto inteiro, e a exposição por calúnia é
+   pessoal, não da plataforma.
+2. **Todo número rastreável à fonte.** Cada valor linka o documento oficial de
+   origem, e cada relatório declara o sha256 do snapshot que o gerou.
 3. **Verificação dupla antes de publicar.** Um número errado destrói a
-   credibilidade de todos os certos.
+   credibilidade de todos os certos. Daí a fila de `vincular.py`.
 
-## Ressalvas metodológicas conhecidas (piloto)
+## Ressalvas metodológicas conhecidas
 
-- **Casamento por nome.** O autor da emenda vem como nome parlamentar; o TSE
-  traz nome civil e nome de urna. O casamento é por nome normalizado com
-  fallback por tokens; homônimos ambíguos são descartados e logados. A versão
-  de produção deve casar por código do autor (Câmara) × SQ_CANDIDATO (TSE).
+- **Casamento de autoria.** A base da CGU traz `Código do Autor da Emenda`,
+  estável, mas 89 dos ~1.573 autores aparecem com mais de uma grafia de nome —
+  e o TSE traz nome civil e de urna. O casamento é por nome exato, com
+  fallback por tokens **travado por primeiro e último nome**: sem essa trava,
+  `EDUARDO BRAGA` casa com `CARLOS EDUARDO BRAGA MENEZES` e `KATIA ABREU` com
+  `CRISTIANE KATIA SIMONI ABREU` — pessoas diferentes. A trava rejeita casos
+  genuinamente ambíguos (`JOSE SILVA` × `JOSE DA SILVA SANTOS`): match nenhum
+  aparece no log, match errado aparece no relatório. Hoje **459 dos 513
+  eleitos** têm autoria identificada, e todo vínculo por token entra na fila de
+  revisão de `vincular.py`. Confirmar marca `conferido`, e nenhuma reingestão
+  sobrescreve decisão humana. O definitivo é casar por id da Câmara.
 - **Municípios por nome, não por código.** O TSE usa código próprio, as
-  emendas usam IBGE. O piloto casa por nome normalizado dentro da UF; a versão
-  real precisa da tabela de correspondência TSE↔IBGE.
+  emendas usam IBGE. A tabela `municipio` (ponte TSE↔IBGE + coordenadas) está
+  criada e **vazia**: enquanto estiver, não há distância em km — e prometer
+  "a 500 km daqui" sem ela seria inventar.
 - **Empenhado ≠ pago.** O relatório usa valor empenhado (compromisso firmado);
   anos recentes têm pagamento em aberto por natureza.
-- **Emendas de relator/comissão (RP8/RP9)** não têm autor individual — não
-  aparecem no cruzamento. Essa opacidade é, em si, um dos argumentos da PEC.
-- **Licenças e suplências**: deputado licenciado pode ter emendas em nome do
-  titular; casos sem match ficam listados no log para revisão manual.
-- **Apelidos** (`pipeline/aliases.json`): nomes parlamentares que não batem
-  com o civil nem com o de urna são mapeados manualmente
-  (ex.: `YANDRA MOURA` → `YANDRA DE ANDRÉ`).
+- **Emendas de relator/comissão (RP8/RP9)** não têm autor individual. No
+  primeiro diff medido, **~99% da variação em valor não era atribuível a
+  nenhum deputado**. Essa opacidade é um argumento da PEC, não um defeito do
+  pipeline — e por isso o resumo diário a separa em vez de escondê-la.
 - **Destino planejado × execução.** No destino planejado, 70–95% dos empenhos
-  vêm como "Múltiplo"/"Sem informação" — essa opacidade é um achado do piloto,
-  não um defeito dele. Por isso o relatório traz uma segunda visão pela base
-  *PorFavorecido* (quem de fato recebeu, por município), com a ressalva de que
-  a sede do favorecido não é necessariamente o local de aplicação (fundos
-  estaduais e ministérios puxam valores para capitais e para Brasília).
+  vêm como "Múltiplo"/"Sem informação". A segunda visão (*PorFavorecido*)
+  mostra quem recebeu, com a ressalva de que a **sede do favorecido não é o
+  local de aplicação** — fundos estaduais e ministérios puxam valores para as
+  capitais e para Brasília. As duas visões discordam, e a discordância é o
+  achado.
+- **R$ 378 milhões sem UF de favorecido** (4.975 linhas) aparecem numa classe
+  própria, "sem local declarado", em vez de sumir da conta.
+- **Armadilha do feed de mudanças: reclassificação não é movimentação.**
+  Um par simétrico (`→ BRASILIA +R$ 5.119.961` e `→ SAO CAETANO DO SUL
+  −R$ 5.119.961`) é o **mesmo empenho sendo reetiquetado** na fonte, não
+  dinheiro trocando de lugar. Ler isso como "o deputado transferiu a verba"
+  produziria uma acusação falsa. Nenhum item do feed vai ao ar sem essa
+  checagem.
+- **Licenças e suplências**: deputado licenciado pode ter emendas em nome do
+  titular. Suplentes estão carregados (4.195), e são justamente onde o
+  casamento por nome mais erra.
 
 ## Próximos passos
 
-- [ ] Tabela TSE↔IBGE de municípios + coordenadas (distância em km do voto à verba)
-- [ ] Granularidade por seção eleitoral (`votacao_secao_<ano>_<UF>.zip`) → CEP
-- [ ] API pública + frontend (a landing em `landing/` vira o shell real)
-- [ ] Validação da metodologia por terceiros antes de qualquer publicação
+- [ ] Popular `municipio` (IBGE + correspondência TSE) → distância voto↔verba
+- [ ] Casar autoria por id da Câmara × SQ_CANDIDATO (elimina o nome do circuito)
+- [ ] Percorrer a fila de `vincular.py` (69 vínculos) antes de qualquer publicação
+- [ ] Granularidade por seção eleitoral (`votacao_secao_<ano>_<UF>.zip`) → CEP real
+- [ ] API HTTP sobre `consulta.py` + a landing como shell

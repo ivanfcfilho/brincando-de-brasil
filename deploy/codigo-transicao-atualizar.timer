@@ -1,0 +1,14 @@
+[Unit]
+Description=Roda o job de atualização todo dia de manhã
+
+[Timer]
+# A CGU publicou 04:39 UTC no dia em que isto foi escrito. 09:00 America/Sao_Paulo
+# dá folga para o arquivo do dia já estar no ar.
+OnCalendar=*-*-* 09:00:00 America/Sao_Paulo
+# Se a máquina estava desligada na hora, roda assim que ligar — o valor de um
+# feed de mudanças é não ter buraco.
+Persistent=true
+RandomizedDelaySec=15m
+
+[Install]
+WantedBy=timers.target

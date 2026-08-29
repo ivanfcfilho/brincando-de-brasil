@@ -1,0 +1,18 @@
+[Unit]
+Description=Código de Transição — checa fontes oficiais e ingere o que mudou
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=kakashi
+WorkingDirectory=/home/kakashi/codigo-de-transicao
+ExecStart=/usr/bin/python3.13 pipeline/atualizar.py
+# A CGU republica de madrugada; falha de rede não deve derrubar o timer.
+Restart=no
+TimeoutStartSec=3h
+StandardOutput=append:/home/kakashi/codigo-de-transicao/data/atualizar.log
+StandardError=append:/home/kakashi/codigo-de-transicao/data/atualizar.log
+
+[Install]
+WantedBy=multi-user.target

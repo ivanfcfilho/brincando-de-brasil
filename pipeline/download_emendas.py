@@ -1,39 +1,13 @@
 #!/usr/bin/env python3
-"""Baixa a base completa de emendas parlamentares do Portal da Transparência.
+"""Baixa a base de emendas parlamentares da CGU.
 
-Fonte oficial (CGU, dados abertos, sem autenticação):
-https://portaldatransparencia.gov.br/download-de-dados/emendas-parlamentares
-
-Uso:
-    python3 pipeline/download_emendas.py [--dest data/raw]
+Mantido por compatibilidade de uso: a lógica mora em fontes.py. Prefira
+`python3.13 pipeline/atualizar.py`, que só baixa se a fonte mudou.
 """
-import argparse
 import os
-import urllib.request
-import zipfile
+import sys
 
-URL = ("https://dadosabertos-download.cgu.gov.br/PortalDaTransparencia/"
-       "saida/emendas-parlamentares/EmendasParlamentares.zip")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from fontes import FONTES, baixar
 
-
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--dest", default="data/raw")
-    args = ap.parse_args()
-    os.makedirs(args.dest, exist_ok=True)
-    dst = os.path.join(args.dest, "EmendasParlamentares.zip")
-
-    req = urllib.request.Request(URL, headers={"User-Agent": "Mozilla/5.0"})
-    print("baixando", URL, flush=True)
-    with urllib.request.urlopen(req, timeout=120) as r, open(dst, "wb") as f:
-        while chunk := r.read(1 << 20):
-            f.write(chunk)
-    print(f"ok: {dst} ({os.path.getsize(dst)/1e6:.0f} MB)")
-
-    with zipfile.ZipFile(dst) as z:
-        z.extract("EmendasParlamentares.csv", args.dest)
-    print("extraído: EmendasParlamentares.csv")
-
-
-if __name__ == "__main__":
-    main()
+print(baixar(FONTES["cgu_emendas"]))
