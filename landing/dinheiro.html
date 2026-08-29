@@ -2,6 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="/menu.js" defer></script>
 <style>
   :root{
     --bg:#0B0F14;          /* near-black, cold blue bias */
@@ -50,29 +51,6 @@
 
   .wrap{max-width:1060px;margin:0 auto;padding:0 1.25rem}
 
-  /* ---------- menu ---------- */
-  .nav{
-    position:sticky;top:0;z-index:50;
-    display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;
-    padding:.85rem 1.25rem;
-    background:rgba(11,15,20,.92);backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav .marca{
-    font-weight:900;letter-spacing:-.01em;font-size:.95rem;margin-right:auto;
-  }
-  .nav .marca span{color:var(--volt)}
-  .nav a{
-    font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;
-    color:var(--ink-dim);text-decoration:none;text-transform:uppercase;
-    padding:.3rem 0;border-bottom:1px solid transparent;
-  }
-  .nav a:hover,.nav a:focus-visible{color:var(--volt);border-bottom-color:var(--volt)}
-  .nav a.cta{
-    color:#0B0F14;background:var(--volt);border-radius:3px;
-    padding:.4rem .8rem;font-weight:700;border-bottom:0;
-  }
-  .nav a.cta:hover{background:#ffe83d}
 
   /* ---------- hero em duas colunas ---------- */
   .hero-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:2.6rem;align-items:start}
@@ -401,15 +379,6 @@
 </div>
 
 
-<nav class="nav" aria-label="Navegação principal">
-  <a class="marca" href="/" style="text-decoration:none;color:var(--ink)">Brincando de <span>Brasil</span></a>
-  <a href="/">← Início</a>
-  <a href="#entenda">O que é isso</a>
-  <a href="#propostas">Propostas</a>
-  <a href="#metodo">Método</a>
-  <a href="#doutrina">Transparência</a>
-  <a class="cta" href="#buscar">Buscar por CEP</a>
-</nav>
 
 <header class="hero" id="buscar">
   <div class="wrap hero-grid">
@@ -417,9 +386,10 @@
     <p class="eyebrow">Rastreamento por CEP</p>
     <h1>O seu dinheiro <span class="hit">não chegou</span> no seu bairro.</h1>
     <p class="lede">
-      Cruzamos os dados abertos do TSE — onde cada deputado recebeu votos, município a
-      município — com o destino oficial das emendas parlamentares. Digite seu CEP e veja
-      o que quem se elegeu com o voto da sua cidade fez com o orçamento dela.
+      Todo ano, cada deputado federal manda milhões do orçamento para onde quiser.
+      Digite o CEP da sua casa e veja: <b>quem se elegeu com os votos da sua
+      cidade</b> — e <b>para onde essa pessoa mandou o dinheiro</b>. Cada número
+      vem com o link do site do governo, para você conferir.
     </p>
     <form class="cepbar" id="cepform" autocomplete="off">
       <input id="cep" inputmode="numeric" maxlength="9" placeholder="Digite seu CEP" aria-label="Digite seu CEP">
@@ -435,17 +405,17 @@
 
      <div class="prop">
        <h3><span class="tag">PEC 1</span>Voto Distrital Misto</h3>
-       <p>Metade da Câmara passa a ser eleita <b>por distrito</b>. Cada região ganha
+       <p>Metade da Câmara passa a ser eleita <b>por região</b>. Seu bairro ganha
        um deputado com nome e endereço — alguém a quem cobrar, e a quem tirar na
-       eleição seguinte. Junto: <b>fim da emenda impositiva</b>.</p>
+       eleição seguinte se não fizer o trabalho.</p>
        <a href="/propostas/voto-distrital.html">Entender o que está sendo proposto →</a>
      </div>
 
      <div class="prop">
        <h3><span class="tag">PEC 2</span>Novo Pacto Educacional</h3>
-       <p>Docência recrutada no <b>terço superior</b> do Enem, carreira paga por
-       <b>evolução de aprendizagem</b> e não por tempo de casa, e repasse de ICMS
-       atrelado à alfabetização — o modelo do Ceará, levado ao país.</p>
+       <p>Só vira professor quem tirou <b>nota alta no Enem</b> — com bolsa
+       integral. E o salário sobe quando <b>os alunos aprendem mais</b>, não só
+       por tempo de casa. É o caminho que o Ceará já mostrou que funciona.</p>
        <a href="/propostas/educacao.html">Ler o dossiê completo →</a>
      </div>
    </aside>
@@ -462,11 +432,12 @@
       <div class="ex-card">
         <span class="ex-num">1</span>
         <h3>O que é uma emenda parlamentar</h3>
-        <p>Todo ano, cada deputado federal recebe uma fatia do orçamento da União e
-        indica <b>para onde ela vai</b>: um hospital, uma prefeitura, uma obra, uma
-        associação. Isso se chama <b>emenda parlamentar</b>. Em 2025, a mediana foi
-        de <b>R$ 41,5 milhões por deputado</b> — número calculado da própria base
-        oficial que esta página usa. Quem escolhe o destino é ele.</p>
+        <p>Todo ano, cada deputado federal ganha uma fatia do dinheiro do país — o
+        orçamento — e escolhe <b>para onde ela vai</b>: um hospital, uma prefeitura,
+        uma obra. Essa verba tem nome: <b>emenda parlamentar</b>. Em 2025, o valor
+        típico foi de <b>R$ 41,5 milhões por deputado</b> (calculado da mesma base
+        oficial que esta página usa). Quem escolhe o destino é o deputado. Mais
+        ninguém.</p>
       </div>
 
       <div class="ex-card">

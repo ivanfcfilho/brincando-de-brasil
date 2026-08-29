@@ -41,13 +41,16 @@ def corpo(s):
 
     return f"""
 <body>
-  <div class="container" style="padding-top:3rem">
-    <a href="/" style="color:var(--accent-gold);font-family:monospace;
-       font-size:.8rem;text-decoration:none">&larr; Brincando de Brasil</a>
-    &nbsp;&middot;&nbsp;
-    <a href="/dinheiro.html" style="color:var(--accent-gold);font-family:monospace;
-       font-size:.8rem;text-decoration:none">busca por CEP &rarr;</a>
-    <div class="tag" style="margin-top:1.5rem">Dossiê Acadêmico e Legislativo</div>
+  <div class="container" style="padding-top:1.4rem">
+    <p style="font-family:monospace;font-size:.75rem;color:var(--text-muted);
+       border:1px dashed var(--border-color);border-radius:4px;padding:.6rem .9rem">
+      Esta é a <b style="color:var(--accent-gold)">versão completa</b> da Ideia #01,
+      com os estudos e as referências. Prefere a explicação simples?
+      Ela está na <a href="/dinheiro.html" style="color:var(--accent-gold)">página
+      da busca por CEP</a>.</p>
+  </div>
+  <div class="container" style="padding-top:1.6rem">
+    <div class="tag">Dossiê Acadêmico e Legislativo</div>
     <h1 class="hero-title">O Mandato sem Endereço:<br>Fundamentação da PEC do
       Voto Distrital Misto</h1>
     <p class="hero-subtitle">

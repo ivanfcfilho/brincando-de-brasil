@@ -37,6 +37,7 @@ PAGINAS = {
     "/": "index.html",
     "/index.html": "index.html",
     "/dinheiro.html": "dinheiro.html",
+    "/menu.js": "menu.js",
     "/propostas/educacao.html": os.path.join("propostas", "educacao.html"),
     "/propostas/voto-distrital.html": os.path.join("propostas", "voto-distrital.html"),
 }
@@ -88,8 +89,11 @@ class Handler(BaseHTTPRequestHandler):
         rota = urlparse(self.path)
         try:
             if rota.path in PAGINAS:
-                with open(os.path.join(LANDING, PAGINAS[rota.path]), "rb") as f:
-                    return self._enviar(200, f.read(), "text/html; charset=utf-8")
+                arquivo = PAGINAS[rota.path]
+                tipo = ("text/javascript; charset=utf-8" if arquivo.endswith(".js")
+                        else "text/html; charset=utf-8")
+                with open(os.path.join(LANDING, arquivo), "rb") as f:
+                    return self._enviar(200, f.read(), tipo)
             if rota.path == "/api/saude":
                 return self._json(200, self.saude())
             if rota.path == "/api/consulta":

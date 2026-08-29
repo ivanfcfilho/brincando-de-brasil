@@ -2,6 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="/menu.js" defer></script>
 <style>
   :root{
     --bg:#0B0F14;
@@ -37,22 +38,6 @@
   }
   .strip .dot{color:var(--volt)}
   .strip .sim{color:#0B0F14;background:var(--volt);padding:.1rem .5rem;border-radius:2px;font-weight:600}
-
-  /* ---------- menu ---------- */
-  .nav{
-    position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;
-    padding:.85rem 1.25rem;background:rgba(11,15,20,.92);backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav .marca{font-weight:900;letter-spacing:-.01em;font-size:.95rem;margin-right:auto;color:var(--ink);text-decoration:none}
-  .nav .marca span{color:var(--volt)}
-  .nav a:not(.marca){
-    font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;color:var(--ink-dim);
-    text-decoration:none;text-transform:uppercase;padding:.3rem 0;border-bottom:1px solid transparent;
-  }
-  .nav a:not(.marca):hover,.nav a:not(.marca):focus-visible{color:var(--volt);border-bottom-color:var(--volt)}
-  .nav a.cta{color:#0B0F14;background:var(--volt);border-radius:3px;padding:.4rem .8rem;font-weight:700;border-bottom:0}
-  .nav a.cta:hover{background:#ffe83d}
 
   /* ---------- hero ---------- */
   .hero{padding:4rem 0 3.6rem;border-bottom:1px solid var(--line)}
@@ -116,6 +101,8 @@
   .icard h3{font-size:1.35rem;line-height:1.2;letter-spacing:-.01em}
   .icard p{font-size:.9rem;color:var(--ink-dim);line-height:1.65;flex-grow:1}
   .icard p b{color:var(--ink)}
+  .icard ol{margin:.2rem 0 .4rem 1.2rem;font-size:.9rem;color:var(--ink-dim);line-height:1.7}
+  .icard ol b{color:var(--ink)}
   .icard .rodape{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.4rem}
   .icard.futura{border-style:dashed;background:transparent}
   .icard.futura h3{color:var(--ink-faint)}
@@ -146,34 +133,25 @@
 </style>
 
 <div class="strip">
-  <span><span class="dot">●</span> BRINCANDO DE BRASIL — LABORATÓRIO CÍVICO DE DADOS ABERTOS</span>
-  <span>FEITO COM: TSE · PORTAL DA TRANSPARÊNCIA · IBGE · CÂMARA</span>
+  <span><span class="dot">●</span> BRINCANDO DE BRASIL</span>
+  <span>FEITO SÓ COM DADOS PÚBLICOS DO GOVERNO</span>
   <span class="sim" id="selo">DADOS OFICIAIS</span>
 </div>
 
-<nav class="nav" aria-label="Navegação principal">
-  <a class="marca" href="/">Brincando de <span>Brasil</span></a>
-  <a href="#comoassim">Como assim</a>
-  <a href="#ideias">As ideias</a>
-  <a href="#regras">Regras</a>
-  <a href="#placar">Placar</a>
-  <a class="cta" href="/dinheiro.html">Testar a Ideia #01</a>
-</nav>
-
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">um cidadão · uma IA · dados públicos</p>
+    <p class="eyebrow">um cidadão comum · uma IA · dados do governo</p>
     <h1>Brincando<br>de <span class="hit">Brasil</span>.</h1>
     <p class="lede">
-      Sabe quando criança brinca de casinha? Isto aqui é um adulto brincando de
-      <b>país</b>: pegando os dados públicos de verdade, o método científico de
-      verdade, e montando as propostas que a gente gostaria de ver em Brasília.
-      O nome é uma ironia assumida — <b>se dá para fazer isso de brincadeira,
-      com um computador e fonte oficial, por que lá não fazem a sério?</b>
+      Este site é uma brincadeira séria. A gente pega os números que o próprio
+      governo publica — <b>quem votou onde</b> e <b>para onde foi o dinheiro</b> —
+      e monta ideias para consertar o Brasil. Tudo explicado <b>passo a passo,
+      para qualquer pessoa entender</b>. O nome é uma ironia: se dá para fazer
+      isso de brincadeira, por que em Brasília não fazem a sério?
     </p>
     <div class="acoes">
-      <a class="btn primary" href="/dinheiro.html">Ideia #01: rastrear meu CEP →</a>
-      <a class="btn" href="#comoassim">Como funciona a brincadeira</a>
+      <a class="btn primary" href="/dinheiro.html">Ver a Ideia #01 →</a>
+      <a class="btn" href="#comoassim">Como funciona</a>
     </div>
   </div>
 </header>
@@ -181,32 +159,32 @@
 <section class="block" id="comoassim">
   <div class="wrap">
     <p class="sec-eyebrow">Como assim, "brincando"?</p>
-    <h2>É brincadeira no nome. No método, é mais sério que muita coisa oficial.</h2>
+    <h2>Três coisas para saber antes de continuar.</h2>
 
     <div class="ex-grid">
       <div class="ex-card">
-        <span class="ex-num">É BRINCADEIRA PORQUE</span>
-        <h3>Não tem partido, candidato nem cadastro</h3>
-        <p>Nenhum político por trás, nenhum financiador, nenhuma senha para criar.
-        É um cidadão comum com um computador, uma inteligência artificial e tempo
-        livre — <b>qualquer pessoa poderia estar fazendo isto</b>. Esse é
-        exatamente o ponto.</p>
+        <span class="ex-num">SEM PEGADINHA</span>
+        <h3>Ninguém quer nada de você</h3>
+        <p>Não pede cadastro, não pede dinheiro, não tem partido nem candidato
+        por trás. É <b>um cidadão comum</b>, com um computador e uma inteligência
+        artificial, mostrando o que qualquer pessoa poderia ver — se alguém
+        explicasse direito.</p>
       </div>
       <div class="ex-card">
-        <span class="ex-num">É SÉRIO PORQUE</span>
-        <h3>Todo número tem fonte oficial e link</h3>
-        <p>Cada valor vem de arquivo público do <b>TSE</b>, do <b>Portal da
-        Transparência</b>, do <b>IBGE</b> ou da <b>Câmara</b> — identificado por
-        impressão digital (sha256) para você conferir que ninguém mexeu. E cada
-        proposta lista <b>as próprias fraquezas</b>, coisa que propaganda não faz.</p>
+        <span class="ex-num">NÚMEROS DE VERDADE</span>
+        <h3>Tudo vem do próprio governo</h3>
+        <p>Os números vêm dos sites oficiais: da <b>Justiça Eleitoral</b> (quem
+        votou onde) e do <b>Portal da Transparência</b> (para onde foi o
+        dinheiro). Em cada número tem um link para você <b>conferir com os
+        próprios olhos</b>. A gente não inventa nada.</p>
       </div>
       <div class="ex-card">
-        <span class="ex-num">O JOGO É ESTE</span>
-        <h3>Uma ideia por vez, para você conferir</h3>
-        <p>Cada "ideia" junta três coisas: um <b>problema medido em dados</b>, uma
-        <b>proposta concreta</b> para resolvê-lo e as <b>evidências</b> — científicas
-        e históricas — de que ela funciona. Você lê, clica nas fontes, discorda à
-        vontade e compartilha se fizer sentido.</p>
+        <span class="ex-num">DOIS JEITOS DE LER</span>
+        <h3>O simples e o completo</h3>
+        <p>As páginas principais explicam tudo <b>passo a passo, sem palavra
+        difícil</b>. E quem quiser ir fundo — estudos científicos, referências,
+        detalhes técnicos — tem um <b>dossiê completo</b> de cada ideia, numa
+        página separada. Você escolhe a profundidade.</p>
       </div>
     </div>
   </div>
@@ -215,46 +193,49 @@
 <section class="block" id="ideias">
   <div class="wrap">
     <p class="sec-eyebrow">As ideias</p>
-    <h2>Por enquanto, duas. O site cresce aos poucos — de propósito.</h2>
-    <p class="sec-lede">Cada ideia entra aqui quando o dado que a sustenta está
-    carregado, conferido e com link para a fonte. Sem pressa e sem achismo.</p>
+    <h2>Por enquanto, duas. Uma de cada vez, sem pressa.</h2>
+    <p class="sec-lede">Uma ideia só entra aqui depois que os números dela foram
+    carregados, conferidos e ganharam link para a fonte.</p>
 
     <div class="ideias">
       <article class="icard destaque">
-        <span class="num">IDEIA #01 · FERRAMENTA + PROPOSTA</span>
+        <span class="num">IDEIA #01 · TEM FERRAMENTA</span>
         <h3>O seu dinheiro não chegou no seu bairro</h3>
-        <p>Digite seu CEP e veja, com dado oficial, <b>quem se elegeu com os votos
-        da sua cidade</b> — e para onde essa pessoa mandou o dinheiro do orçamento.
-        Spoiler: na mediana, a verba de um deputado chega a <b>centenas de
-        quilômetros</b> de onde vieram os votos dele. A proposta que ataca a causa
-        disso é o <b>Voto Distrital Misto</b>: cada região com um deputado de nome
-        e endereço, demissível na urna.</p>
+        <p>Funciona assim:</p>
+        <ol>
+          <li>Sua cidade vota e <b>elege deputados</b>.</li>
+          <li>Cada deputado ganha, todo ano, <b>milhões do orçamento</b> para
+          mandar para onde quiser.</li>
+          <li><b>Digite seu CEP</b> e veja para onde foi o dinheiro de quem se
+          elegeu com os votos da sua cidade.</li>
+        </ol>
+        <p>Quase sempre, foi para longe. A página explica por que isso acontece
+        — e qual mudança faria o dinheiro voltar para perto de quem votou.</p>
         <div class="rodape">
           <a class="btn primary" href="/dinheiro.html">Digitar meu CEP</a>
-          <a class="btn" href="/propostas/voto-distrital.html">Ler a proposta</a>
+          <a class="btn" href="/propostas/voto-distrital.html">Versão científica</a>
         </div>
       </article>
 
       <article class="icard">
-        <span class="num">IDEIA #02 · DOSSIÊ</span>
-        <h3>O Novo Pacto Educacional</h3>
-        <p>Coreia do Sul, Finlândia e Singapura recrutam professores no <b>terço
-        superior</b> dos alunos; o Brasil historicamente absorve o terço inferior.
-        A proposta reprecifica a carreira: docência com nota alta no Enem e bolsa
-        integral, salário por <b>evolução de aprendizagem</b>, e repasse de ICMS
-        atrelado à alfabetização — o modelo que já funcionou no <b>Ceará</b>,
-        levado ao país inteiro.</p>
+        <span class="num">IDEIA #02 · EDUCAÇÃO</span>
+        <h3>Os melhores alunos virando professores</h3>
+        <p>Nos países com as melhores escolas do mundo, quem vira professor está
+        entre <b>os melhores alunos</b>. No Brasil, historicamente, é o contrário.
+        A ideia: salário e carreira bons o bastante para <b>atrair os melhores
+        para a sala de aula</b> — do jeito que o Ceará já fez com a alfabetização,
+        e deu certo. Os estudos e as fontes estão no dossiê.</p>
         <div class="rodape">
-          <a class="btn primary" href="/propostas/educacao.html">Ler o dossiê</a>
+          <a class="btn primary" href="/propostas/educacao.html">Ler a ideia</a>
         </div>
       </article>
 
       <article class="icard futura">
         <span class="num cinza">IDEIA #03 · EM CONSTRUÇÃO</span>
         <h3>A próxima ainda está no forno</h3>
-        <p>A regra da casa vale para nós também: ideia só entra no ar com dado
-        carregado, número conferido e fonte linkada. Quando a próxima passar por
-        esse filtro, ela aparece aqui.</p>
+        <p>A próxima ideia entra aqui quando os números dela estiverem prontos e
+        conferidos. O site cresce devagar, <b>de propósito</b>: melhor pouco e
+        certo do que muito e duvidoso.</p>
       </article>
     </div>
   </div>
@@ -263,43 +244,41 @@
 <section class="block" id="regras">
   <div class="wrap">
     <p class="sec-eyebrow">As regras da brincadeira</p>
-    <h2>Quatro regras. Quem quebra, perde — inclusive a gente.</h2>
+    <h2>Quatro regras. Valem para a gente também.</h2>
 
     <div class="rules">
       <div class="rule">
         <span class="n">01</span>
         <div>
-          <h3>Número sem fonte não entra no jogo</h3>
-          <p>Todo dado publicado tem link para o arquivo oficial de onde saiu e a
-          impressão digital (sha256) do arquivo. Se você não consegue conferir,
-          nós não publicamos.</p>
+          <h3>Número sem fonte não entra</h3>
+          <p>Se não dá para conferir num site oficial do governo, a gente não
+          publica. Simples assim.</p>
         </div>
       </div>
       <div class="rule">
         <span class="n">02</span>
         <div>
-          <h3>A gente mostra, nunca acusa</h3>
-          <p>"Desviou" é conclusão sua; nós publicamos origem do voto, destino da
-          verba e a distância entre os dois. Mandar emenda para outro município é
-          <b>legal</b> — o dado mostra a divergência, e nada além disso.</p>
+          <h3>A gente mostra, você conclui</h3>
+          <p>Nunca escrevemos "fulano roubou" ou "desviou". Mostramos de onde
+          veio o voto, para onde foi o dinheiro e a distância entre os dois.
+          Mandar dinheiro para longe é <b>permitido por lei</b> — a conclusão
+          sobre isso é sua.</p>
         </div>
       </div>
       <div class="rule">
         <span class="n">03</span>
         <div>
-          <h3>Toda ideia lista as próprias fraquezas</h3>
-          <p>Cada proposta traz uma seção de vulnerabilidades: onde ela pode
-          falhar e qual a correção. Proposta que se apresenta como perfeita é
-          propaganda, não proposta.</p>
+          <h3>Toda ideia conta os próprios defeitos</h3>
+          <p>Nenhuma proposta é perfeita. Cada uma lista onde pode dar errado —
+          e como consertar. Proposta que se diz perfeita é propaganda.</p>
         </div>
       </div>
       <div class="rule">
         <span class="n">04</span>
         <div>
           <h3>Errou, corrige na frente de todo mundo</h3>
-          <p>Erro em qualquer número é erro nosso: aponte, que corrigimos e o
-          registro da correção fica público. A base guarda o histórico de cada
-          mudança nos dados oficiais.</p>
+          <p>Achou um número errado? Avise. A gente corrige e deixa o registro
+          da correção à vista de todos.</p>
         </div>
       </div>
     </div>
@@ -309,12 +288,12 @@
 <section class="block" id="placar">
   <div class="wrap">
     <p class="sec-eyebrow">O placar</p>
-    <h2>O que já está carregado na base, agora.</h2>
+    <h2>O que já tem dentro da máquina, agora.</h2>
     <div class="placar">
-      <div class="pc"><div class="v" id="pc-dep">—</div><div class="l">deputados federais eleitos, com origem de voto mapeada</div></div>
-      <div class="pc"><div class="v" id="pc-mun">—</div><div class="l">municípios brasileiros, com coordenadas para medir distância</div></div>
-      <div class="pc"><div class="v" id="pc-eme">—</div><div class="l">emendas parlamentares rastreadas no orçamento</div></div>
-      <div class="pc"><div class="v" id="pc-att">—</div><div class="l">última verificação das fontes oficiais</div></div>
+      <div class="pc"><div class="v" id="pc-dep">—</div><div class="l">deputados federais acompanhados</div></div>
+      <div class="pc"><div class="v" id="pc-mun">—</div><div class="l">cidades brasileiras no mapa</div></div>
+      <div class="pc"><div class="v" id="pc-eme">—</div><div class="l">verbas de deputados (emendas) rastreadas</div></div>
+      <div class="pc"><div class="v" id="pc-att">—</div><div class="l">última conferência nos dados do governo</div></div>
     </div>
     <p class="placar-nota" id="placar-nota">&gt; consultando a base…</p>
   </div>
@@ -323,9 +302,9 @@
 <footer>
   <div class="wrap f-grid">
     <p><span class="brand">Brincando de Brasil</span><br>
-    Um laboratório cívico independente. Os nomes, valores e distâncias exibidos
-    são <b>reais</b> e vêm de arquivos oficiais. Erro em qualquer número é erro
-    nosso: aponte, que corrigimos e registramos a correção.</p>
+    Feito por um cidadão, de graça. Os nomes e valores mostrados são <b>reais</b>
+    e vêm dos sites oficiais do governo. Achou um erro? Avise: a gente corrige
+    e registra a correção.</p>
     <p>FONTES USADAS:
     <a href="https://dadosabertos.tse.jus.br/dataset/resultados-2022" target="_blank" rel="noopener">TSE — resultados 2022</a> ·
     <a href="https://portaldatransparencia.gov.br/download-de-dados/emendas-parlamentares" target="_blank" rel="noopener">Portal da Transparência / CGU — emendas</a> ·
@@ -354,7 +333,7 @@
       return f.descricao + ' (sha256 ' + String(f.sha256 || '').slice(0, 12) + '…)';
     }).join(' · ');
     document.getElementById('placar-nota').innerHTML =
-      '&gt; arquivos na base: ' + nota;
+      '&gt; arquivos oficiais na base: ' + nota;
     document.getElementById('selo').textContent = 'DADOS OFICIAIS · AO VIVO';
   }).catch(function () {
     document.getElementById('placar-nota').innerHTML =

@@ -11,7 +11,10 @@ const raiz = path.dirname(__dirname);
 
 // A ferramenta de CEP mora em dinheiro.html; index.html é o hub do site.
 const html = fs.readFileSync(path.join(raiz, 'landing', 'dinheiro.html'), 'utf8');
-let js = html.slice(html.indexOf('<script>') + 8, html.indexOf('</script>'));
+// O primeiro </script> do arquivo é o do include de /menu.js; o fechamento
+// que interessa é o que vem DEPOIS da abertura do bloco inline.
+const ini = html.indexOf('<script>') + 8;
+let js = html.slice(ini, html.indexOf('</script>', ini));
 
 const elemento = () => ({
   textContent: '', innerHTML: '', style: {}, hidden: false, className: '',
