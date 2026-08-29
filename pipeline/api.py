@@ -28,7 +28,17 @@ import db as bd
 from consulta import municipio_por_cep, proveniencia, resolver_municipio, responder
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LANDING = os.path.join(RAIZ, "landing", "index.html")
+LANDING = os.path.join(RAIZ, "landing")
+
+# Páginas estáticas servidas por rota fixa. Lista explícita em vez de servir o
+# diretório inteiro: sem isso, qualquer arquivo que caia em landing/ vai ao ar
+# sem ninguém decidir, e ../ vira travessia de diretório.
+PAGINAS = {
+    "/": "index.html",
+    "/index.html": "index.html",
+    "/propostas/educacao.html": os.path.join("propostas", "educacao.html"),
+    "/propostas/voto-distrital.html": os.path.join("propostas", "voto-distrital.html"),
+}
 
 # Uma conexão por thread: conexão de psycopg2 não é segura para compartilhar
 # entre threads, e abrir uma por requisição desperdiça o handshake.
@@ -76,8 +86,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         rota = urlparse(self.path)
         try:
-            if rota.path in ("/", "/index.html"):
-                with open(LANDING, "rb") as f:
+            if rota.path in PAGINAS:
+                with open(os.path.join(LANDING, PAGINAS[rota.path]), "rb") as f:
                     return self._enviar(200, f.read(), "text/html; charset=utf-8")
             if rota.path == "/api/saude":
                 return self._json(200, self.saude())

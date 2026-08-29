@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PEC da Educação | White Paper Acadêmico</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-dark: #07090e;
+        --bg-surface: #10141d;
+        --bg-card: #181d29;
+        --text-main: #e2e8f0;
+        --text-muted: #94a3b8;
+        --text-citation: #64748b;
+        --accent-gold: #c6a85c;
+        --accent-gold-dim: rgba(198, 168, 92, 0.1);
+        --border-color: #273142;
+        --danger: #f85149;
+        --success: #2ea043;
+        --warning: #d29922;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      .serif {
+        font-family: "Merriweather", serif;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Header */
+      header {
+        padding: 100px 0 70px;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        background: radial-gradient(
+          circle at top,
+          var(--bg-surface) 0%,
+          var(--bg-dark) 100%
+        );
+      }
+
+      .tag {
+        display: inline-block;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        color: var(--accent-gold);
+        margin-bottom: 24px;
+        border: 1px solid var(--accent-gold);
+        padding: 6px 16px;
+        border-radius: 50px;
+      }
+      .hero-title {
+        font-size: 3.2rem;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: #fff;
+        font-weight: 900;
+      }
+      .hero-subtitle {
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      /* Sections */
+      section {
+        padding: 90px 0;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .section-title {
+        font-size: 2.2rem;
+        margin-bottom: 16px;
+        color: #fff;
+        text-align: center;
+      }
+      .section-title span {
+        color: var(--accent-gold);
+      }
+      .section-desc {
+        text-align: center;
+        color: var(--text-muted);
+        max-width: 800px;
+        margin: 0 auto 50px;
+        font-size: 1.1rem;
+      }
+
+      /* Grid */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+        align-items: start;
+      }
+      @media (max-width: 768px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+      }
+
+      /* FOLDING STYLES (Cards and Patches) */
+      .card,
+      .patch-card {
+        background: var(--bg-card);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        transition: border-color 0.3s ease;
+      }
+      .card {
+        padding: 35px;
+      }
+      .card:hover {
+        border-color: var(--accent-gold);
+      }
+
+      .card-icon {
+        font-size: 2rem;
+        color: var(--accent-gold);
+        margin-bottom: 15px;
+        font-weight: 900;
+      }
+      .card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+        color: #fff;
+      }
+      .summary-text {
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        font-size: 1.05rem;
+      }
+
+      details {
+        margin-top: 15px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      summary {
+        padding: 16px 20px;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--accent-gold);
+        background: rgba(0, 0, 0, 0.3);
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: background 0.2s;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary:hover {
+        background: rgba(0, 0, 0, 0.6);
+      }
+      summary::after {
+        content: "+";
+        font-size: 1.5rem;
+        font-weight: 300;
+        transition: transform 0.3s;
+      }
+      details[open] summary::after {
+        transform: rotate(45deg);
+      }
+
+      .fold-content {
+        padding: 25px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      /* Scientific Content Formatting */
+      .academic-p {
+        font-size: 0.95rem;
+        color: #cbd5e1;
+        margin-bottom: 16px;
+        text-align: justify;
+      }
+
+      .citation-box {
+        background: #090b10;
+        border-left: 3px solid var(--accent-gold);
+        padding: 15px 20px;
+        margin: 20px 0;
+        border-radius: 0 6px 6px 0;
+      }
+      .citation-box h5 {
+        color: var(--accent-gold);
+        font-family: "Inter", sans-serif;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+      .citation-box ul {
+        list-style-type: none;
+      }
+      .citation-box li {
+        color: var(--text-citation);
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+        padding-left: 15px;
+        position: relative;
+      }
+      .citation-box li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: var(--accent-gold);
+      }
+
+      /* Patches Grid Specifics */
+      .patch-card {
+        padding: 0;
+        overflow: hidden;
+        margin-bottom: 30px;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+      }
+      .patch-problem {
+        background: rgba(248, 81, 73, 0.05);
+        padding: 30px;
+        border-right: 1px solid var(--border-color);
+      }
+      .patch-problem h4 {
+        color: var(--danger);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        font-family: "Inter", sans-serif;
+      }
+      .patch-problem p {
+        color: #fff;
+        font-size: 1.05rem;
+      }
+
+      .patch-solution {
+        padding: 30px;
+        background: var(--bg-card);
+      }
+      .patch-solution h4 {
+        color: var(--success);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .patch-solution h3 {
+        color: var(--accent-gold);
+        margin-bottom: 12px;
+        font-size: 1.3rem;
+      }
+      .patch-solution > p {
+        color: var(--text-muted);
+        font-size: 1rem;
+        margin-bottom: 15px;
+      }
+
+      .math-block {
+        background: #000;
+        padding: 15px;
+        border-radius: 6px;
+        font-family: monospace;
+        color: var(--warning);
+        margin: 15px 0;
+        border: 1px solid var(--border-color);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .patch-card {
+          grid-template-columns: 1fr;
+        }
+        .patch-problem {
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+        }
+      }
+
+      footer {
+        text-align: center;
+        padding: 50px 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container" style="padding-top:2rem"><a href="/" style="color:var(--accent-gold);font-family:monospace;font-size:.8rem;text-decoration:none">&larr; voltar para a busca por CEP</a> &nbsp;·&nbsp; <a href="/propostas/voto-distrital.html" style="color:var(--accent-gold);font-family:monospace;font-size:.8rem;text-decoration:none">ver a PEC do Voto Distrital &rarr;</a></div>
+<div class="container">
+        <span class="tag">Dossiê Acadêmico e Legislativo</span>
+        <h1 class="hero-title">
+          O Novo Pacto Educacional:<br />Fundamentação Científica
+        </h1>
+        <p class="hero-subtitle">
+          Proposta de Emenda à Constituição alicerçada em econometria,
+          sociologia das profissões e nas metodologias comparadas de letramento
+          da OCDE.
+        </p>
+      </div>
+    </header>
+
+    <section id="pilares">
+      <div class="container">
+        <h2 class="section-title">Os 4 Pilares <span>Sistêmicos</span></h2>
+        <p class="section-desc">
+          Abaixo, a densidade teórica e a base empírica que validam a
+          necessidade de alteração da arquitetura de incentivos do Estado
+          brasileiro.
+        </p>
+
+        <div class="grid-2">
+          <!-- Pilar 1 -->
+          <div class="card">
+            <div class="card-icon serif">01.</div>
+            <h3>O Filtro de Excelência</h3>
+            <p class="summary-text">
+              Aumento drástico da barreira de entrada cognitiva. A docência
+              exige as maiores notas do Enem para reverter o colapso do capital
+              simbólico.
+            </p>
+            <details>
+              <summary>Expandir Embasamento Científico</summary>
+              <div class="fold-content">
+                <p class="academic-p">
+                  A sociologia das profissões demonstra que o status ocupacional
+                  é intrinsecamente ligado à
+                  <strong>seletividade do recrutamento</strong>. Relatórios
+                  globais atestam que sistemas educacionais de ponta (Coreia do
+                  Sul, Finlândia, Singapura) restringem o ingresso nos cursos de
+                  formação de professores ao terço superior (top 30%) das
+                  coortes acadêmicas, enquanto o Brasil absorve historicamente o
+                  terço inferior.
+                </p>
+                <p class="academic-p">
+                  A elevação da nota de corte, financiada por bolsas de alta
+                  performance durante a graduação, força uma reprecificação
+                  matemática da carreira pelo Estado, estabelecendo uma escassez
+                  induzida de capital humano especializado.
+                </p>
+
+                <div class="citation-box">
+                  <h5>Referências Chave</h5>
+                  <ul>
+                    <li>
+                      <strong>Barber, M., & Mourshed, M. (2007).</strong>
+                      <em
+                        >How the world's best-performing school systems come out
+                        on top.</em
+                      >
+                      McKinsey & Company. (O axioma de que a qualidade de um
+                      sistema não supera a de seus professores).
+                    </li>
+                    <li>
+                      <strong
+                        >Auguste, B., Kihn, P., & Miller, M. (2010).</strong
+                      >
+                      <em
+                        >Closing the talent gap: Attracting and retaining
+                        top-third graduates to careers in teaching.</em
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <!-- Pilar 2 -->
+          <div class="card">
+            <div class="card-icon serif">02.</div>
+            <h3>Carreira por Evidências</h3>
+            <p class="summary-text">
+              Ruptura com o modelo de progressão por temporalidade (anuênios).
+              Remuneração vinculada aos índices de aprendizagem e avaliações
+              externas.
+            </p>
+            <details>
+              <summary>Expandir Embasamento Científico</summary>
+              <div class="fold-content">
+                <p class="academic-p">
+                  A literatura econométrica aponta que a experiência do
+                  professor (tempo de serviço) apresenta retornos marginais
+                  decrescentes na proficiência do aluno após os primeiros 5
+                  anos. No entanto, o plano de carreira brasileiro remunera
+                  primariamente o tempo.
+                </p>
+                <p class="academic-p">
+                  A substituição por um modelo focado em métricas rigorosas de
+                  avaliação, alinhadas aos parâmetros do PISA e aferidas por
+                  ferramentas como o Saeb e o Ideb, permite que profissionais
+                  excepcionais rompam tetos salariais rapidamente, justificados
+                  perante o fisco pela auditoria de eficiência cognitiva
+                  entregue.
+                </p>
+
+                <div class="citation-box">
+                  <h5>Referências Chave</h5>
+                  <ul>
+                    <li>
+                      <strong>Hanushek, E. A. (2011).</strong>
+                      <em>The economic value of higher teacher quality.</em>
+                      Economics of Education Review. (Demonstra o impacto no PIB
+                      a longo prazo por desvios-padrão de qualidade docente).
+                    </li>
+                    <li>
+                      <strong>OCDE (2018).</strong>
+                      <em>Effective Teacher Policies: Insights from PISA.</em>
+                      Paris: OECD Publishing.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <!-- Pilar 3 -->
+          <div class="card">
+            <div class="card-icon serif">03.</div>
+            <h3>A Trava Demográfica</h3>
+            <p class="summary-text">
+              Uso da transição demográfica brasileira. Blindar o orçamento
+              enquanto as matrículas caem gera o excedente per capita para
+              inflar a folha salarial.
+            </p>
+            <details>
+              <summary>Expandir Embasamento Científico</summary>
+              <div class="fold-content">
+                <p class="academic-p">
+                  O Brasil adentrou a fase aguda de seu
+                  <strong>dividendo demográfico</strong>. A taxa de fecundidade
+                  caiu para 1.53 filhos por mulher (abaixo da taxa de
+                  reposição). Consequentemente, o IBGE projeta uma redução
+                  dramática da população em idade escolar obrigatória nas
+                  próximas décadas.
+                </p>
+                <p class="academic-p">
+                  Do ponto de vista da matemática fiscal, fixar
+                  constitucionalmente o orçamento nominal da educação assegura
+                  que o divisor (alunos) encolha enquanto o dividendo (repasse)
+                  se mantém, gerando crescimento exponencial do custo aluno/ano,
+                  provendo o lastro fiscal para os salários de elite sem choque
+                  tributário.
+                </p>
+
+                <div class="citation-box">
+                  <h5>Referências Chave</h5>
+                  <ul>
+                    <li>
+                      <strong
+                        >Bloom, D. E., Canning, D., & Sevilla, J.
+                        (2003).</strong
+                      >
+                      <em
+                        >The Demographic Dividend: A New Perspective on the
+                        Economic Consequences of Population Change.</em
+                      >
+                      RAND Corporation.
+                    </li>
+                    <li>
+                      <strong>IBGE (2024).</strong>
+                      <em
+                        >Projeções da População do Brasil e Unidades da
+                        Federação.</em
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <!-- Pilar 4 -->
+          <div class="card">
+            <div class="card-icon serif">04.</div>
+            <h3>ICMS da Aprendizagem</h3>
+            <p class="summary-text">
+              A engenharia tributária que atrela o repasse estadual de ICMS à
+              evolução da alfabetização e letramento, forçando o alinhamento
+              político municipal.
+            </p>
+            <details>
+              <summary>Expandir Embasamento Científico</summary>
+              <div class="fold-content">
+                <p class="academic-p">
+                  A teoria da escolha pública assume que gestores locais
+                  maximizam transferências intergovernamentais não-vinculadas. O
+                  modelo do Ceará (PAIC), agora base da EC 108/2020, atrelou a
+                  cota-parte municipal do ICMS à taxa de
+                  <strong>alfabetização na idade certa</strong> (aferida pelo
+                  Spaece).
+                </p>
+                <p class="academic-p">
+                  Os dados longitudinais demonstram que essa repactuação de
+                  incentivos eliminou o clientelismo na nomeação de diretores
+                  escolares, pois as prefeituras não podiam se dar ao luxo de
+                  perder receitas bilionárias decorrentes do fracasso nos
+                  indicadores de letramento e matemática básica.
+                </p>
+
+                <div class="citation-box">
+                  <h5>Referências Chave</h5>
+                  <ul>
+                    <li>
+                      <strong>Loureiro, A., Cruz, L., et al. (2020).</strong>
+                      <em
+                        >The State of Ceará in Brazil is a Role Model for
+                        Reducing Learning Poverty.</em
+                      >
+                      Banco Mundial.
+                    </li>
+                    <li>
+                      <strong>Costa, L. O., & Carnoy, M. (2015).</strong>
+                      <em
+                        >The effectiveness of an early-grade literacy
+                        intervention on the cognitive achievement of Brazilian
+                        students.</em
+                      >
+                      Educational Evaluation and Policy Analysis.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="antifragilidade">
+      <div class="container">
+        <h2 class="section-title">
+          Auditoria e Correções <span>(Patches)</span>
+        </h2>
+        <p class="section-desc">
+          Validação científica das vulnerabilidades estruturais do modelo e suas
+          reengenharias matemáticas para adequação ao cenário nacional.
+        </p>
+
+        <!-- Furo 2 (Agora com VAM) -->
+        <div class="patch-card">
+          <div class="patch-problem">
+            <h4>Vulnerabilidade A: Lei de Goodhart</h4>
+            <p>
+              Atrelar salários apenas à nota bruta do Ideb/Saeb induz a seleção
+              adversa. Bons professores abandonarão áreas periféricas (notas
+              estruturalmente menores) para lecionarem em bairros de alta renda,
+              destruindo a equidade.
+            </p>
+          </div>
+          <div class="patch-solution">
+            <h4>Correção Econométrica</h4>
+            <h3>Modelos de Valor Agregado (VAM)</h3>
+            <p>
+              A meritocracia não pode mensurar o ponto de chegada absoluto, mas
+              a inclinação da curva de aprendizado isolando fatores exógenos
+              (renda, background familiar).
+            </p>
+
+            <details>
+              <summary>Análise Metodológica (VAM)</summary>
+              <div class="fold-content">
+                <p class="academic-p">
+                  A literatura de <em>Value-Added Modeling (VAM)</em> sugere
+                  isolar estatisticamente o impacto exclusivo do docente no
+                  ganho cognitivo anual do aluno. O prêmio financeiro é
+                  concedido com base na derivada do desempenho, ajustado pelo
+                  indicador de nível socioeconômico (INSE) do Inep.
+                </p>
+
+                <div class="math-block">
+                  Prêmio_Salarial = &Sigma; (Nota<sub>t</sub> -
+                  Nota<sub>t-1</sub>) &times; &beta;<sub>Vulnerabilidade</sub>
+                </div>
+
+                <div class="citation-box">
+                  <h5>Referências Chave</h5>
+                  <ul>
+                    <li>
+                      <strong
+                        >Chetty, R., Friedman, J. N., & Rockoff, J. E.
+                        (2014).</strong
+                      >
+                      <em
+                        >Measuring the Impacts of Teachers I: Evaluating Bias in
+                        Teacher Value-Added Estimates.</em
+                      >
+                      American Economic Review.
+                    </li>
+                    <li>
+                      <strong>Sanders, W. L., & Rivers, J. C. (1996).</strong>
+                      <em
+                        >Cumulative and residual effects of teachers on future
+                        student academic achievement.</em
+                      >
+                      (Demonstra que o professor é o fator intra-escolar mais
+                      determinante na variância dos resultados).
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- Furo 1 (Apagão de Mão de Obra) -->
+        <div class="patch-card">
+          <div class="patch-problem">
+            <h4>Vulnerabilidade B: Escassez Crítica</h4>
+            <p>
+              Implementar a barreira de entrada (Pilar 1) gera um colapso
+              imediato no fluxo de suprimento. Haverá um apagão incalculável de
+              professores de disciplinas STEM (Ciência, Tecnologia, Engenharia e
+              Matemática).
+            </p>
+          </div>
+          <div class="patch-solution">
+            <h4>Correção Operacional</h4>
+            <h3>Certificação Lateral Acelerada</h3>
+            <p>
+              Absorção de profissionais com alto capital técnico (engenheiros,
+              físicos, analistas de dados) através de residência pedagógica
+              remunerada intensiva de curta duração.
+            </p>
+
+            <details>
+              <summary>Validação Comparada</summary>
+              <div class="fold-content">
+                <p class="academic-p">
+                  O Brasil deve adotar um <em>framework</em> análogo à rede
+                  global "Teach For All" (como o <em>Teach First</em> no Reino
+                  Unido). Recruta-se bacharéis de alta proficiência para suprir
+                  o gargalo de STEM sob tutoria intensiva, garantindo que o
+                  hiato de formação da nova elite pedagógica não deixe a rede
+                  pública desassistida.
+                </p>
+
+                <div class="citation-box">
+                  <h5>Referências Chave</h5>
+                  <ul>
+                    <li>
+                      <strong>Hutchings, M., et al. (2006).</strong>
+                      <em>The evaluation of Teach First.</em> Department for
+                      Education and Skills (UK). (Evidências de que docentes de
+                      via lateral em programas de elite superam ou igualam a
+                      média histórica em eficácia).
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- NOVO BLOCO: REFORMA DO IDEB - Cole abaixo do fechamento da section de antifragilidade -->
+    <section id="reforma-ideb">
+      <div class="container">
+        <div
+          class="section-header"
+          style="text-align: center; margin-bottom: 50px"
+        >
+          <h2 class="section-title">
+            A Reforma da Métrica <span>(Ideb 2.0)</span>
+          </h2>
+          <p class="section-desc">
+            Se a métrica que define a remuneração for corrompível, o sistema
+            inteiro entra em colapso. A reengenharia estatística do Índice de
+            Desenvolvimento da Educação Básica.
+          </p>
+        </div>
+
+        <div class="patch-card">
+          <div class="patch-problem">
+            <h4>Vulnerabilidade C: A Ilusão do Fluxo e Exclusão</h4>
+            <p>
+              O Ideb atual é calculado por:
+              <em>Proficiência × Taxa de Aprovação</em>. Isso gerou dois
+              incentivos perversos para fraude sistêmica:
+            </p>
+            <ul
+              style="
+                color: #cbd5e1;
+                font-size: 0.95rem;
+                margin-top: 12px;
+                padding-left: 20px;
+              "
+            >
+              <li style="margin-bottom: 8px">
+                <strong>Aprovação Automática Falsa:</strong> Prefeitos proíbem a
+                reprovação. A taxa de fluxo vai a 100%, inflando o Ideb
+                artificialmente sem nenhum ganho real cognitivo.
+              </li>
+              <li>
+                <strong>Exclusão Branca:</strong> Escolas incentivam os alunos
+                com maior defasagem a faltarem no dia do exame nacional (Saeb)
+                para que a média da escola seja calculada apenas com a nota dos
+                melhores alunos.
+              </li>
+            </ul>
+          </div>
+          <div class="patch-solution">
+            <h4>Correção Estatística</h4>
+            <h3>Ideb Ajustado por Equidade (Ideb-E)</h3>
+            <p>
+              A nova métrica invalida aprovações sem lastro cognitivo e pune
+              matematicamente a desigualdade intra-escolar e a abstenção
+              seletiva no dia do teste.
+            </p>
+
+            <details>
+              <summary>Expandir Modelagem do Ideb 2.0</summary>
+              <div class="fold-content">
+                <p class="academic-p">
+                  Para evitar a maquiagem estatística, a Lei do "Ideb 2.0"
+                  altera a arquitetura do índice. O fluxo escolar (taxa de
+                  aprovação) sofre um <strong>desconto de penalidade</strong> se
+                  a proficiência média da escola estiver abaixo do quartil
+                  mínimo (ou seja, a fórmula assume que aprovar 100% de alunos
+                  analfabetos é um demérito, não um mérito).
+                </p>
+                <p class="academic-p">
+                  Além disso, introduz-se o <em>Fator Gini Educacional</em> e a
+                  <em>Trava de Presença</em>. Se a variação de notas dentro da
+                  mesma escola for muito alta (sinal de que a escola foca em
+                  poucos alunos) ou se a taxa de comparecimento no dia do Saeb
+                  for menor que 95% (sinal de exclusão branca), o Ideb final da
+                  escola sofre um corte linear drástico.
+                </p>
+
+                <div class="math-block" style="text-align: left; padding: 20px">
+                  <div
+                    style="
+                      color: #94a3b8;
+                      font-size: 0.8rem;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    Nova Fórmula Estrutural (Ideb 2.0):
+                  </div>
+                  <strong
+                    >Ideb-E = [ (Proficiência_Média) &times; (Fluxo_Validado) ]
+                    &times; (1 - Índice_Desigualdade) &times;
+                    Fator_Presença</strong
+                  >
+                  <div
+                    style="
+                      color: #64748b;
+                      font-size: 0.8rem;
+                      margin-top: 8px;
+                      font-family: &quot;Inter&quot;, sans-serif;
+                    "
+                  >
+                    * Fluxo_Validado: Taxa de aprovação é descontada caso a
+                    proficiência seja &lt; Nível 2.<br />
+                    * Fator_Presença: Multiplicador &lt; 1 se a participação no
+                    Saeb for inferior a 95%.
+                  </div>
+                </div>
+
+                <div class="citation-box">
+                  <h5>Referências Chave</h5>
+                  <ul>
+                    <li>
+                      <strong>Fernandes, R. (2007).</strong>
+                      <em
+                        >Índice de Desenvolvimento da Educação Básica
+                        (Ideb).</em
+                      >
+                      INEP. (O próprio criador do Ideb alertou para a
+                      necessidade de atualizações metodológicas contra o
+                      <em>gaming</em> do sistema).
+                    </li>
+                    <li>
+                      <strong>Soares, J. F., & Xavier, F. P. (2013).</strong>
+                      <em>Pressupostos Educacionais e Estatísticos do Ideb.</em>
+                      Educação & Sociedade. (Estudo que demonstra como o
+                      indicador de fluxo pode mascarar a baixa aprendizagem em
+                      municípios que forçam a aprovação).
+                    </li>
+                    <li>
+                      <strong>Koretz, D. (2017).</strong>
+                      <em
+                        >The Testing Charade: Pretending to Make Schools
+                        Better.</em
+                      >
+                      Harvard University Press. (Análise empírica de como
+                      sistemas de alto impacto financeiro geram inflação de
+                      notas e fraude de exclusão se não possuírem travas de
+                      equidade e presença).
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FIM DO NOVO BLOCO -->
+    <footer>
+      <div class="container">
+        <p>
+          <strong>PEC da Educação</strong> — Documento de Modelagem
+          Técnico-Científica
+        </p>
+        <p style="margin-top: 10px; opacity: 0.4">
+          Compilação baseada na integração de microeconomia, econometria da
+          educação e análise comparativa PISA.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

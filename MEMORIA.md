@@ -24,6 +24,16 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
   por deputado, a distância média do dinheiro até o CEP, ponderada por valor.
 - **500 dos 513 eleitos** com autoria de emenda identificada.
 - 22 testes (`tests/`) e 13 invariantes (`conferir.py`), rodando no fim do job.
+- **Menu + duas propostas.** A landing ganhou navegação fixa e, ao lado da
+  manchete, um resumo das duas PECs: Voto Distrital Misto e Novo Pacto
+  Educacional (este veio de um HTML do Gemini, em `landing/propostas/`).
+- **O dossiê do voto distrital é GERADO dos dados** (`gerar_dossie.py` +
+  `estatisticas.py`), não escrito à mão. Números nacionais novos e fortes:
+  mediana de **360 km** entre o centro do voto e o destino do dinheiro;
+  em **78%** dos deputados o maior destino de verba não é a maior base;
+  mediana de **8 municípios** para somar metade da votação; **94,7%** do
+  empenhado sem município e **59,1%** sem deputado identificável.
+  As referências acadêmicas do dossiê **ainda precisam ser conferidas**.
 - **A landing explica antes de mostrar**: três cartões (o que é emenda, que
   cargo é esse, para onde o dinheiro "deveria" ir) e uma ponte, depois do
   resultado, ligando o dado ao argumento da PEC. Jargão de orçamento traduzido,

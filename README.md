@@ -30,8 +30,11 @@ pipeline/
   consulta.py            CEP → município → deputados → destino da verba
   cruzamento.py          relatório por UF (lê do banco)
   api.py                 servidor HTTP: serve a landing e responde por CEP
+  estatisticas.py        números nacionais para o dossiê (recalculáveis)
+  gerar_dossie.py        gera o dossiê do voto distrital a partir dos dados
   conferir.py            invariantes do banco (roda no fim do job)
 landing/index.html     a busca por CEP, consumindo a API
+landing/propostas/     dossiês das PECs (voto distrital é gerado dos dados)
 tests/                 testes; cada caso de nome é uma regressão real
 deploy/                systemd service + timer do job diário
 data/raw/              dumps oficiais (não versionados, ~800 MB)
@@ -88,7 +91,26 @@ Termos de orçamento aparecem traduzidos: "empenhado" vira *reservado no
 orçamento*, "execução" vira *já pago*, "múltiplo/sem informação" vira *sem
 cidade informada*. Há um teste que falha se o jargão voltar à tela.
 
-Rotas: `/` (landing), `/api/consulta?cep=…`, `/api/saude`.
+Rotas: `/` (landing), `/propostas/voto-distrital.html`,
+`/propostas/educacao.html`, `/api/consulta?cep=…`, `/api/saude`.
+
+**Os dossiês.** A landing tem um menu e, ao lado da manchete, um resumo das duas
+PECs. O dossiê do voto distrital é **gerado dos dados**
+(`python3.13 pipeline/gerar_dossie.py`): nenhum número empírico é digitado à
+mão, e a página é regerada junto com o banco. Os números nacionais que ele
+usa saem de `estatisticas.py` e podem ser recalculados por qualquer pessoa:
+
+| Medida | Valor |
+|---|---|
+| Distância mediana entre o centro do voto e o destino do dinheiro | **360 km** |
+| Deputados cujo maior destino de verba **não** é sua maior base de votos | **78%** |
+| Municípios que somam metade da votação de um deputado (mediana) | **8** |
+| Do empenhado que não informa município | **94,7%** (R$ 161,5 bi) |
+| Do empenhado sem deputado individual identificável | **59,1%** (R$ 100,7 bi) |
+
+As **referências acadêmicas** do dossiê ainda precisam ser conferidas contra os
+originais antes de qualquer uso público — a regra de verificação dupla vale
+também para nós, e a página diz isso na própria seção de procedência.
 
 ## Uso diário
 

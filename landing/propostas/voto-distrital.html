@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PEC do Voto Distrital Misto | Dossiê Acadêmico</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-dark: #07090e;
+        --bg-surface: #10141d;
+        --bg-card: #181d29;
+        --text-main: #e2e8f0;
+        --text-muted: #94a3b8;
+        --text-citation: #64748b;
+        --accent-gold: #c6a85c;
+        --accent-gold-dim: rgba(198, 168, 92, 0.1);
+        --border-color: #273142;
+        --danger: #f85149;
+        --success: #2ea043;
+        --warning: #d29922;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      .serif {
+        font-family: "Merriweather", serif;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Header */
+      header {
+        padding: 100px 0 70px;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        background: radial-gradient(
+          circle at top,
+          var(--bg-surface) 0%,
+          var(--bg-dark) 100%
+        );
+      }
+
+      .tag {
+        display: inline-block;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        color: var(--accent-gold);
+        margin-bottom: 24px;
+        border: 1px solid var(--accent-gold);
+        padding: 6px 16px;
+        border-radius: 50px;
+      }
+      .hero-title {
+        font-size: 3.2rem;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: #fff;
+        font-weight: 900;
+      }
+      .hero-subtitle {
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      /* Sections */
+      section {
+        padding: 90px 0;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .section-title {
+        font-size: 2.2rem;
+        margin-bottom: 16px;
+        color: #fff;
+        text-align: center;
+      }
+      .section-title span {
+        color: var(--accent-gold);
+      }
+      .section-desc {
+        text-align: center;
+        color: var(--text-muted);
+        max-width: 800px;
+        margin: 0 auto 50px;
+        font-size: 1.1rem;
+      }
+
+      /* Grid */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+        align-items: start;
+      }
+      @media (max-width: 768px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+      }
+
+      /* FOLDING STYLES (Cards and Patches) */
+      .card,
+      .patch-card {
+        background: var(--bg-card);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        transition: border-color 0.3s ease;
+      }
+      .card {
+        padding: 35px;
+      }
+      .card:hover {
+        border-color: var(--accent-gold);
+      }
+
+      .card-icon {
+        font-size: 2rem;
+        color: var(--accent-gold);
+        margin-bottom: 15px;
+        font-weight: 900;
+      }
+      .card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+        color: #fff;
+      }
+      .summary-text {
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        font-size: 1.05rem;
+      }
+
+      details {
+        margin-top: 15px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      summary {
+        padding: 16px 20px;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--accent-gold);
+        background: rgba(0, 0, 0, 0.3);
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: background 0.2s;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary:hover {
+        background: rgba(0, 0, 0, 0.6);
+      }
+      summary::after {
+        content: "+";
+        font-size: 1.5rem;
+        font-weight: 300;
+        transition: transform 0.3s;
+      }
+      details[open] summary::after {
+        transform: rotate(45deg);
+      }
+
+      .fold-content {
+        padding: 25px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      /* Scientific Content Formatting */
+      .academic-p {
+        font-size: 0.95rem;
+        color: #cbd5e1;
+        margin-bottom: 16px;
+        text-align: justify;
+      }
+
+      .citation-box {
+        background: #090b10;
+        border-left: 3px solid var(--accent-gold);
+        padding: 15px 20px;
+        margin: 20px 0;
+        border-radius: 0 6px 6px 0;
+      }
+      .citation-box h5 {
+        color: var(--accent-gold);
+        font-family: "Inter", sans-serif;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+      .citation-box ul {
+        list-style-type: none;
+      }
+      .citation-box li {
+        color: var(--text-citation);
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+        padding-left: 15px;
+        position: relative;
+      }
+      .citation-box li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: var(--accent-gold);
+      }
+
+      /* Patches Grid Specifics */
+      .patch-card {
+        padding: 0;
+        overflow: hidden;
+        margin-bottom: 30px;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+      }
+      .patch-problem {
+        background: rgba(248, 81, 73, 0.05);
+        padding: 30px;
+        border-right: 1px solid var(--border-color);
+      }
+      .patch-problem h4 {
+        color: var(--danger);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        font-family: "Inter", sans-serif;
+      }
+      .patch-problem p {
+        color: #fff;
+        font-size: 1.05rem;
+      }
+
+      .patch-solution {
+        padding: 30px;
+        background: var(--bg-card);
+      }
+      .patch-solution h4 {
+        color: var(--success);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .patch-solution h3 {
+        color: var(--accent-gold);
+        margin-bottom: 12px;
+        font-size: 1.3rem;
+      }
+      .patch-solution > p {
+        color: var(--text-muted);
+        font-size: 1rem;
+        margin-bottom: 15px;
+      }
+
+      .math-block {
+        background: #000;
+        padding: 15px;
+        border-radius: 6px;
+        font-family: monospace;
+        color: var(--warning);
+        margin: 15px 0;
+        border: 1px solid var(--border-color);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .patch-card {
+          grid-template-columns: 1fr;
+        }
+        .patch-problem {
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+        }
+      }
+
+      footer {
+        text-align: center;
+        padding: 50px 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+<body>
+  <div class="container" style="padding-top:3rem">
+    <a href="/" style="color:var(--accent-gold);font-family:monospace;
+       font-size:.8rem;text-decoration:none">&larr; voltar para a busca por CEP</a>
+    <div class="tag" style="margin-top:1.5rem">Dossiê Acadêmico e Legislativo</div>
+    <h1 class="hero-title">O Mandato sem Endereço:<br>Fundamentação da PEC do
+      Voto Distrital Misto</h1>
+    <p class="hero-subtitle">
+      Proposta de Emenda à Constituição alicerçada em teoria dos sistemas
+      eleitorais, evidência comparada (Alemanha e Nova Zelândia) e na medição
+      direta, município a município, do descolamento entre a origem do voto e o
+      destino do orçamento no Brasil.
+    </p>
+  </div>
+
+  <!-- ============ EVIDÊNCIA PRÓPRIA ============ -->
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">A Evidência Brasileira</h2>
+      <p class="section-desc">
+        Os números abaixo não vêm da literatura: foram calculados dos arquivos
+        oficiais do TSE e da CGU pelo código deste repositório, e podem ser
+        recalculados por qualquer pessoa. É a parte da argumentação que não
+        depende de acreditar em ninguém.
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon serif">360 km</div>
+        <h3>É a mediana da distância entre o voto e a verba</h3>
+        <p class="summary-text">
+          Para cada um dos 500 deputados federais eleitos em 2022,
+          calculamos o centro de gravidade dos seus votos — a média das
+          coordenadas dos municípios onde teve voto, ponderada pelos votos — e a
+          distância média até onde o dinheiro das emendas dele efetivamente
+          chegou, ponderada por valor.
+        </p>
+        <details>
+          <summary>Expandir método e distribuição</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              A média nacional é de <strong>380 km</strong>, e os 10%
+              mais dispersos superam <strong>570 km</strong>.
+              <strong>88 deputados</strong> têm distância média
+              acima de 500 km — mais que a distância entre São Paulo e o Rio de
+              Janeiro, ida e volta.
+            </p>
+            <p class="academic-p">
+              O cálculo usa apenas a execução financeira (dinheiro que de fato
+              saiu e chegou ao favorecido), porque o destino declarado no empenho
+              é opaco em 94,7% dos casos — ver o
+              pilar 03. As distâncias são medidas entre centroides de território
+              (malha oficial do IBGE), não entre sedes municipais.
+            </p>
+            <div class="citation-box">
+              <h5>Como reproduzir</h5>
+              <ul><li><code>python3.13 pipeline/estatisticas.py</code></li></ul>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="card-icon serif">78%</div>
+        <h3>Dos deputados mandam o grosso da verba para fora da sua maior base</h3>
+        <p class="summary-text">
+          Em apenas 109 de 500 casos o município que
+          mais recebeu dinheiro é o mesmo que mais deu votos. Na esmagadora
+          maioria, a maior base eleitoral e o maior destino do dinheiro são
+          lugares diferentes.
+        </p>
+        <details>
+          <summary>Expandir leitura</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              Isto <strong>não é indício de irregularidade</strong>. Nada obriga
+              a emenda a voltar para a base — mandar tudo para outro estado é
+              legal. O número mede exatamente a ausência dessa obrigação: quando
+              não há vínculo territorial no mandato, não há razão sistêmica para
+              que o dinheiro siga o voto.
+            </p>
+            <p class="academic-p">
+              Boa parte da diferença tem explicação prosaica: fundos estaduais,
+              consórcios e fornecedores têm sede em capitais, o que puxa o
+              registro do favorecido para lá. Essa ressalva vale para o número e
+              está declarada em toda consulta da plataforma.
+            </p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="card-icon serif">8</div>
+        <h3>Municípios bastam para somar metade da votação de um deputado</h3>
+        <p class="summary-text">
+          Mediana de 8 municípios (máximo observado:
+          73). O voto brasileiro é geograficamente concentrado —
+          o que derruba o argumento de que distritalizar seria artificial.
+        </p>
+        <details>
+          <summary>Expandir implicação</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              A defesa mais comum do sistema atual é que a representação já seria
+              territorial "na prática", tornando o distrito desnecessário. O dado
+              mostra o contrário do que essa defesa supõe: os deputados
+              <em>já</em> têm base territorial concentrada, mas essa base não tem
+              existência jurídica. Ela é um fato eleitoral sem contrapartida
+              institucional — o eleitor não pode cobrá-la, porque formalmente ela
+              não existe.
+            </p>
+            <p class="academic-p">
+              O distrito não cria um vínculo territorial onde não havia. Ele
+              torna <strong>exigível</strong> um vínculo que já existe de fato.
+            </p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="card-icon serif">59,1%</div>
+        <h3>Do orçamento de emendas não tem deputado a quem cobrar</h3>
+        <p class="summary-text">
+          R$ 100,7 bilhões empenhados desde 2023 vêm de
+          relator, bancada ou comissão — instrumentos sem autor individual. Não
+          há nome a quem atribuir, logo não há nome a quem responsabilizar.
+        </p>
+        <details>
+          <summary>Expandir</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              A plataforma não consegue mostrar esse dinheiro em nenhuma busca por
+              CEP — não porque falhe, mas porque a informação de autoria não
+              existe na fonte. A opacidade é um achado, não um defeito da
+              medição: é a maior fatia do orçamento de emendas e a que menos
+              admite cobrança eleitoral.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PILARES ============ -->
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Os 4 Pilares da Proposta</h2>
+      <p class="section-desc">
+        A engrenagem que produz o número acima, e a alteração de arquitetura que
+        a desmonta.
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-icon serif">01.</div>
+        <h3>O Voto sem Endereço</h3>
+        <p class="summary-text">
+          O deputado federal é eleito pelo estado inteiro em lista aberta com
+          magnitude altíssima (até 70 cadeiras em SP). Ele não deve o mandato a
+          nenhum lugar — e, portanto, não deve satisfação a nenhum.
+        </p>
+        <details>
+          <summary>Expandir Embasamento Científico</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              Carey e Shugart demonstram que os incentivos ao <strong>voto
+              pessoal</strong> variam sistematicamente com o desenho da regra
+              eleitoral, e que a combinação lista aberta + alta magnitude de
+              distrito produz o caso extremo: o candidato compete não apenas
+              contra outros partidos, mas contra os próprios companheiros de
+              legenda, por votos espalhados por um território inteiro.
+            </p>
+            <p class="academic-p">
+              A consequência prevista pela teoria — e observada por Ames no caso
+              brasileiro — é a busca por recursos particularizáveis, distribuídos
+              onde forem eleitoralmente mais rentáveis a cada ciclo, e não onde
+              haja compromisso permanente. A verba segue a conveniência porque a
+              regra não dá ao território poder de cobrança.
+            </p>
+            <div class="citation-box">
+              <h5>Referências Chave</h5>
+              <ul>
+                <li><strong>Carey, J. M., &amp; Shugart, M. S. (1995).</strong>
+                  <em>Incentives to cultivate a personal vote: A rank ordering of
+                  electoral formulas.</em> Electoral Studies, 14(4).</li>
+                <li><strong>Ames, B. (2001).</strong> <em>The Deadlock of
+                  Democracy in Brazil.</em> University of Michigan Press.</li>
+                <li><strong>Nicolau, J. (2017).</strong> <em>Representantes de
+                  quem? Os (des)caminhos do seu voto da urna à Câmara dos
+                  Deputados.</em> Zahar.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="card-icon serif">02.</div>
+        <h3>O Distrito com Nome</h3>
+        <p class="summary-text">
+          Metade da Câmara passa a ser eleita em distritos uninominais; a outra
+          metade por lista partidária, preservando a proporcionalidade do
+          resultado. É o modelo alemão, em vigor desde 1949.
+        </p>
+        <details>
+          <summary>Expandir Embasamento Científico</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              O sistema misto de membro proporcional (MMP) resolve o falso dilema
+              entre representatividade e responsabilização: o voto de lista
+              determina a proporção final de cadeiras de cada partido, enquanto o
+              voto distrital determina <em>quem</em> ocupa parte delas. Não se
+              troca proporcionalidade por território — obtêm-se os dois.
+            </p>
+            <p class="academic-p">
+              <strong>Prova histórica:</strong> a Nova Zelândia migrou de maioria
+              simples para MMP após a Comissão Real de 1986 e dois referendos
+              (1992 e 1993), com a primeira eleição sob o novo sistema em 1996 —
+              caso raro de mudança de sistema eleitoral decidida em consulta
+              popular, e o exemplo mais próximo do que esta PEC propõe fazer.
+            </p>
+            <div class="citation-box">
+              <h5>Referências Chave</h5>
+              <ul>
+                <li><strong>Shugart, M. S., &amp; Wattenberg, M. P. (orgs., 2001).</strong>
+                  <em>Mixed-Member Electoral Systems: The Best of Both Worlds?</em>
+                  Oxford University Press.</li>
+                <li><strong>Royal Commission on the Electoral System (1986).</strong>
+                  <em>Towards a Better Democracy.</em> Wellington, Nova Zelândia.</li>
+                <li><strong>Lijphart, A. (1999).</strong> <em>Patterns of
+                  Democracy.</em> Yale University Press.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="card-icon serif">03.</div>
+        <h3>Fim da Emenda Impositiva</h3>
+        <p class="summary-text">
+          Hoje, 94,7% do valor empenhado
+          (R$ 161,5 bilhões desde 2023) não
+          informa sequer o município de destino. Obrigatoriedade de pagar sem
+          obrigatoriedade de dizer para onde.
+        </p>
+        <details>
+          <summary>Expandir Embasamento</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              O regime impositivo retirou do Executivo a discricionariedade sobre
+              o pagamento, mas não criou, em contrapartida, exigência
+              proporcional de rastreabilidade. O resultado é medível e está acima:
+              a maior parte do dinheiro é obrigatória para quem paga e opaca para
+              quem financia.
+            </p>
+            <p class="academic-p">
+              Este número é o mais fácil de verificar de toda a proposta — basta
+              abrir a base da CGU. E é o que menos depende de concordar com a
+              tese: seja qual for a opinião sobre emendas, um orçamento em que
+              nove de cada dez reais não declaram destino não é auditável.
+            </p>
+            <div class="citation-box">
+              <h5>Fonte primária</h5>
+              <ul>
+                <li><strong>CGU / Portal da Transparência</strong> —
+                  <em>Emendas Parlamentares</em>, base completa, campo
+                  "Localidade de aplicação do recurso".</li>
+                <li><strong>Constituição Federal</strong>, art. 166 e parágrafos
+                  (regime das emendas individuais e de bancada).</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="card-icon serif">04.</div>
+        <h3>Cláusula de Barreira Rígida</h3>
+        <p class="summary-text">
+          Sem barreira, o componente de lista reproduz a fragmentação atual e o
+          pedágio de coalizão que trava qualquer pauta — de qualquer campo
+          ideológico.
+        </p>
+        <details>
+          <summary>Expandir Embasamento Científico</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              A literatura sobre sistemas partidários associa fragmentação
+              elevada a custos de coordenação que deslocam a disputa do conteúdo
+              para o preço do apoio. O patamar alemão de 5% é o parâmetro
+              consolidado: alto o bastante para eliminar legendas de aluguel,
+              baixo o bastante para não fechar o sistema.
+            </p>
+            <p class="academic-p">
+              É o pilar que torna a proposta legível para os dois campos: nenhuma
+              agenda, à esquerda ou à direita, é aprovada hoje sem pagar pedágio
+              a quem não disputa conteúdo nenhum.
+            </p>
+            <div class="citation-box">
+              <h5>Referências Chave</h5>
+              <ul>
+                <li><strong>Duverger, M. (1954).</strong> <em>Political
+                  Parties.</em> Wiley.</li>
+                <li><strong>Mainwaring, S. (1999).</strong> <em>Rethinking Party
+                  Systems in the Third Wave of Democratization: The Case of
+                  Brazil.</em> Stanford University Press.</li>
+                <li><strong>Bundeswahlgesetz</strong> (Lei Eleitoral Federal
+                  alemã) — cláusula de 5%.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VULNERABILIDADES ============ -->
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Auditoria e Correções (Patches)</h2>
+      <p class="section-desc">
+        Onde este modelo pode falhar, dito por quem o propõe. Uma proposta que
+        não lista as próprias vulnerabilidades está escondendo alguma.
+      </p>
+    </div>
+
+    <div class="patch-card">
+      <div class="patch-problem">
+        <h4>Vulnerabilidade A: Desenho dos Distritos (gerrymandering)</h4>
+        <p>Quem traça o mapa escolhe o vencedor. Se a definição dos distritos
+        ficar com o próprio Congresso, a reforma entrega uma ferramenta de
+        perpetuação mais eficiente que a atual.</p>
+      </div>
+      <div class="patch-solution">
+        <h4>Correção: delimitação técnica e vinculada</h4>
+        <p>Traçado por órgão técnico independente, com critérios objetivos
+        fixados na própria Emenda — contiguidade territorial, desvio populacional
+        máximo declarado, respeito a limites municipais — e revisão automática a
+        cada censo, sem juízo político sobre o mapa.</p>
+        <details>
+          <summary>Expandir</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              A experiência comparada mostra que a diferença entre um MMP saudável
+              e um MMP capturado está menos na fórmula e mais em quem desenha o
+              mapa. Deixar o critério na lei ordinária seria transferir para a
+              maioria de plantão exatamente o poder que a reforma quer limitar.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="patch-card">
+      <div class="patch-problem">
+        <h4>Vulnerabilidade B: Paroquialismo</h4>
+        <p>Um deputado distrital pode se comportar como vereador federal:
+        otimizar para a obra visível no seu distrito e desertar de temas
+        nacionais que não rendem voto local.</p>
+      </div>
+      <div class="patch-solution">
+        <h4>Correção: a metade de lista é o contrapeso</h4>
+        <p>É exatamente por isso que a proposta é <em>mista</em>. Metade da
+        Câmara continua eleita por lista, sem distrito a atender, com incentivo
+        preservado para pautas nacionais e temáticas.</p>
+        <details>
+          <summary>Expandir</summary>
+          <div class="fold-content">
+            <p class="academic-p">
+              O sistema puramente distrital (maioria simples) é o que produz
+              paroquialismo sem contrapeso, e não é o que se propõe aqui. A
+              crítica é legítima contra o modelo britânico; contra o modelo
+              alemão, ela descreve metade do desenho e ignora a outra.
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="patch-card">
+      <div class="patch-problem">
+        <h4>Vulnerabilidade C: Minorias geograficamente dispersas</h4>
+        <p>Grupos cuja identidade não é territorial — e que hoje elegem
+        representantes somando votos espalhados pelo estado — podem perder
+        representação se o distrito virar a via principal.</p>
+      </div>
+      <div class="patch-solution">
+        <h4>Correção: a proporcionalidade final é a da lista</h4>
+        <p>No MMP, o total de cadeiras de cada partido é determinado pelo voto de
+        lista, não pela soma dos distritos vencidos. Candidaturas de base difusa
+        continuam viáveis pela lista, com a proporcionalidade nacional preservada
+        — que é precisamente o que distingue o modelo alemão do britânico.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PROCEDÊNCIA ============ -->
+  <div class="container" style="padding-bottom:4rem">
+    <div class="section-header">
+      <h2 class="section-title">Procedência dos Números</h2>
+      <p class="section-desc">
+        Toda estatística da seção "A Evidência Brasileira" foi gerada por
+        <code>pipeline/estatisticas.py</code> a partir dos arquivos abaixo. A
+        página é regenerada junto com os dados; não há número digitado à mão.
+      </p>
+    </div>
+    <div class="citation-box">
+      <h5>Snapshots utilizados</h5>
+      <ul><li><strong>EmendasParlamentares.zip</strong> — sha256 <code>649220ce9bcd72675f41407d…</code>, baixado em 29/08/2026</li><li><strong>votacao_candidato_munzona_2022.zip</strong> — sha256 <code>64dec552548377d9e958b72b…</code>, baixado em 29/08/2026</li></ul>
+    </div>
+    <div class="citation-box" style="margin-top:1rem">
+      <h5>Nota de verificação</h5>
+      <ul>
+        <li>As estatísticas brasileiras são recalculáveis com o repositório e não
+          dependem de confiança em terceiros.</li>
+        <li>As <strong>referências acadêmicas</strong> desta página foram
+          reunidas para fundamentação e <strong>devem ser conferidas contra os
+          originais</strong> antes de qualquer uso público — é a regra de
+          verificação dupla do projeto, e ela vale também para nós.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
