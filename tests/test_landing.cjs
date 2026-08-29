@@ -9,7 +9,8 @@ const fs = require('fs');
 const path = require('path');
 const raiz = path.dirname(__dirname);
 
-const html = fs.readFileSync(path.join(raiz, 'landing', 'index.html'), 'utf8');
+// A ferramenta de CEP mora em dinheiro.html; index.html é o hub do site.
+const html = fs.readFileSync(path.join(raiz, 'landing', 'dinheiro.html'), 'utf8');
 let js = html.slice(html.indexOf('<script>') + 8, html.indexOf('</script>'));
 
 const elemento = () => ({

@@ -36,6 +36,7 @@ LANDING = os.path.join(RAIZ, "landing")
 PAGINAS = {
     "/": "index.html",
     "/index.html": "index.html",
+    "/dinheiro.html": "dinheiro.html",
     "/propostas/educacao.html": os.path.join("propostas", "educacao.html"),
     "/propostas/voto-distrital.html": os.path.join("propostas", "voto-distrital.html"),
 }

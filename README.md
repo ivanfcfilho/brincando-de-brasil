@@ -1,8 +1,9 @@
-# O Código de Transição — pipeline de dados
+# Brincando de Brasil — pipeline de dados
 
-Cruzamento **origem do voto (TSE) × destino da emenda (Portal da
-Transparência)**, a métrica central da plataforma "O Seu Dinheiro Não Chegou
-no Seu Bairro".
+Laboratório cívico: propostas para o país fundamentadas em dados abertos
+oficiais. A Ideia #01 é o cruzamento **origem do voto (TSE) × destino da
+emenda (Portal da Transparência)** — a métrica central de "O Seu Dinheiro
+Não Chegou no Seu Bairro".
 
 Para cada deputado federal, o pipeline responde:
 
@@ -33,7 +34,8 @@ pipeline/
   estatisticas.py        números nacionais para o dossiê (recalculáveis)
   gerar_dossie.py        gera o dossiê do voto distrital a partir dos dados
   conferir.py            invariantes do banco (roda no fim do job)
-landing/index.html     a busca por CEP, consumindo a API
+landing/index.html     o hub do site: manifesto, regras e as ideias
+landing/dinheiro.html  Ideia #01 — a busca por CEP, consumindo a API
 landing/propostas/     dossiês das PECs (voto distrital é gerado dos dados)
 tests/                 testes; cada caso de nome é uma regressão real
 deploy/                systemd service + timer do job diário

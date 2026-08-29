@@ -43,7 +43,10 @@ def corpo(s):
 <body>
   <div class="container" style="padding-top:3rem">
     <a href="/" style="color:var(--accent-gold);font-family:monospace;
-       font-size:.8rem;text-decoration:none">&larr; voltar para a busca por CEP</a>
+       font-size:.8rem;text-decoration:none">&larr; Brincando de Brasil</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/dinheiro.html" style="color:var(--accent-gold);font-family:monospace;
+       font-size:.8rem;text-decoration:none">busca por CEP &rarr;</a>
     <div class="tag" style="margin-top:1.5rem">Dossiê Acadêmico e Legislativo</div>
     <h1 class="hero-title">O Mandato sem Endereço:<br>Fundamentação da PEC do
       Voto Distrital Misto</h1>
