@@ -6,8 +6,10 @@ neste projeto, com o nome real do caso. Não são exemplos inventados: são as
 atribuições falsas que chegaram a entrar no banco antes da trava.
 """
 import os
-import sys
+import shutil
+import subprocess
 import unittest
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                 "pipeline"))
@@ -169,6 +171,21 @@ class TestCentroide(unittest.TestCase):
         ]}
         lon, lat = self.centroide(geom)
         self.assertAlmostEqual(lon, 11.0, places=6)
+
+
+class TestLanding(unittest.TestCase):
+    """A renderização da landing roda em Node contra uma resposta real da API
+    (tests/fixture_consulta.json). Se o Node não existir, o teste é pulado —
+    o pipeline não depende dele para rodar."""
+
+    def test_render_com_dados_reais(self):
+        node = shutil.which("node") or shutil.which("nodejs")
+        if not node:
+            self.skipTest("node não instalado")
+        script = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "test_landing.cjs")
+        r = subprocess.run([node, script], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
 
 if __name__ == "__main__":

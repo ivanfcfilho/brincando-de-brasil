@@ -29,7 +29,9 @@ pipeline/
   vincular.py            autor de emenda ↔ deputado, com fila de revisão
   consulta.py            CEP → município → deputados → destino da verba
   cruzamento.py          relatório por UF (lê do banco)
+  api.py                 servidor HTTP: serve a landing e responde por CEP
   conferir.py            invariantes do banco (roda no fim do job)
+landing/index.html     a busca por CEP, consumindo a API
 tests/                 testes; cada caso de nome é uma regressão real
 deploy/                systemd service + timer do job diário
 data/raw/              dumps oficiais (não versionados, ~800 MB)
@@ -63,6 +65,19 @@ A ordem importa: `ingest_municipios` precisa do TSE já carregado (para casar os
 códigos), e `ingest_emendas` precisa dos municípios (para resolver o código
 IBGE do favorecido, de onde sai a distância).
 
+## Ver funcionando
+
+```bash
+python3.13 pipeline/api.py          # http://127.0.0.1:8000
+```
+
+Abra `http://127.0.0.1:8000` e digite um CEP. A página mostra, para cada
+deputado eleito com voto naquele município: de onde vieram os votos, para onde
+foi o dinheiro, a distância em km entre as duas coisas, e o `sha256` do arquivo
+oficial que gerou cada número.
+
+Rotas: `/` (landing), `/api/consulta?cep=…`, `/api/saude`.
+
 ## Uso diário
 
 ```bash
@@ -72,7 +87,7 @@ python3.13 pipeline/atualizar.py --resumo 7 # o que mudou na semana
 python3.13 pipeline/consulta.py --cep 49010-000
 python3.13 pipeline/cruzamento.py --uf SE
 python3.13 pipeline/conferir.py             # invariantes (sai != 0 se falhar)
-python3.13 -m unittest discover -s tests    # testes
+python3.13 -m unittest discover -s tests    # testes (inclui a landing, via node)
 ```
 
 `conferir.py` existe porque um bug real passou silencioso: o ZIP do TSE traz
@@ -194,5 +209,6 @@ que geraram cada número.
 
 - [ ] Percorrer a fila de `vincular.py` (47 vínculos) antes de qualquer publicação
 - [ ] Granularidade por seção eleitoral (`votacao_secao_<ano>_<UF>.zip`) → CEP real
-- [ ] API HTTP sobre `consulta.py` + a landing como shell
 - [ ] Coordenada da SEDE municipal (hoje é o centroide do território)
+- [ ] Servidor de produção, limite de requisição e cache (`api.py` é de
+      desenvolvimento: `http.server` da biblioteca padrão)

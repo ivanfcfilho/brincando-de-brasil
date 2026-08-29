@@ -23,7 +23,11 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
 - **Distância em km funcionando** (o número da manchete): a consulta devolve,
   por deputado, a distância média do dinheiro até o CEP, ponderada por valor.
 - **500 dos 513 eleitos** com autoria de emenda identificada.
-- 21 testes (`tests/`) e 13 invariantes (`conferir.py`), rodando no fim do job.
+- 22 testes (`tests/`) e 13 invariantes (`conferir.py`), rodando no fim do job.
+- **A landing consome a API e roda local**: `python3.13 pipeline/api.py` e
+  abrir `http://127.0.0.1:8000`. Saiu de dados simulados para dados reais;
+  o mapa de calor falso deu lugar a "de onde vieram os votos" × "para onde foi
+  o dinheiro", ambos com a distância em km.
 - **Job diário** (`pipeline/atualizar.py`) roda checagem por `ETag` (~1 KB),
   baixa só o que mudou, ingere e resume o diff. Rodou de verdade: detectou a
   republicação da CGU de 29/08, ingeriu e gerou 67 mil mudanças.
@@ -98,8 +102,9 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
 1. **Percorrer a fila de `vincular.py`** (47 vínculos) e os 13 eleitos sem
    autoria — pré-requisito de qualquer publicação.
 2. Granularidade por seção eleitoral (`votacao_secao_<ano>_<UF>.zip`) → CEP real.
-3. API HTTP sobre `consulta.py`; a landing vira o shell da busca.
-4. Coordenada da SEDE municipal (hoje é o centroide do território).
+3. Coordenada da SEDE municipal (hoje é o centroide do território).
+4. A API é de desenvolvimento (`http.server`): para expor publicamente, falta
+   servidor de produção, limite de requisição e cache.
 
 ## Como retomar
 

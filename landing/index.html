@@ -233,12 +233,52 @@
   footer .f-grid{display:flex;flex-wrap:wrap;gap:1rem 3rem;justify-content:space-between}
   footer p{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);line-height:2;max-width:64ch}
   footer .brand{color:var(--volt);letter-spacing:.2em;text-transform:uppercase}
+
+  /* ---------- resultado real (API) ---------- */
+  .dep{
+    background:var(--panel);border:1px solid var(--line);border-radius:3px;
+    padding:1.5rem 1.4rem;margin-bottom:1.1rem;
+  }
+  .dep h3{
+    font-family:var(--mono);font-size:.95rem;letter-spacing:.04em;
+    display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin-bottom:1.1rem;
+  }
+  .dep h3 .pt{
+    font-size:.7rem;color:#0B0F14;background:var(--ink-dim);
+    padding:.1rem .45rem;border-radius:2px;letter-spacing:.08em;
+  }
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:1.7rem}
+  .cols h4{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-faint);margin-bottom:.7rem;
+  }
+  .lista{list-style:none;display:grid;gap:.55rem}
+  .lista li{font-size:.82rem}
+  .lista .cap{display:flex;justify-content:space-between;gap:.8rem;margin-bottom:.22rem}
+  .lista .cap span{color:var(--ink-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lista .cap b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:.78rem}
+  .km{color:var(--ink-faint);font-family:var(--mono);font-size:.72rem;margin-left:.4rem}
+  .km.longe{color:var(--alert)}
+  .minibar{height:5px;background:#070B0F;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+  .minibar span{display:block;height:100%}
+  .minibar .f-volt{background:var(--volt)}
+  .minibar .f-alert{background:var(--alert)}
+  .aviso{
+    font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--ink-faint);
+    border-left:2px solid var(--line);padding-left:.8rem;margin-top:1.6rem;
+  }
+  .semdado{font-size:.85rem;color:var(--ink-dim);font-style:italic}
+  .erro{
+    font-family:var(--mono);font-size:.85rem;color:var(--alert);
+    border:1px solid var(--alert);border-radius:3px;padding:1rem;
+  }
+  @media (max-width:720px){ .cols{grid-template-columns:1fr} }
 </style>
 
 <div class="strip">
   <span><span class="dot">●</span> O CÓDIGO DE TRANSIÇÃO — PLATAFORMA DE RASTREIO ORÇAMENTÁRIO</span>
   <span>FONTES-ALVO: TSE · PORTAL DA TRANSPARÊNCIA · SIGA BRASIL</span>
-  <span class="sim">PROTÓTIPO — DADOS SIMULADOS</span>
+  <span class="sim" id="selo">DADOS OFICIAIS · CARREGANDO…</span>
 </div>
 
 <header class="hero">
@@ -246,9 +286,9 @@
     <p class="eyebrow">Rastreamento por CEP</p>
     <h1>O seu dinheiro <span class="hit">não chegou</span> no seu bairro.</h1>
     <p class="lede">
-      Cruzamos os dados abertos do TSE — onde cada deputado recebeu votos, urna por urna —
-      com o destino oficial das emendas parlamentares. Digite seu CEP e veja o que
-      quem se elegeu com o voto da sua rua fez com o orçamento dela.
+      Cruzamos os dados abertos do TSE — onde cada deputado recebeu votos, município a
+      município — com o destino oficial das emendas parlamentares. Digite seu CEP e veja
+      o que quem se elegeu com o voto da sua cidade fez com o orçamento dela.
     </p>
     <form class="cepbar" id="cepform" autocomplete="off">
       <input id="cep" inputmode="numeric" maxlength="9" placeholder="Digite seu CEP" aria-label="Digite seu CEP">
@@ -261,56 +301,7 @@
 <section class="result" id="result" aria-live="polite">
   <div class="wrap">
     <div class="term" id="term"></div>
-
-    <div class="verdict" id="verdict" hidden>
-      <div class="panel">
-        <h3>Densidade de votos — seções eleitorais do seu território <span class="simtag">simulação</span></h3>
-        <div class="heat" id="heat" role="img" aria-label="Mapa de calor simulado da densidade de votos por seção eleitoral"></div>
-        <div class="heat-legend"><span>menos votos</span><span>mais votos</span></div>
-      </div>
-
-      <div class="panel">
-        <h3>Dep. J. Meireles — nome e números fictícios <span class="simtag">simulação</span></h3>
-        <div class="numgrid">
-          <div>
-            <div class="bignum volt">41%</div>
-            <p class="numlabel">dos votos do deputado saíram deste território</p>
-          </div>
-          <div>
-            <div class="bignum alert">R$ 11,8 mi</div>
-            <p class="numlabel">em emendas de 2025 destinadas a municípios a mais de 300 km daqui</p>
-          </div>
-        </div>
-
-        <div class="bars">
-          <div class="bar-row">
-            <div class="bar-cap"><span>Votos recebidos <b>neste território</b></span><b>41%</b></div>
-            <div class="bar"><span class="f-volt" style="width:41%"></span></div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-cap"><span>Emendas destinadas <b>a este território</b></span><b>6%</b></div>
-            <div class="bar"><span class="f-alert" style="width:6%"></span></div>
-          </div>
-        </div>
-
-        <p class="srcline">
-          FONTE (na versão real): TSE — votação nominal por seção eleitoral ×
-          Portal da Transparência / SIGA Brasil — execução de emendas por município.
-          Cada número publicado linka o documento oficial de origem. Nada é inferido; nada é editado.
-        </p>
-
-        <div class="ctarow">
-          <a class="btn primary" href="#pec">Apoiar a PEC</a>
-          <a class="btn" href="#doutrina">Cobrar o deputado</a>
-          <a class="btn" href="#metodo">Ver a metodologia</a>
-        </div>
-        <p class="cta-note">
-          "Cobrar" abre o WhatsApp <em>no seu celular</em>, com uma mensagem que <strong>você</strong> revisa
-          e <strong>você</strong> envia. A plataforma não dispara nada em seu nome — mil cobranças reais
-          valem mais que um milhão de robôs.
-        </p>
-      </div>
-    </div>
+    <div id="verdict" hidden></div>
   </div>
 </section>
 
@@ -453,33 +444,144 @@
   var result=document.getElementById('result');
   var term=document.getElementById('term');
   var verdict=document.getElementById('verdict');
-  var heat=document.getElementById('heat');
+  var selo=document.getElementById('selo');
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var running=false;
+  var running=false, fontes=null;
 
-  // deterministic pseudo-random so the heat map is stable per CEP
-  function mulberry(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-
-  function buildHeat(seedStr){
-    var seed=0;for(var i=0;i<seedStr.length;i++)seed=seed*31+seedStr.charCodeAt(i)|0;
-    var rnd=mulberry(seed||42);
-    heat.innerHTML='';
-    var cx=4+Math.floor(rnd()*7),cy=2+Math.floor(rnd()*5);
-    for(var y=0;y<9;y++){
-      for(var x=0;x<14;x++){
-        var d=Math.hypot(x-cx,y-cy);
-        var v=Math.max(0,1-d/7)+rnd()*0.25;
-        var cell=document.createElement('i');
-        cell.style.opacity=(0.06+Math.min(1,v)*0.9).toFixed(2);
-        heat.appendChild(cell);
-      }
-    }
+  function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+  function num(v){return Number(v||0)}
+  function brl(v){
+    return 'R$ '+num(v).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
   }
+  function pct(v){return num(v).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%'}
+  function km(v){return Math.round(num(v)).toLocaleString('pt-BR')+' km'}
+  function titulo(t){
+    return String(t||'').toLowerCase().replace(/(^|[\s'-])([a-zà-ú])/g,function(m,a,b){
+      return a+b.toUpperCase()});
+  }
+
+  // Selo com a data do arquivo oficial que gerou os números: a promessa do
+  // projeto é que todo número seja rastreável, e a data é a parte visível.
+  fetch('/api/saude').then(function(r){return r.json()}).then(function(d){
+    fontes=d.fontes||[];
+    var cgu=fontes.filter(function(f){return f.fonte_id==='cgu_emendas'})[0];
+    var quando=cgu?new Date(cgu.baixado_em).toLocaleDateString('pt-BR'):'—';
+    selo.textContent='DADOS OFICIAIS · CGU '+quando+' · TSE 2022';
+  }).catch(function(){ selo.textContent='SERVIDOR FORA DO AR'; });
 
   input.addEventListener('input',function(){
     var d=input.value.replace(/\D/g,'').slice(0,8);
     input.value=d.length>5?d.slice(0,5)+'-'+d.slice(5):d;
   });
+
+  function linhas(term, lista, done){
+    var i=0;
+    (function next(){
+      if(i<lista.length){
+        var s=document.createElement('span');
+        s.className='ln'; s.innerHTML=lista[i++];
+        term.appendChild(s);
+        setTimeout(next, reduced?0:260);
+      } else { done(); }
+    })();
+  }
+
+  function barra(rotulo, valor, largura, classe, sufixo){
+    return '<li>'
+      + '<div class="cap"><span>'+rotulo+'</span><b>'+valor+(sufixo||'')+'</b></div>'
+      + '<div class="minibar"><span class="'+classe+'" style="width:'
+      + Math.max(0,Math.min(100,largura)).toFixed(1)+'%"></span></div></li>';
+  }
+
+  function cartao(d, municipio){
+    var e=d.emendas, ex=e.executado, dist=e.distancia;
+    var totalEx=num(ex.total);
+    var aqui=num(ex.neste_municipio);
+    var pctAqui=totalEx?100*aqui/totalEx:0;
+
+    var h='<article class="dep"><h3>'+esc(titulo(d.nome_urna))
+        + ' <span class="pt">'+esc(d.partido||'—')+'</span></h3>';
+
+    h+='<div class="numgrid">'
+      +'<div><div class="bignum volt">'+pct(d.pct_do_deputado)+'</div>'
+      +'<p class="numlabel">da votação total do parlamentar saiu de '+esc(titulo(municipio))+'</p></div>';
+    if(dist && dist.km_medio!=null){
+      h+='<div><div class="bignum alert">'+km(dist.km_medio)+'</div>'
+        +'<p class="numlabel">distância média do dinheiro executado até aqui, '
+        +'ponderada por valor</p></div>';
+    } else {
+      h+='<div><div class="bignum">—</div><p class="numlabel">sem execução com '
+        +'município identificado</p></div>';
+    }
+    h+='</div>';
+
+    if(!totalEx && !num(e.planejado.total)){
+      h+='<p class="semdado">Nenhuma emenda casada com este parlamentar nesta base. '
+        +'Pode ser licença, suplência ou divergência de grafia — não é afirmação '
+        +'de que não houve emenda.</p></article>';
+      return h;
+    }
+
+    h+='<div class="cols"><div><h4>De onde vieram os votos</h4><ul class="lista">';
+    (d.origem_votos||[]).forEach(function(o){
+      h+=barra(esc(titulo(o.municipio))+'<span class="km'+(num(o.km)>100?' longe':'')
+              +'">'+km(o.km)+'</span>', pct(o.pct), num(o.pct), 'f-volt');
+    });
+    h+='</ul></div><div><h4>Para onde foi o dinheiro (execução)</h4><ul class="lista">';
+    var maior=Math.max.apply(null,(e.maiores_destinos||[{valor:1}]).map(function(m){
+      return num(m.valor)}));
+    (e.maiores_destinos||[]).forEach(function(m){
+      h+=barra(esc(titulo(m.municipio))+'/'+esc(m.uf)
+              +'<span class="km'+(num(m.km)>100?' longe':'')+'">'+km(m.km)+'</span>',
+              brl(m.valor), maior?100*num(m.valor)/maior:0, 'f-alert');
+    });
+    h+='</ul></div></div>';
+
+    h+='<div class="bars">'
+      +'<div class="bar-row"><div class="bar-cap"><span>Votos recebidos '
+      +'<b>neste município</b></span><b>'+pct(d.pct_do_deputado)+'</b></div>'
+      +'<div class="bar"><span class="f-volt" style="width:'+num(d.pct_do_deputado)
+      +'%"></span></div></div>'
+      +'<div class="bar-row"><div class="bar-cap"><span>Execução recebida por '
+      +'favorecidos <b>sediados neste município</b></span><b>'+pct(pctAqui)+'</b></div>'
+      +'<div class="bar"><span class="f-alert" style="width:'+pctAqui.toFixed(1)
+      +'%"></span></div></div></div>';
+
+    h+='<p class="srcline">Empenhado (destino declarado): '+brl(e.planejado.total)
+      +' — sendo '+brl(e.planejado.sem_municipio_definido)+' sem município definido na '
+      +'fonte. Recebido (execução): '+brl(ex.total)+'. '
+      +'Emenda para outro município é legal; o dado mostra a divergência entre a '
+      +'origem do voto e o destino da verba, e nada além disso.</p>';
+    return h+'</article>';
+  }
+
+  function render(d){
+    var h='<h3 style="font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;'
+        + 'text-transform:uppercase;color:var(--ink-faint);margin-bottom:1rem">'
+        + esc(titulo(d.municipio))+' / '+esc(d.uf)
+        + (d.bairro?' · bairro '+esc(titulo(d.bairro)):'')+'</h3>';
+    if(!d.deputados.length){
+      h+='<p class="semdado">Nenhum deputado federal eleito com votos registrados '
+        +'neste município.</p>';
+    } else {
+      d.deputados.forEach(function(x){ h+=cartao(x, d.municipio) });
+    }
+    h+='<p class="aviso">'
+      +'O CEP resolve o <b>município</b>, não o bairro nem a seção eleitoral: '
+      +'a base que desceria a bairro ainda não está carregada, e prometer isso '
+      +'agora seria inventar.<br>'
+      +'Distâncias são entre <b>centroides de território</b> (IBGE), não entre as '
+      +'sedes — em município de área grande a diferença chega a dezenas de km.<br>'
+      +'A sede do favorecido não é necessariamente o local de aplicação: fundos '
+      +'estaduais e ministérios concentram valores nas capitais e em Brasília.<br>';
+    (d.fontes||[]).forEach(function(f){
+      h+='Fonte: <b>'+esc(f.arquivo)+'</b> · sha256 '+esc(f.sha256.slice(0,16))
+        +' · baixado em '+new Date(f.baixado_em).toLocaleDateString('pt-BR')+'<br>';
+    });
+    h+='</p>';
+    verdict.innerHTML=h;
+    verdict.hidden=false;
+  }
 
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -493,31 +595,36 @@
       return;
     }
     running=true;
-    verdict.hidden=true;
+    verdict.hidden=true; verdict.innerHTML='';
     term.innerHTML='';
     result.classList.add('on');
     result.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
-    buildHeat(cep);
 
-    var lines=[
-      '> consultando CEP '+input.value+' … <span class="ok">ok</span>',
-      '> TSE / votação por seção eleitoral (simulado) … <span class="ok">ok</span>',
-      '> Portal da Transparência / emendas 2025 (simulado) … <span class="ok">ok</span>',
-      '> cruzando voto × destino da verba … <span class="vt">divergência encontrada</span>'
-    ];
-    var i=0;
-    function next(){
-      if(i<lines.length){
-        var s=document.createElement('span');
-        s.className='ln';s.innerHTML=lines[i++];
-        term.appendChild(s);
-        setTimeout(next,reduced?0:420);
-      }else{
-        verdict.hidden=false;
+    var pedido=fetch('/api/consulta?cep='+cep+'&limite=5').then(function(r){
+      return r.json().then(function(j){ return {ok:r.ok, corpo:j} });
+    });
+
+    linhas(term,[
+      '&gt; CEP '+esc(input.value)+' → município (ViaCEP) … <span class="ok">ok</span>',
+      '&gt; TSE / votação nominal por município, 2022 … <span class="ok">ok</span>',
+      '&gt; CGU / emendas do mandato, execução por favorecido … <span class="ok">ok</span>',
+      '&gt; cruzando origem do voto × destino da verba … <span class="vt">pronto</span>'
+    ], function(){
+      pedido.then(function(r){
         running=false;
-      }
-    }
-    next();
+        if(!r.ok){
+          verdict.innerHTML='<p class="erro">'+esc(r.corpo.erro||'erro na consulta')+'</p>';
+          verdict.hidden=false;
+          return;
+        }
+        render(r.corpo);
+      }).catch(function(err){
+        running=false;
+        verdict.innerHTML='<p class="erro">Servidor fora do ar. Rode '
+          +'<b>python3.13 pipeline/api.py</b> e recarregue.</p>';
+        verdict.hidden=false;
+      });
+    });
   });
 })();
 </script>

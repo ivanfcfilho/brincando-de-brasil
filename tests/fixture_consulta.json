@@ -1,0 +1,343 @@
+{
+    "municipio": "Aracaju",
+    "uf": "SE",
+    "cod_ibge": 2800308,
+    "bairro": "Centro",
+    "deputados": [
+        {
+            "sq_candidato": "260001646377",
+            "nome_urna": "RODRIGO VALADARES",
+            "partido": "UNI\u00c3O",
+            "situacao": "ELEITO POR MEDIA",
+            "votos": 19735,
+            "pct_do_municipio": "8.87",
+            "pct_do_deputado": "39.71",
+            "total_votos": "49696",
+            "emendas": {
+                "origem": {
+                    "cod_ibge": 2800308,
+                    "nome": "Aracaju",
+                    "uf": "SE"
+                },
+                "planejado": {
+                    "total": "104786573.47",
+                    "neste_municipio": "0",
+                    "outros_do_estado": "99837.00",
+                    "outros_estados": "0",
+                    "sem_municipio_definido": "104686736.47"
+                },
+                "executado": {
+                    "total": "88232454.32",
+                    "neste_municipio": "28504341.10",
+                    "outros_do_estado": "54121458.04",
+                    "outros_estados": "5606655.18",
+                    "sem_local_definido": "0"
+                },
+                "distancia": {
+                    "km_medio": 124.59438266148575,
+                    "valor_com_local": "88232454.32",
+                    "valor_acima_100km": "7586655.18"
+                },
+                "maiores_destinos": [
+                    {
+                        "municipio": "Aracaju",
+                        "uf": "SE",
+                        "valor": "28504341.10",
+                        "km": "0"
+                    },
+                    {
+                        "municipio": "Capela",
+                        "uf": "SE",
+                        "valor": "10767293.00",
+                        "km": "58"
+                    },
+                    {
+                        "municipio": "Tobias Barreto",
+                        "uf": "SE",
+                        "valor": "9949950.00",
+                        "km": "100"
+                    },
+                    {
+                        "municipio": "Malhador",
+                        "uf": "SE",
+                        "valor": "7472500.00",
+                        "km": "42"
+                    },
+                    {
+                        "municipio": "Indiaroba",
+                        "uf": "SE",
+                        "valor": "7252007.00",
+                        "km": "72"
+                    }
+                ],
+                "maiores_emendas": [
+                    {
+                        "codigo_emenda": "202444690003",
+                        "ano": 2024,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Sa\u00fade",
+                        "empenhado": "16034886.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202444690003"
+                    },
+                    {
+                        "codigo_emenda": "202544690002",
+                        "ano": 2025,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Sa\u00fade",
+                        "empenhado": "12745000.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202544690002"
+                    },
+                    {
+                        "codigo_emenda": "202644690001",
+                        "ano": 2026,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Encargos especiais",
+                        "empenhado": "9959950.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202644690001"
+                    },
+                    {
+                        "codigo_emenda": "202544690006",
+                        "ano": 2025,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Sa\u00fade",
+                        "empenhado": "9775985.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202544690006"
+                    },
+                    {
+                        "codigo_emenda": "202444690005",
+                        "ano": 2024,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Encargos especiais",
+                        "empenhado": "9350000.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202444690005"
+                    }
+                ]
+            },
+            "origem_votos": [
+                {
+                    "municipio": "ARACAJU",
+                    "uf": "SE",
+                    "votos": 19735,
+                    "pct": "39.71",
+                    "km": "0"
+                },
+                {
+                    "municipio": "NOSSA SENHORA DO SOCORRO",
+                    "uf": "SE",
+                    "votos": 4342,
+                    "pct": "8.74",
+                    "km": "16"
+                },
+                {
+                    "municipio": "SIM\u00c3O DIAS",
+                    "uf": "SE",
+                    "votos": 3119,
+                    "pct": "6.28",
+                    "km": "85"
+                },
+                {
+                    "municipio": "TOBIAS BARRETO",
+                    "uf": "SE",
+                    "votos": 2424,
+                    "pct": "4.88",
+                    "km": "100"
+                },
+                {
+                    "municipio": "ITAPORANGA D'AJUDA",
+                    "uf": "SE",
+                    "votos": 2046,
+                    "pct": "4.12",
+                    "km": "26"
+                },
+                {
+                    "municipio": "S\u00c3O CRIST\u00d3V\u00c3O",
+                    "uf": "SE",
+                    "votos": 1672,
+                    "pct": "3.36",
+                    "km": "14"
+                }
+            ]
+        },
+        {
+            "sq_candidato": "260001619667",
+            "nome_urna": "DELEGADA KATARINA",
+            "partido": "PSD",
+            "situacao": "ELEITO POR MEDIA",
+            "votos": 16938,
+            "pct_do_municipio": "7.61",
+            "pct_do_deputado": "44.42",
+            "total_votos": "38135",
+            "emendas": {
+                "origem": {
+                    "cod_ibge": 2800308,
+                    "nome": "Aracaju",
+                    "uf": "SE"
+                },
+                "planejado": {
+                    "total": "113318292.65",
+                    "neste_municipio": "480000.00",
+                    "outros_do_estado": "200000.00",
+                    "outros_estados": "0",
+                    "sem_municipio_definido": "112638292.65"
+                },
+                "executado": {
+                    "total": "90781358.39",
+                    "neste_municipio": "7253473.36",
+                    "outros_do_estado": "63021490.19",
+                    "outros_estados": "20505491.60",
+                    "sem_local_definido": "903.24"
+                },
+                "distancia": {
+                    "km_medio": 354.94844026619774,
+                    "valor_com_local": "90780455.15",
+                    "valor_acima_100km": "29768283.60"
+                },
+                "maiores_destinos": [
+                    {
+                        "municipio": "Bras\u00edlia",
+                        "uf": "DF",
+                        "valor": "18448383.33",
+                        "km": "1275"
+                    },
+                    {
+                        "municipio": "Aracaju",
+                        "uf": "SE",
+                        "valor": "7253473.36",
+                        "km": "0"
+                    },
+                    {
+                        "municipio": "Lagarto",
+                        "uf": "SE",
+                        "valor": "4291000.00",
+                        "km": "63"
+                    },
+                    {
+                        "municipio": "Feira Nova",
+                        "uf": "SE",
+                        "valor": "4178000.00",
+                        "km": "83"
+                    },
+                    {
+                        "municipio": "Nossa Senhora das Dores",
+                        "uf": "SE",
+                        "valor": "4087500.00",
+                        "km": "61"
+                    }
+                ],
+                "maiores_emendas": [
+                    {
+                        "codigo_emenda": "202543440001",
+                        "ano": 2025,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Sa\u00fade",
+                        "empenhado": "17727984.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202543440001"
+                    },
+                    {
+                        "codigo_emenda": "202443440006",
+                        "ano": 2024,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Encargos especiais",
+                        "empenhado": "15685792.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202443440006"
+                    },
+                    {
+                        "codigo_emenda": "202543440015",
+                        "ano": 2025,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Encargos especiais",
+                        "empenhado": "15256992.07",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202543440015"
+                    },
+                    {
+                        "codigo_emenda": "202443440004",
+                        "ano": 2024,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Sa\u00fade",
+                        "empenhado": "14435793.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202443440004"
+                    },
+                    {
+                        "codigo_emenda": "202643440013",
+                        "ano": 2026,
+                        "municipio": "MULTIPLO",
+                        "uf": "SERGIPE",
+                        "nome_funcao": "Encargos especiais",
+                        "empenhado": "14029500.00",
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/202643440013"
+                    }
+                ]
+            },
+            "origem_votos": [
+                {
+                    "municipio": "ARACAJU",
+                    "uf": "SE",
+                    "votos": 16938,
+                    "pct": "44.42",
+                    "km": "0"
+                },
+                {
+                    "municipio": "NOSSA SENHORA DO SOCORRO",
+                    "uf": "SE",
+                    "votos": 2719,
+                    "pct": "7.13",
+                    "km": "16"
+                },
+                {
+                    "municipio": "SIM\u00c3O DIAS",
+                    "uf": "SE",
+                    "votos": 2284,
+                    "pct": "5.99",
+                    "km": "85"
+                },
+                {
+                    "municipio": "ITABAIANA",
+                    "uf": "SE",
+                    "votos": 1584,
+                    "pct": "4.15",
+                    "km": "50"
+                },
+                {
+                    "municipio": "GRACCHO CARDOSO",
+                    "uf": "SE",
+                    "votos": 1119,
+                    "pct": "2.93",
+                    "km": "87"
+                },
+                {
+                    "municipio": "S\u00c3O CRIST\u00d3V\u00c3O",
+                    "uf": "SE",
+                    "votos": 979,
+                    "pct": "2.57",
+                    "km": "14"
+                }
+            ]
+        }
+    ],
+    "fontes": [
+        {
+            "fonte_id": "cgu_emendas",
+            "baixado_em": "2026-08-29T15:32:33.107808+00:00",
+            "publicado_em": "Sat, 29 Aug 2026 04:39:07 GMT",
+            "sha256": "649220ce9bcd72675f41407dae9b4cfbbc86c105dde58470ffd291e7d4ec97ef",
+            "arquivo": "data/raw/EmendasParlamentares.zip"
+        },
+        {
+            "fonte_id": "tse_munzona_2022",
+            "baixado_em": "2026-08-29T15:03:56.387238+00:00",
+            "publicado_em": null,
+            "sha256": "64dec552548377d9e958b72b2f9ef30a05aec331b04ec1368da4f1f5cababf21",
+            "arquivo": "data/raw/votacao_candidato_munzona_2022.zip"
+        }
+    ],
+    "cep": "49010000"
+}

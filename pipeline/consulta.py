@@ -104,6 +104,27 @@ def deputados_do_municipio(con, cod_ibge, limite=10):
         return [dict(r) for r in cur.fetchall()]
 
 
+def origem_dos_votos(con, sq_candidato, origem, limite=6):
+    """De onde vieram os votos deste deputado, com a distância até o município
+    consultado. É a metade da tese que o destino da verba não mostra: sem ela,
+    a página diria para onde o dinheiro foi sem dizer de onde veio o mandato.
+    """
+    with con.cursor() as cur:
+        cur.execute("""
+            SELECT upper(m.nome) AS municipio, m.uf, v.votos,
+                   ROUND(100.0 * v.votos / NULLIF(t.total_votos,0), 2) AS pct,
+                   ROUND((earth_distance(ll_to_earth(%(lat)s, %(lon)s),
+                          ll_to_earth(m.lat, m.lon)) / 1000)::numeric) AS km
+            FROM voto_municipio v
+            JOIN municipio m ON m.cod_tse = v.cod_municipio_tse
+            JOIN vw_votos_totais t ON t.sq_candidato = v.sq_candidato
+            WHERE v.sq_candidato = %(sq)s AND m.lat IS NOT NULL
+            ORDER BY v.votos DESC LIMIT %(lim)s
+        """, {"sq": sq_candidato, "lat": origem["lat"], "lon": origem["lon"],
+              "lim": limite})
+        return [dict(r) for r in cur.fetchall()]
+
+
 def destino_das_emendas(con, sq_candidato, origem, mandato_inicio=2023):
     """Para onde foi o dinheiro deste deputado, medido a partir de `origem`
     (a linha de `municipio` correspondente ao CEP consultado).
@@ -270,6 +291,7 @@ def responder(con, origem, bairro="", limite=5, mandato_inicio=2023):
     for d in deps:
         d["emendas"] = destino_das_emendas(con, d["sq_candidato"], origem,
                                            mandato_inicio)
+        d["origem_votos"] = origem_dos_votos(con, d["sq_candidato"], origem)
     return {"municipio": origem["nome"], "uf": origem["uf"],
             "cod_ibge": origem["cod_ibge"], "bairro": bairro,
             "deputados": deps, "fontes": proveniencia(con)}
