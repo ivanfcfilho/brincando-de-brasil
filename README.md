@@ -71,10 +71,22 @@ IBGE do favorecido, de onde sai a distância).
 python3.13 pipeline/api.py          # http://127.0.0.1:8000
 ```
 
-Abra `http://127.0.0.1:8000` e digite um CEP. A página mostra, para cada
-deputado eleito com voto naquele município: de onde vieram os votos, para onde
-foi o dinheiro, a distância em km entre as duas coisas, e o `sha256` do arquivo
-oficial que gerou cada número.
+Abra `http://127.0.0.1:8000` e digite um CEP. A página explica primeiro o que é
+uma emenda parlamentar e que cargo é esse, e só então mostra, para cada deputado
+eleito com voto naquele município: de onde vieram os votos, para onde foi o
+dinheiro, a distância em km entre as duas coisas, links para a fonte oficial de
+cada emenda e o `sha256` do arquivo que gerou cada número.
+
+**A página é didática e persuasiva, e o argumento é estrutural.** Ela diz, com
+todas as letras, que ninguém listado quebrou regra alguma: o deputado é eleito
+pelo estado inteiro, não deve o mandato a nenhuma cidade e por isso o dinheiro
+não tem endereço. É desenho, não desvio — e é isso que o voto distrital misto
+muda. Persuadir pelo mecanismo é o que a regra editorial permite; insinuar
+desvio é o que ela proíbe, e o que derrubaria o projeto.
+
+Termos de orçamento aparecem traduzidos: "empenhado" vira *reservado no
+orçamento*, "execução" vira *já pago*, "múltiplo/sem informação" vira *sem
+cidade informada*. Há um teste que falha se o jargão voltar à tela.
 
 Rotas: `/` (landing), `/api/consulta?cep=…`, `/api/saude`.
 
@@ -179,6 +191,13 @@ que geraram cada número.
   oficial. Em município de área grande a diferença para a sede é de dezenas de
   km: Manaus tem centroide a ~50 km do centro da cidade. A distância publicada
   precisa dizer o que mede.
+- **Link de emenda: o padrão `/emendas/{codigo}` do Portal devolve 404.** A
+  página de detalhe só é alcançável por uma querystring que o próprio servidor
+  monta. O que funciona é a consulta com o código no filtro
+  (`/emendas/consulta?codigoEmenda=…`), verificada. E 17.810 das 94.463 emendas
+  vêm com "Sem informação" no lugar do código: para essas não se gera link
+  nenhum. Link morto numa página que promete rastreabilidade é pior que link
+  ausente.
 - **Um município sem coordenada**: Boa Esperança do Norte (MT) foi criado
   depois de 2022, não está na malha daquele ano e não tem código do TSE.
 - **Empenhado ≠ pago.** O relatório usa valor empenhado (compromisso firmado);

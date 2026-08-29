@@ -44,18 +44,37 @@ const testes = [
   ['nome do deputado',        /Rodrigo Valadares/],
   ['sigla do partido',        /UNIÃO/],
   ['origem dos votos',        /De onde vieram os votos/],
-  ['destino do dinheiro',     /Para onde foi o dinheiro/],
+  ['destino do dinheiro',     /Para onde o dinheiro foi parar/],
   ['distância em km',         /\d+ km/],
   ['valor em reais',          /R\$ [\d.]+/],
-  ['ressalva do centroide',   /centroides de território/],
-  ['ressalva da sede',        /sede do favorecido/],
-  ['ressalva do CEP',         /não o bairro nem a seção eleitoral/],
+
+  // Tradução do jargão: sem isto os números são verdadeiros e inúteis.
+  ['explica "reservado"',     /Reservado no orçamento/],
+  ['explica "já pago"',       /Já pago/],
+  ['explica opacidade',       /não diz para qual/],
+  ['diz que é legal',         /Mandar emenda para outra cidade é legal/],
+
+  // Persuasão pelo mecanismo, nunca por acusação.
+  ['argumento estrutural',    /o mandato não tem endereço/],
+  ['liga ao voto distrital',  /voto distrital misto/],
+  ['inocenta os listados',    /Nenhum dos nomes acima quebrou regra nenhuma/],
+
+  // Rastreabilidade de verdade.
+  ['link para a Câmara',      /camara\.leg\.br\/deputados\/\d+/],
+  ['link para a fonte',       /href="https:\/\/[^"]*portaldatransparencia[^"]*"/],
   ['proveniência (sha256)',   /sha256 [0-9a-f]{16}/],
-  // A regra editorial vale para o texto da tela, não só para o pipeline.
-  ['nenhuma inferência',      /Emenda para outro município é legal/],
-  // A base não traz gênero; supor pelo nome erraria com metade das pessoas.
-  ['texto sem gênero suposto', /votação total do parlamentar/],
+
+  // Ressalvas visíveis na tela, não só no README.
+  ['ressalva do CEP',         /identifica a <b>cidade<\/b>/],
+  ['ressalva do centroide',   /centro geográfico/],
+  ['ressalva da sede',        /nem sempre é onde a obra acontece/],
+  ['ressalva relator/bancada',/não têm autor individual/],
 ];
+
+// Jargão de orçamento que não pode chegar ao leitor sem tradução.
+const jargao = [/destino declarado/i, /\(execução\)/i, /favorecidos sediados/i,
+                /ponderada por valor/i, /empenhad[ao]s? \(/i];
+
 
 let falhas = 0;
 for (const [nome, re] of testes) {
@@ -63,6 +82,16 @@ for (const [nome, re] of testes) {
   if (!ok) falhas++;
   console.log(`  ${ok ? 'ok   ' : 'FALHA'} ${nome}`);
 }
+for (const re of jargao) {
+  if (re.test(saida)) {
+    console.log(`  FALHA jargão sem tradução na tela: ${re}`);
+    falhas++;
+  }
+}
+if (!jargao.some((re) => re.test(saida))) {
+  console.log('  ok    nenhum jargão de orçamento sem tradução');
+}
+
 if (/undefined|NaN|\[object/.test(saida)) {
   console.log('  FALHA há undefined/NaN/[object] no HTML gerado');
   console.log('        ' + saida.match(/.{0,70}(undefined|NaN|\[object).{0,70}/)[0]);

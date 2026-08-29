@@ -234,6 +234,56 @@
   footer p{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);line-height:2;max-width:64ch}
   footer .brand{color:var(--volt);letter-spacing:.2em;text-transform:uppercase}
 
+  /* ---------- explicação para quem chega sem contexto ---------- */
+  .explica{padding:3rem 0;border-bottom:1px solid var(--line);background:var(--panel-2)}
+  .ex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.6rem}
+  .ex-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:1.3rem;
+  }
+  .ex-num{
+    font-family:var(--mono);font-size:.7rem;color:#0B0F14;background:var(--volt);
+    padding:.12rem .45rem;border-radius:2px;font-weight:700;
+  }
+  .ex-card h3{font-size:1.02rem;margin:.7rem 0 .5rem;line-height:1.3}
+  .ex-card p{font-size:.88rem;color:var(--ink-dim);line-height:1.65}
+  .ex-card b{color:var(--ink)}
+  .ex-card em{color:var(--volt);font-style:normal}
+  .ex-nota{
+    margin-top:1.4rem;font-family:var(--mono);font-size:.75rem;color:var(--ink-faint);
+    line-height:1.8;
+  }
+  .ex-nota a{color:var(--volt);text-decoration:underline;text-underline-offset:2px}
+
+  /* ---------- caixa "como ler" dentro do cartão ---------- */
+  .comoler{
+    margin-top:1.5rem;border:1px solid var(--line);border-radius:3px;
+    background:var(--panel-2);padding:1rem 1.1rem;
+  }
+  .comoler h5{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--volt);margin-bottom:.7rem;
+  }
+  .comoler p{font-size:.85rem;color:var(--ink-dim);line-height:1.7;margin-bottom:.55rem}
+  .comoler p:last-child{margin-bottom:0}
+  .comoler b{color:var(--ink)}
+  .comoler .termo{
+    color:var(--ink);border-bottom:1px dotted var(--ink-faint);cursor:help;
+  }
+  .linkfonte{
+    display:inline-block;margin-top:.5rem;font-family:var(--mono);font-size:.75rem;
+    color:var(--volt);text-decoration:underline;text-underline-offset:2px;
+  }
+  .emendalista{list-style:none;margin-top:.5rem;display:grid;gap:.3rem}
+  .emendalista li{font-size:.8rem;color:var(--ink-dim);font-family:var(--mono)}
+  .emendalista a{color:var(--volt);text-decoration:underline;text-underline-offset:2px}
+
+  /* ---------- referências ---------- */
+  .refs{list-style:none;display:grid;gap:.9rem;margin-top:1.4rem}
+  .refs li{font-size:.9rem;color:var(--ink-dim);line-height:1.6}
+  .refs a{color:var(--volt);text-decoration:underline;text-underline-offset:2px}
+  .refs .oq{display:block;color:var(--ink-faint);font-size:.82rem;margin-top:.15rem}
+  @media (max-width:820px){ .ex-grid{grid-template-columns:1fr} }
+
   /* ---------- resultado real (API) ---------- */
   .dep{
     background:var(--panel);border:1px solid var(--line);border-radius:3px;
@@ -298,6 +348,53 @@
   </div>
 </header>
 
+
+<section class="explica">
+  <div class="wrap">
+    <p class="sec-eyebrow" style="font-family:var(--mono);font-size:.75rem;letter-spacing:.2em;color:var(--volt);text-transform:uppercase">// Antes de digitar o CEP</p>
+    <h2 style="font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;margin-top:.6rem">Em três parágrafos, o que está sendo medido aqui.</h2>
+
+    <div class="ex-grid">
+      <div class="ex-card">
+        <span class="ex-num">1</span>
+        <h3>O que é uma emenda parlamentar</h3>
+        <p>Todo ano, cada deputado federal recebe uma fatia do orçamento da União e
+        indica <b>para onde ela vai</b>: um hospital, uma prefeitura, uma obra, uma
+        associação. Isso se chama <b>emenda parlamentar</b>. Em 2025, a mediana foi
+        de <b>R$ 41,5 milhões por deputado</b> — número calculado da própria base
+        oficial que esta página usa. Quem escolhe o destino é ele.</p>
+      </div>
+
+      <div class="ex-card">
+        <span class="ex-num">2</span>
+        <h3>Que cargo é esse</h3>
+        <p><b>Deputado federal.</b> São 513 no Brasil, eleitos por <b>estado inteiro</b>
+        — não por bairro, nem por cidade, nem por distrito. Você vota num nome que
+        disputa com o estado todo. Por isso nenhum deles "é" do seu bairro: o mandato
+        não tem endereço, e é justamente essa a engrenagem que esta página mede.</p>
+      </div>
+
+      <div class="ex-card">
+        <span class="ex-num">3</span>
+        <h3>Para onde esse dinheiro <em>deveria</em> ir?</h3>
+        <p>Para onde ele quiser. <b>Não existe lei que obrigue</b> a emenda a voltar
+        para a região que elegeu o deputado — mandar tudo para outro estado é
+        perfeitamente legal. É essa <b>ausência de vínculo</b> que a PEC quer mudar.
+        E é por isso que esta página não acusa ninguém: ela mostra a distância entre
+        o voto e a verba, e para por aí.</p>
+      </div>
+    </div>
+
+    <p class="ex-nota">
+      &gt; Esta página cruza duas listas públicas: <b>onde cada deputado recebeu votos</b>
+      (TSE, eleição de 2022) e <b>para onde mandou o dinheiro</b> (Portal da
+      Transparência / CGU, emendas de 2023 em diante).<br>
+      &gt; Nenhum número aqui é estimado ou inferido. Cada um vem de um arquivo oficial,
+      identificado pelo seu <b>sha256</b> no rodapé do resultado.
+    </p>
+  </div>
+</section>
+
 <section class="result" id="result" aria-live="polite">
   <div class="wrap">
     <div class="term" id="term"></div>
@@ -316,10 +413,12 @@
     <div class="cols">
       <div class="step">
         <p class="k">Etapa 01 — Coleta</p>
-        <h3>Dado aberto, urna por urna</h3>
-        <p>Robôs de coleta leem os repositórios oficiais do TSE (votação por seção eleitoral)
-        e do Portal da Transparência e SIGA Brasil (autoria, valor e município de destino de cada emenda).
-        Nenhum dado sigiloso, nenhum vazamento: tudo já é público por lei.</p>
+        <h3>Dado aberto, município a município</h3>
+        <p>Um robô lê todo dia os arquivos oficiais do TSE (votação nominal por município,
+        eleição de 2022) e do Portal da Transparência / CGU (autor, valor e destino de
+        cada emenda). Nenhum dado sigiloso, nenhum vazamento: tudo já é público por lei.
+        Cada arquivo baixado fica registrado com data e sha256 — a impressão digital que
+        prova qual versão gerou cada número.</p>
       </div>
       <div class="step">
         <p class="k">Etapa 02 — Cruzamento</p>
@@ -331,8 +430,9 @@
       <div class="step">
         <p class="k">Etapa 03 — Publicação</p>
         <h3>Todo número tem link</h3>
-        <p>Cada valor exibido aponta para o documento oficial de origem. A plataforma nunca
-        publica inferência ("desviou", "roubou") — publica o dado bruto e a distância em quilômetros.
+        <p>Cada valor exibido aponta para a fonte oficial de origem, e o resultado traz o
+        sha256 dos arquivos que o geraram. A plataforma nunca publica inferência
+        ("desviou", "roubou") — publica o dado bruto e a distância em quilômetros.
         O dado oficial não pode ser processado. A opinião, sim.</p>
       </div>
     </div>
@@ -429,10 +529,19 @@
 <footer>
   <div class="wrap f-grid">
     <p><span class="brand">O Código de Transição</span><br>
-    Protótipo de interface — todos os nomes, valores e mapas exibidos são fictícios,
-    gerados apenas para demonstrar a experiência da plataforma.</p>
-    <p>FONTES PREVISTAS: dadosabertos.tse.jus.br · portaldatransparencia.gov.br ·
-    www12.senado.leg.br/orcamento (SIGA Brasil)<br>
+    Os nomes, valores e distâncias exibidos são <b>reais</b> e vêm de arquivos
+    oficiais, identificados por sha256 no rodapé de cada consulta. Erro em qualquer
+    número é erro nosso: aponte, que corrigimos e registramos a correção.</p>
+    <p>FONTES USADAS:
+    <a href="https://dadosabertos.tse.jus.br/dataset/resultados-2022" target="_blank" rel="noopener">TSE — resultados 2022</a> ·
+    <a href="https://portaldatransparencia.gov.br/download-de-dados/emendas-parlamentares" target="_blank" rel="noopener">Portal da Transparência / CGU — emendas</a> ·
+    <a href="https://servicodados.ibge.gov.br/api/v1/localidades/municipios" target="_blank" rel="noopener">IBGE — municípios e malha</a> ·
+    <a href="https://dadosabertos.camara.leg.br" target="_blank" rel="noopener">Câmara — dados abertos</a> ·
+    <a href="https://viacep.com.br" target="_blank" rel="noopener">ViaCEP</a><br>
+    ENTENDER O ORÇAMENTO:
+    <a href="https://portaldatransparencia.gov.br/emendas/visao-geral" target="_blank" rel="noopener">o que são emendas parlamentares</a> ·
+    <a href="https://www12.senado.leg.br/orcamento/glossario" target="_blank" rel="noopener">glossário do Orçamento (Senado)</a> ·
+    <a href="https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm" target="_blank" rel="noopener">Constituição, art. 166</a><br>
     CÓDIGO: aberto (licença livre) — auditável por qualquer cidadão ou gabinete.</p>
   </div>
 </footer>
@@ -494,31 +603,43 @@
   }
 
   function cartao(d, municipio){
-    var e=d.emendas, ex=e.executado, dist=e.distancia;
-    var totalEx=num(ex.total);
+    var e=d.emendas, ex=e.executado, pl=e.planejado, dist=e.distancia;
+    var totalEx=num(ex.total), totalPl=num(pl.total);
     var aqui=num(ex.neste_municipio);
     var pctAqui=totalEx?100*aqui/totalEx:0;
+    var semCidade=num(pl.sem_municipio_definido);
+    var pctSemCidade=totalPl?100*semCidade/totalPl:0;
+    var cidade=esc(titulo(municipio));
 
     var h='<article class="dep"><h3>'+esc(titulo(d.nome_urna))
-        + ' <span class="pt">'+esc(d.partido||'—')+'</span></h3>';
+        + ' <span class="pt">'+esc(d.partido||'—')+'</span>';
+    if(d.link_camara){
+      h+=' <a class="linkfonte" style="margin:0" target="_blank" rel="noopener" href="'
+        + esc(d.link_camara)+'">ver no site da Câmara ↗</a>';
+    }
+    h+='</h3>';
 
+    // Os dois números de manchete, com a frase inteira em português comum.
     h+='<div class="numgrid">'
       +'<div><div class="bignum volt">'+pct(d.pct_do_deputado)+'</div>'
-      +'<p class="numlabel">da votação total do parlamentar saiu de '+esc(titulo(municipio))+'</p></div>';
+      +'<p class="numlabel">dos votos que elegeram este deputado vieram de '
+      +cidade+'</p></div>';
     if(dist && dist.km_medio!=null){
       h+='<div><div class="bignum alert">'+km(dist.km_medio)+'</div>'
-        +'<p class="numlabel">distância média do dinheiro executado até aqui, '
-        +'ponderada por valor</p></div>';
+        +'<p class="numlabel">é a distância média entre '+cidade+' e as cidades '
+        +'onde o dinheiro dele foi parar</p></div>';
     } else {
-      h+='<div><div class="bignum">—</div><p class="numlabel">sem execução com '
-        +'município identificado</p></div>';
+      h+='<div><div class="bignum">—</div><p class="numlabel">o dinheiro pago não '
+        +'tem cidade identificada na fonte oficial</p></div>';
     }
     h+='</div>';
 
-    if(!totalEx && !num(e.planejado.total)){
-      h+='<p class="semdado">Nenhuma emenda casada com este parlamentar nesta base. '
-        +'Pode ser licença, suplência ou divergência de grafia — não é afirmação '
-        +'de que não houve emenda.</p></article>';
+    if(!totalEx && !totalPl){
+      h+='<div class="comoler"><h5>Sem emenda encontrada</h5>'
+        +'<p>Nenhuma emenda foi encontrada em nome deste parlamentar nesta base. '
+        +'Pode ser licença, suplência, ministério assumido ou diferença de grafia '
+        +'do nome. <b>Isto não é afirmação de que não houve emenda</b> — é ausência '
+        +'de dado, e a diferença entre as duas coisas importa.</p></div></article>';
       return h;
     }
 
@@ -527,7 +648,7 @@
       h+=barra(esc(titulo(o.municipio))+'<span class="km'+(num(o.km)>100?' longe':'')
               +'">'+km(o.km)+'</span>', pct(o.pct), num(o.pct), 'f-volt');
     });
-    h+='</ul></div><div><h4>Para onde foi o dinheiro (execução)</h4><ul class="lista">';
+    h+='</ul></div><div><h4>Para onde o dinheiro foi parar</h4><ul class="lista">';
     var maior=Math.max.apply(null,(e.maiores_destinos||[{valor:1}]).map(function(m){
       return num(m.valor)}));
     (e.maiores_destinos||[]).forEach(function(m){
@@ -538,45 +659,109 @@
     h+='</ul></div></div>';
 
     h+='<div class="bars">'
-      +'<div class="bar-row"><div class="bar-cap"><span>Votos recebidos '
-      +'<b>neste município</b></span><b>'+pct(d.pct_do_deputado)+'</b></div>'
+      +'<div class="bar-row"><div class="bar-cap"><span>Dos votos dele, quanto veio '
+      +'<b>de '+cidade+'</b></span><b>'+pct(d.pct_do_deputado)+'</b></div>'
       +'<div class="bar"><span class="f-volt" style="width:'+num(d.pct_do_deputado)
       +'%"></span></div></div>'
-      +'<div class="bar-row"><div class="bar-cap"><span>Execução recebida por '
-      +'favorecidos <b>sediados neste município</b></span><b>'+pct(pctAqui)+'</b></div>'
+      +'<div class="bar-row"><div class="bar-cap"><span>Do dinheiro já pago, quanto '
+      +'ficou <b>em '+cidade+'</b></span><b>'+pct(pctAqui)+'</b></div>'
       +'<div class="bar"><span class="f-alert" style="width:'+pctAqui.toFixed(1)
       +'%"></span></div></div></div>';
 
-    h+='<p class="srcline">Empenhado (destino declarado): '+brl(e.planejado.total)
-      +' — sendo '+brl(e.planejado.sem_municipio_definido)+' sem município definido na '
-      +'fonte. Recebido (execução): '+brl(ex.total)+'. '
-      +'Emenda para outro município é legal; o dado mostra a divergência entre a '
-      +'origem do voto e o destino da verba, e nada além disso.</p>';
+    // A caixa que traduz o jargão orçamentário. Sem ela, os números acima são
+    // verdadeiros e inúteis: ninguém que não trabalhe com orçamento sabe o
+    // que "empenhado" quer dizer.
+    h+='<div class="comoler"><h5>Como ler estes números</h5>';
+    h+='<p><b>Reservado no orçamento: '+brl(totalPl)+'.</b> É o quanto o governo '
+      +'separou para as emendas deste deputado de 2023 para cá. Reservado não é pago: '
+      +'é um compromisso no papel.</p>';
+    if(semCidade>0){
+      h+='<p><b>Sem cidade informada: '+brl(semCidade)+' ('+pct(pctSemCidade)+' do total).</b> '
+        +'Esse dinheiro está reservado, mas o documento oficial <b>não diz para qual '
+        +'cidade vai</b> — registra apenas "múltiplo" ou "sem informação". '
+        +'Isso não é falha desta página: é o que o governo publica. '
+        +'A dificuldade de saber para onde o dinheiro vai é, ela própria, um dos '
+        +'motivos da reforma.</p>';
+    }
+    h+='<p><b>Já pago: '+brl(totalEx)+'.</b> Dinheiro que de fato saiu da conta e chegou '
+      +'a quem recebeu (uma prefeitura, um hospital, uma empresa, uma associação). '
+      +'É por este caminho que dá para saber onde o dinheiro parou — e é dele que sai '
+      +'a distância em km lá em cima.</p>';
+    h+='<p><b>Mandar emenda para outra cidade é legal</b> e acontece o tempo todo. '
+      +'Esta página não diz que houve desvio, roubo ou irregularidade: ela mostra de '
+      +'onde vieram os votos e para onde foi a verba. A conclusão é sua.</p>';
+
+    var comLink=(e.maiores_emendas||[]).filter(function(m){return m.fonte});
+    if(comLink.length){
+      h+='<p style="margin-top:.8rem"><b>Conferir na fonte</b> — as maiores emendas '
+        +'dele, no Portal da Transparência:</p><ul class="emendalista">';
+      comLink.slice(0,3).forEach(function(m){
+        h+='<li>'+esc(m.ano)+' · '+brl(m.empenhado)+' · '+esc(m.nome_funcao||'—')
+          +' — <a target="_blank" rel="noopener" href="'+esc(m.fonte)+'">emenda '
+          +esc(m.codigo_emenda)+' ↗</a></li>';
+      });
+      h+='</ul>';
+    }
+    h+='</div>';
     return h+'</article>';
   }
 
   function render(d){
+    var cidade=esc(titulo(d.municipio));
     var h='<h3 style="font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;'
-        + 'text-transform:uppercase;color:var(--ink-faint);margin-bottom:1rem">'
-        + esc(titulo(d.municipio))+' / '+esc(d.uf)
+        + 'text-transform:uppercase;color:var(--ink-faint);margin-bottom:.4rem">'
+        + cidade+' / '+esc(d.uf)
         + (d.bairro?' · bairro '+esc(titulo(d.bairro)):'')+'</h3>';
+
     if(!d.deputados.length){
       h+='<p class="semdado">Nenhum deputado federal eleito com votos registrados '
         +'neste município.</p>';
-    } else {
-      d.deputados.forEach(function(x){ h+=cartao(x, d.municipio) });
+      verdict.innerHTML=h; verdict.hidden=false; return;
     }
+
+    h+='<p style="color:var(--ink-dim);font-size:.92rem;margin-bottom:1.4rem;max-width:70ch">'
+      +'Abaixo, os deputados federais que <b>mais receberam votos em '+cidade+'</b> na '
+      +'eleição de 2022. Para cada um: de onde vieram os votos que o elegeram, e para '
+      +'onde foi o dinheiro das emendas dele.</p>';
+
+    d.deputados.forEach(function(x){ h+=cartao(x, d.municipio) });
+
+    // A ponte: o dado que a pessoa acabou de ver, ligado ao argumento.
+    // O argumento é sobre o SISTEMA, não sobre as pessoas listadas acima —
+    // é o que o dado sustenta, e é o que não pode ser derrubado.
+    h+='<div class="comoler" style="border-color:var(--volt)">'
+      +'<h5>Por que isso acontece</h5>'
+      +'<p>Nenhum dos nomes acima quebrou regra nenhuma. O deputado federal é eleito '
+      +'<b>pelo estado inteiro</b>, não por '+cidade+'. Ele não deve o mandato a '
+      +'nenhuma cidade em particular — e, portanto, não deve satisfação a nenhuma. '
+      +'O dinheiro não tem endereço porque <b>o mandato não tem endereço</b>.</p>'
+      +'<p>É desenho, não desvio. E é exatamente isso que o <b>voto distrital misto</b> '
+      +'muda: metade da Câmara passa a ser eleita por distrito, e cada distrito ganha '
+      +'um nome com endereço — alguém a quem cobrar, e a quem tirar na eleição seguinte '
+      +'se o dinheiro continuar indo para 1.000 km daqui.</p>'
+      +'<div class="ctarow"><a class="btn primary" href="#pec">Entender a PEC</a>'
+      +'<a class="btn" href="#metodo">Como estes números são apurados</a></div></div>';
+
     h+='<p class="aviso">'
-      +'O CEP resolve o <b>município</b>, não o bairro nem a seção eleitoral: '
-      +'a base que desceria a bairro ainda não está carregada, e prometer isso '
-      +'agora seria inventar.<br>'
-      +'Distâncias são entre <b>centroides de território</b> (IBGE), não entre as '
-      +'sedes — em município de área grande a diferença chega a dezenas de km.<br>'
-      +'A sede do favorecido não é necessariamente o local de aplicação: fundos '
-      +'estaduais e ministérios concentram valores nas capitais e em Brasília.<br>';
+      +'<b>O que esta página não sabe.</b><br>'
+      +'O CEP identifica a <b>cidade</b>, não o bairro nem a seção eleitoral. '
+      +'Os dados por bairro existem no TSE mas ainda não estão carregados aqui, e '
+      +'prometer bairro sem eles seria inventar.<br>'
+      +'As distâncias são medidas do <b>centro geográfico de cada cidade</b> (IBGE), '
+      +'não do centro urbano. Em cidade de área grande, a diferença chega a dezenas '
+      +'de km.<br>'
+      +'Quem recebeu o dinheiro nem sempre é onde a obra acontece: fundos estaduais e '
+      +'ministérios têm sede nas capitais e em Brasília, e isso puxa valores para lá.<br>'
+      +'Emendas de relator, bancada e comissão <b>não têm autor individual</b> e por '
+      +'isso não aparecem em nenhum cartão acima — costumam ser a maior parte do '
+      +'dinheiro, e ninguém responde por elas.<br><br>'
+      +'<b>De onde vem cada número:</b><br>';
     (d.fontes||[]).forEach(function(f){
-      h+='Fonte: <b>'+esc(f.arquivo)+'</b> · sha256 '+esc(f.sha256.slice(0,16))
-        +' · baixado em '+new Date(f.baixado_em).toLocaleDateString('pt-BR')+'<br>';
+      h+='&nbsp;&nbsp;<a target="_blank" rel="noopener" href="'+esc(f.url)+'">'
+        +esc(f.descricao||f.fonte_id)+' ↗</a><br>'
+        +'&nbsp;&nbsp;arquivo <b>'+esc(f.arquivo.split('/').pop())+'</b> · '
+        +'sha256 '+esc(f.sha256.slice(0,16))+'… · baixado em '
+        +new Date(f.baixado_em).toLocaleDateString('pt-BR')+'<br>';
     });
     h+='</p>';
     verdict.innerHTML=h;

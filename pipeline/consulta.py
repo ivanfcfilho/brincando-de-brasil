@@ -26,7 +26,20 @@ from nomes import chave_municipio, norm
 
 VIACEP = "https://viacep.com.br/ws/{}/json/"
 # Cada valor publicado precisa apontar para o documento oficial de origem.
-URL_EMENDA = "https://portaldatransparencia.gov.br/emendas/{}"
+#
+# ATENÇÃO: o padrão /emendas/{codigo} devolve 404 — a página de detalhe do
+# Portal só é alcançável por uma querystring que o próprio servidor monta.
+# O que funciona e é verificável é a consulta com o código no filtro. E 17.810
+# das 94.463 emendas vêm com "Sem informação" no lugar do código: para essas
+# NÃO se gera link nenhum. Link morto numa página que promete rastreabilidade
+# é pior que link ausente.
+URL_EMENDA = "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda={}"
+URL_DEPUTADO = "https://www.camara.leg.br/deputados/{}"
+
+
+def link_emenda(codigo):
+    codigo = (codigo or "").strip()
+    return URL_EMENDA.format(codigo) if codigo.isdigit() else None
 SEM_MUNICIPIO = ("MULTIPLO", "SEM INFORMACAO")
 
 
@@ -87,8 +100,8 @@ def deputados_do_municipio(con, cod_ibge, limite=10):
             ), total_municipio AS (
                 SELECT SUM(votos) AS t FROM aqui
             )
-            SELECT d.sq_candidato, d.nome_urna, d.partido, d.situacao,
-                   a.votos,
+            SELECT d.sq_candidato, d.nome_urna, d.nome AS nome_civil, d.partido,
+                   d.situacao, d.uf, d.id_camara, a.votos,
                    ROUND(100.0 * a.votos / NULLIF((SELECT t FROM total_municipio),0), 2)
                        AS pct_do_municipio,
                    ROUND(100.0 * a.votos / NULLIF(vt.total_votos,0), 2)
@@ -232,7 +245,7 @@ def destino_das_emendas(con, sq_candidato, origem, mandato_inicio=2023):
             ORDER BY empenhado DESC LIMIT 5
         """, par)
         out["maiores_emendas"] = [
-            dict(r, fonte=URL_EMENDA.format(r["codigo_emenda"])) for r in cur.fetchall()]
+            dict(r, fonte=link_emenda(r["codigo_emenda"])) for r in cur.fetchall()]
     _conferir_fechamento(out)
     _conferir_coerencia(out, origem)
     return out
@@ -278,10 +291,11 @@ def proveniencia(con):
     """De qual arquivo oficial, baixado quando, veio cada número da resposta."""
     with con.cursor() as cur:
         cur.execute("""
-            SELECT DISTINCT ON (fonte_id) fonte_id, baixado_em, publicado_em,
-                   sha256, arquivo
-            FROM snapshot WHERE ingerido_em IS NOT NULL
-            ORDER BY fonte_id, baixado_em DESC
+            SELECT DISTINCT ON (s.fonte_id) s.fonte_id, s.baixado_em,
+                   s.publicado_em, s.sha256, s.arquivo, f.descricao, f.url
+            FROM snapshot s JOIN fonte f ON f.id = s.fonte_id
+            WHERE s.ingerido_em IS NOT NULL
+            ORDER BY s.fonte_id, s.baixado_em DESC
         """)
         return [dict(r) for r in cur.fetchall()]
 
@@ -292,6 +306,9 @@ def responder(con, origem, bairro="", limite=5, mandato_inicio=2023):
         d["emendas"] = destino_das_emendas(con, d["sq_candidato"], origem,
                                            mandato_inicio)
         d["origem_votos"] = origem_dos_votos(con, d["sq_candidato"], origem)
+    for d in deps:
+        d["link_camara"] = (URL_DEPUTADO.format(d["id_camara"])
+                            if d["id_camara"] else None)
     return {"municipio": origem["nome"], "uf": origem["uf"],
             "cod_ibge": origem["cod_ibge"], "bairro": bairro,
             "deputados": deps, "fontes": proveniencia(con)}

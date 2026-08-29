@@ -24,6 +24,10 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
   por deputado, a distância média do dinheiro até o CEP, ponderada por valor.
 - **500 dos 513 eleitos** com autoria de emenda identificada.
 - 22 testes (`tests/`) e 13 invariantes (`conferir.py`), rodando no fim do job.
+- **A landing explica antes de mostrar**: três cartões (o que é emenda, que
+  cargo é esse, para onde o dinheiro "deveria" ir) e uma ponte, depois do
+  resultado, ligando o dado ao argumento da PEC. Jargão de orçamento traduzido,
+  com teste que falha se voltar.
 - **A landing consome a API e roda local**: `python3.13 pipeline/api.py` e
   abrir `http://127.0.0.1:8000`. Saiu de dados simulados para dados reais;
   o mapa de calor falso deu lugar a "de onde vieram os votos" × "para onde foi

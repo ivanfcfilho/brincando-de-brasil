@@ -7,8 +7,11 @@
         {
             "sq_candidato": "260001646377",
             "nome_urna": "RODRIGO VALADARES",
+            "nome_civil": "RODRIGO SANTANA VALADARES",
             "partido": "UNI\u00c3O",
             "situacao": "ELEITO POR MEDIA",
+            "uf": "SE",
+            "id_camara": 165470,
             "votos": 19735,
             "pct_do_municipio": "8.87",
             "pct_do_deputado": "39.71",
@@ -78,7 +81,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Sa\u00fade",
                         "empenhado": "16034886.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202444690003"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202444690003"
                     },
                     {
                         "codigo_emenda": "202544690002",
@@ -87,7 +90,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Sa\u00fade",
                         "empenhado": "12745000.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202544690002"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202544690002"
                     },
                     {
                         "codigo_emenda": "202644690001",
@@ -96,7 +99,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Encargos especiais",
                         "empenhado": "9959950.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202644690001"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202644690001"
                     },
                     {
                         "codigo_emenda": "202544690006",
@@ -105,7 +108,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Sa\u00fade",
                         "empenhado": "9775985.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202544690006"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202544690006"
                     },
                     {
                         "codigo_emenda": "202444690005",
@@ -114,7 +117,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Encargos especiais",
                         "empenhado": "9350000.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202444690005"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202444690005"
                     }
                 ]
             },
@@ -161,13 +164,17 @@
                     "pct": "3.36",
                     "km": "14"
                 }
-            ]
+            ],
+            "link_camara": "https://www.camara.leg.br/deputados/165470"
         },
         {
             "sq_candidato": "260001619667",
             "nome_urna": "DELEGADA KATARINA",
+            "nome_civil": "KATARINA FEITOZA LIMA SANTANA",
             "partido": "PSD",
             "situacao": "ELEITO POR MEDIA",
+            "uf": "SE",
+            "id_camara": 220561,
             "votos": 16938,
             "pct_do_municipio": "7.61",
             "pct_do_deputado": "44.42",
@@ -237,7 +244,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Sa\u00fade",
                         "empenhado": "17727984.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202543440001"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202543440001"
                     },
                     {
                         "codigo_emenda": "202443440006",
@@ -246,7 +253,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Encargos especiais",
                         "empenhado": "15685792.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202443440006"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202443440006"
                     },
                     {
                         "codigo_emenda": "202543440015",
@@ -255,7 +262,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Encargos especiais",
                         "empenhado": "15256992.07",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202543440015"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202543440015"
                     },
                     {
                         "codigo_emenda": "202443440004",
@@ -264,7 +271,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Sa\u00fade",
                         "empenhado": "14435793.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202443440004"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202443440004"
                     },
                     {
                         "codigo_emenda": "202643440013",
@@ -273,7 +280,7 @@
                         "uf": "SERGIPE",
                         "nome_funcao": "Encargos especiais",
                         "empenhado": "14029500.00",
-                        "fonte": "https://portaldatransparencia.gov.br/emendas/202643440013"
+                        "fonte": "https://portaldatransparencia.gov.br/emendas/consulta?codigoEmenda=202643440013"
                     }
                 ]
             },
@@ -320,7 +327,8 @@
                     "pct": "2.57",
                     "km": "14"
                 }
-            ]
+            ],
+            "link_camara": "https://www.camara.leg.br/deputados/220561"
         }
     ],
     "fontes": [
@@ -329,14 +337,18 @@
             "baixado_em": "2026-08-29T15:32:33.107808+00:00",
             "publicado_em": "Sat, 29 Aug 2026 04:39:07 GMT",
             "sha256": "649220ce9bcd72675f41407dae9b4cfbbc86c105dde58470ffd291e7d4ec97ef",
-            "arquivo": "data/raw/EmendasParlamentares.zip"
+            "arquivo": "data/raw/EmendasParlamentares.zip",
+            "descricao": "Emendas parlamentares \u2014 CGU/Portal da Transpar\u00eancia",
+            "url": "https://dadosabertos-download.cgu.gov.br/PortalDaTransparencia/saida/emendas-parlamentares/EmendasParlamentares.zip"
         },
         {
             "fonte_id": "tse_munzona_2022",
             "baixado_em": "2026-08-29T15:03:56.387238+00:00",
             "publicado_em": null,
             "sha256": "64dec552548377d9e958b72b2f9ef30a05aec331b04ec1368da4f1f5cababf21",
-            "arquivo": "data/raw/votacao_candidato_munzona_2022.zip"
+            "arquivo": "data/raw/votacao_candidato_munzona_2022.zip",
+            "descricao": "Vota\u00e7\u00e3o nominal por munic\u00edpio/zona \u2014 TSE, elei\u00e7\u00e3o 2022",
+            "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_candidato_munzona/votacao_candidato_munzona_2022.zip"
         }
     ],
     "cep": "49010000"
