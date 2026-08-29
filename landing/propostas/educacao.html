@@ -236,6 +236,8 @@
         padding-left: 15px;
         position: relative;
       }
+      .citation-box a{color:var(--accent-gold);text-decoration:none;font-size:.8rem}
+      .citation-box a:hover{text-decoration:underline}
       .citation-box li::before {
         content: "•";
         position: absolute;
@@ -320,6 +322,24 @@
         font-size: 0.9rem;
       }
 
+
+      /* Lógica aristotélica */
+      .silogismo{background:#090b10;border:1px solid var(--border-color);border-left:3px solid var(--accent-gold);border-radius:0 6px 6px 0;padding:16px 20px;margin:0 0 18px}
+      .silogismo h5{color:var(--accent-gold);font-family:"Inter",sans-serif;font-size:.75rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+      .silogismo p{font-size:.9rem;color:#cbd5e1;margin:6px 0;display:flex;gap:10px;text-align:left}
+      .silogismo p span{color:var(--accent-gold);font-family:monospace;flex:0 0 24px}
+      .silogismo p.conclusao{border-top:1px dashed var(--border-color);padding-top:8px;margin-top:8px;color:#fff}
+      .silogismo p.refuta{font-size:.82rem;color:var(--text-citation);display:block}
+      .silogismo p.refuta strong{color:var(--warning)}
+      .causas{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:40px}
+      @media(max-width:768px){.causas{grid-template-columns:1fr}}
+      .causa{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:24px}
+      .causa h4{color:var(--accent-gold);font-size:1rem;margin-bottom:4px}
+      .causa .grego{font-family:monospace;font-size:.72rem;color:var(--text-citation);display:block;margin-bottom:10px}
+      .causa p{font-size:.92rem;color:var(--text-muted)}
+      .causa p b{color:#fff}
+      .integridade{margin-top:50px;border:1px dashed var(--warning);border-radius:8px;padding:16px 20px;font-size:.85rem;color:var(--text-muted)}
+      .integridade strong{color:var(--warning)}
     </style>
     <script src="/menu.js" defer></script>
   </head>
@@ -340,6 +360,125 @@
         </p>
       </div>
     </header>
+
+
+    <section id="logica">
+      <div class="container">
+        <h2 class="section-title">A Arquitetura <span>Lógica</span></h2>
+        <p class="section-desc">
+          Antes da evidência, a forma. Este dossiê segue o padrão que
+          Aristóteles fixou nos <em>Segundos Analíticos</em> (I.2, 71b) para o
+          conhecimento científico: a <strong>demonstração</strong>
+          (<em>apodeixis</em>) — um encadeamento válido de silogismos a partir
+          de premissas verdadeiras e mais conhecidas que a conclusão. Cada
+          pilar, abaixo, é apresentado nessa forma: premissas explícitas,
+          conclusão que se segue delas por necessidade, e a condição que o
+          refutaria.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Validade e solidez são coisas distintas</h3>
+            <p class="summary-text" style="text-align:left">
+              Um argumento é <strong>válido</strong> quando a conclusão se segue
+              das premissas (questão de forma, verificável por inspeção) e
+              <strong>sólido</strong> quando, além disso, as premissas são
+              verdadeiras (questão empírica, verificável por dados). Este
+              documento assume o ônus completo: a forma de cada argumento está
+              exposta, e cada premissa fática carrega a sua referência. Quem
+              quiser derrubar uma conclusão sabe exatamente o que precisa
+              atacar — uma premissa, com evidência — em vez de discutir
+              retórica.
+            </p>
+            <div class="silogismo">
+              <h5>O silogismo central da PEC (forma Barbara, AAA-1)</h5>
+              <p><span>P1</span>Nenhum sistema escolar sustenta qualidade acima
+                da qualidade média dos seus professores — a regularidade
+                empírica mais estável da literatura comparada (Barber &amp;
+                Mourshed, 2007; Chetty, Friedman &amp; Rockoff, 2014).</p>
+              <p><span>P2</span>A qualidade média dos professores de um país é
+                determinada por quem entra na carreira e pelo que a carreira
+                remunera (Auguste et al., 2010; Bruns &amp; Luque, 2015).</p>
+              <p class="conclusao"><span>&there4;</span>Nenhuma reforma
+                educacional brasileira pode funcionar sem mudar o recrutamento
+                e a remuneração docentes. Os quatro pilares são a aplicação
+                desta conclusão — e nada além dela.</p>
+              <p class="refuta"><strong>Como refutar:</strong> exiba um sistema
+                de alto desempenho sustentado (PISA) que recrute professores no
+                terço inferior da coorte e remunere apenas tempo de serviço.
+                Não há caso documentado.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Dialética: o teste das premissas</h3>
+            <p class="summary-text" style="text-align:left">
+              Nos <em>Tópicos</em>, Aristóteles distingue a demonstração da
+              <strong>dialética</strong>: o exame de um argumento pelas objeções
+              mais fortes que ele admite. Este dossiê incorpora esse teste em
+              duas camadas. Primeira: cada silogismo declara a sua
+              <strong>condição de refutação</strong> — o fato observável que,
+              se ocorresse, derrubaria a premissa. Segunda: a seção de
+              vulnerabilidades adiante não é adorno; é a rodada dialética do
+              próprio proponente contra a proposta (Lei de Goodhart, escassez
+              docente, exclusão de alunos), com a correção para cada objeção
+              que sobreviveu ao exame. A evidência contrária relevante não é
+              omitida: onde a literatura é mista — como em remuneração por
+              desempenho (Fryer, 2013) — ela está citada no pilar
+              correspondente, porque premissa que só conhece evidência
+              favorável não é premissa, é propaganda.
+            </p>
+          </div>
+        </div>
+
+        <div class="causas">
+          <div class="causa">
+            <h4>Causa material — quem entra</h4>
+            <span class="grego">hyl&#275; &middot; &ldquo;aquilo de que&rdquo; &middot; F&iacute;sica II.3</span>
+            <p>Um sistema escolar é feito, materialmente, das pessoas que
+            lecionam. Hoje o insumo é recrutado no <b>terço inferior</b> da
+            distribuição de desempenho. O <b>Pilar 1</b> (Filtro de
+            Excelência) atua sobre a causa material: muda de quem o sistema é
+            feito.</p>
+          </div>
+          <div class="causa">
+            <h4>Causa formal — a estrutura da carreira</h4>
+            <span class="grego">eidos &middot; &ldquo;aquilo segundo o que&rdquo;</span>
+            <p>A forma que organiza a matéria é o desenho da carreira: hoje,
+            progressão por <b>tempo de serviço</b>, o fator com menor efeito
+            sobre a aprendizagem. O <b>Pilar 2</b> (Carreira por Evidências)
+            atua sobre a causa formal: muda a estrutura que ordena a
+            profissão.</p>
+          </div>
+          <div class="causa">
+            <h4>Causa eficiente — quem move o sistema</h4>
+            <span class="grego">to kinoun &middot; &ldquo;aquilo por que&rdquo;</span>
+            <p>O motor imediato da escola pública é o <b>gestor municipal</b> e
+            os incentivos fiscais que ele enfrenta. O <b>Pilar 4</b> (ICMS da
+            Aprendizagem) atua sobre a causa eficiente — e o <b>Pilar 3</b>
+            (Trava Demográfica) fornece o lastro material que torna o movimento
+            possível sem imposto novo.</p>
+          </div>
+          <div class="causa">
+            <h4>Causa final — o que o sistema persegue</h4>
+            <span class="grego">telos &middot; &ldquo;aquilo em vista de que&rdquo;</span>
+            <p>Todo sistema otimiza o que mede. O <em>telos</em> de fato da
+            escola brasileira hoje é <b>fluxo e aprovação</b>, não
+            aprendizagem. A seção final (Ideb ajustado por equidade) redefine o
+            fim: <b>aprendizagem verificada, de todos os alunos</b> — e o resto
+            da arquitetura passa a servir a ele.</p>
+          </div>
+        </div>
+
+        <p class="section-desc" style="margin-top:50px;margin-bottom:0">
+          Uma falha em qualquer causa compromete o todo — é por isso que a
+          proposta é um pacote, não um cardápio: filtro sem carreira não atrai;
+          carreira sem lastro fiscal não paga; incentivo ao gestor sem métrica
+          honesta vira Goodhart. A interdependência não é retórica; é a
+          estrutura causal do problema.
+        </p>
+      </div>
+    </section>
 
     <section id="pilares">
       <div class="container">
@@ -363,6 +502,13 @@
             <details>
               <summary>Expandir Embasamento Científico</summary>
               <div class="fold-content">
+                <div class="silogismo">
+                  <h5>Forma do argumento</h5>
+                  <p><span>P1</span>A eficácia de um sistema escolar tem como teto a qualidade média dos seus professores — e o efeito do professor persiste na vida adulta do aluno: renda, faculdade, gravidez precoce (Chetty, Friedman &amp; Rockoff, 2014).</p>
+                  <p><span>P2</span>O Brasil recruta seus docentes majoritariamente entre os alunos de desempenho mais baixo no Enem, com atratividade mínima entre os de alto desempenho (Louzano et al., 2010; Bruns &amp; Luque, 2015; Elacqua et al., 2018).</p>
+                  <p class="conclusao"><span>&there4;</span>O teto do sistema brasileiro está estruturalmente rebaixado pelo insumo; elevá-lo exige deslocar o recrutamento para o topo da distribuição — o Filtro de Excelência.</p>
+                  <p class="refuta"><strong>Como refutar:</strong> exiba um sistema de alto desempenho sustentado no PISA que recrute professores no terço inferior da coorte. A literatura comparada não registra nenhum.</p>
+                </div>
                 <p class="academic-p">
                   A sociologia das profissões demonstra que o status ocupacional
                   é intrinsecamente ligado à
@@ -391,6 +537,8 @@
                       >
                       McKinsey & Company. (O axioma de que a qualidade de um
                       sistema não supera a de seus professores).
+                    
+                      <a href="https://www.mckinsey.com/industries/education/our-insights/how-the-worlds-best-performing-school-systems-come-out-on-top" target="_blank" rel="noopener">[fonte]</a>
                     </li>
                     <li>
                       <strong
@@ -400,6 +548,41 @@
                         >Closing the talent gap: Attracting and retaining
                         top-third graduates to careers in teaching.</em
                       >
+                    </li>
+                    <li>
+                      <strong>Chetty, R., Friedman, J. N., &amp; Rockoff, J. E. (2014).</strong>
+                      <em>Measuring the Impacts of Teachers II: Teacher Value-Added and
+                      Student Outcomes in Adulthood.</em> American Economic Review, 104(9),
+                      2633–79. (Um professor de alto valor agregado eleva renda adulta,
+                      ingresso na faculdade e reduz gravidez na adolescência; trocar um
+                      professor do pior 5% por um mediano vale ~US$ 250 mil de renda
+                      futura por turma.)
+                      <a href="https://www.aeaweb.org/articles?id=10.1257/aer.104.9.2633" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
+                    <li>
+                      <strong>Bruns, B., &amp; Luque, J. (2015).</strong>
+                      <em>Great Teachers: How to Raise Student Learning in Latin America
+                      and the Caribbean.</em> Banco Mundial. (Padrões baixos de entrada na
+                      formação docente e incentivos de carreira pouco atrativos na
+                      América Latina; professor médio perde o equivalente a um dia de
+                      instrução por semana.)
+                      <a href="https://www.worldbank.org/content/dam/Worldbank/document/LAC/Great_Teachers-How_to_Raise_Student_Learning-Barbara-Bruns-Advance%20Edition.pdf" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
+                    <li>
+                      <strong>Louzano, P., Rocha, V., Moriconi, G. M., &amp; Oliveira, R. P. (2010).</strong>
+                      <em>Quem quer ser professor? Atratividade, seleção e formação
+                      docente no Brasil.</em> Estudos em Avaliação Educacional, Fundação
+                      Carlos Chagas. (Com dados do Enem: a docência brasileira atrai
+                      candidatos de baixo desempenho acadêmico; a carreira é pouco
+                      atrativa exatamente para os melhores alunos.)
+                      <a href="https://www.fcc.org.br/pesquisa/publicacoes/eae/arquivos/1608/1608.pdf" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
+                    <li>
+                      <strong>Elacqua, G., Vegas, E., Hincapié, D., &amp; Alfonso, M. (2018).</strong>
+                      <em>Profissão Professor na América Latina: por que a docência
+                      perdeu prestígio e como recuperá-lo?</em> BID. (Evolução histórica
+                      da perda de prestígio e as políticas que a revertem.)
+                      <a href="https://publications.iadb.org/publications/portuguese/document/Profiss%C3%A3o-professor-na-Am%C3%A9rica-Latina-Por-que-a-doc%C3%AAncia-perdeu-prest%C3%ADgio-e-como-recuper%C3%A1-lo.pdf" target="_blank" rel="noopener">[fonte]</a>
                     </li>
                   </ul>
                 </div>
@@ -419,6 +602,13 @@
             <details>
               <summary>Expandir Embasamento Científico</summary>
               <div class="fold-content">
+                <div class="silogismo">
+                  <h5>Forma do argumento</h5>
+                  <p><span>P1</span>A qualidade do professor é o maior fator escolar de aprendizagem, mas quase nada dela é explicado por credenciais e tempo de serviço — o retorno da experiência estabiliza após os primeiros anos (Rivkin, Hanushek &amp; Kain, 2005).</p>
+                  <p><span>P2</span>A carreira docente brasileira remunera primariamente tempo de serviço — justamente o fator que não explica a qualidade.</p>
+                  <p class="conclusao"><span>&there4;</span>A estrutura atual paga pelo que não produz efeito e ignora o que produz; vincular progressão à evolução da aprendizagem realinha o incentivo ao fim da instituição.</p>
+                  <p class="refuta"><strong>Como refutar:</strong> demonstre que remuneração por desempenho não move aprendizagem em desenho algum. A evidência exige honestidade: houve efeito forte e persistente num experimento randomizado na Índia (Muralidharan &amp; Sundararaman, 2011) e efeito nulo em Nova York com desenho coletivo e opaco (Fryer, 2013). A conclusão que sobrevive é condicional — funciona quando o incentivo é individual, simples e previsível — e é essa versão que a PEC adota, com as travas da seção de vulnerabilidades.</p>
+                </div>
                 <p class="academic-p">
                   A literatura econométrica aponta que a experiência do
                   professor (tempo de serviço) apresenta retornos marginais
@@ -449,6 +639,32 @@
                       <em>Effective Teacher Policies: Insights from PISA.</em>
                       Paris: OECD Publishing.
                     </li>
+                    <li>
+                      <strong>Rivkin, S. G., Hanushek, E. A., &amp; Kain, J. F. (2005).</strong>
+                      <em>Teachers, Schools, and Academic Achievement.</em> Econometrica,
+                      73(2), 417–458. (Subir um desvio-padrão na qualidade docente vale
+                      mais que reduzir a turma em dez alunos; credenciais e experiência
+                      explicam pouco da variação de qualidade.)
+                      <a href="https://hanushek.stanford.edu/sites/default/files/publications/Rivkin%2BHanushek%2BKain%202005%20Ecta%2073%282%29.pdf" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
+                    <li>
+                      <strong>Muralidharan, K., &amp; Sundararaman, V. (2011).</strong>
+                      <em>Teacher Performance Pay: Experimental Evidence from India.</em>
+                      Journal of Political Economy, 119(1), 39–77. (Experimento
+                      randomizado: bônus individual por desempenho elevou aprendizagem em
+                      0,27 dp em matemática e 0,17 dp em língua, sem efeitos adversos
+                      detectados, com alto custo-efetividade.)
+                      <a href="https://www.journals.uchicago.edu/doi/abs/10.1086/659655" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
+                    <li>
+                      <strong>Fryer, R. G. (2013).</strong>
+                      <em>Teacher Incentives and Student Achievement: Evidence from New
+                      York City Public Schools.</em> Journal of Labor Economics, 31(2),
+                      373–427. (<b>Evidência contrária</b>, citada de propósito: bônus
+                      coletivo por escola, de regra complexa, não moveu aprendizagem — o
+                      desenho do incentivo decide o resultado, não o slogan.)
+                      <a href="https://www.journals.uchicago.edu/doi/10.1086/667757" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -467,13 +683,22 @@
             <details>
               <summary>Expandir Embasamento Científico</summary>
               <div class="fold-content">
+                <div class="silogismo">
+                  <h5>Forma do argumento</h5>
+                  <p><span>P1</span>O número de alunos em idade escolar cairá de forma sustentada: a fecundidade caiu de 2,32 (2000) para 1,57 (2023) e os nascimentos, de 3,6 para 2,6 milhões/ano, rumo a 1,5 milhão em 2070 (IBGE, Projeções 2024).</p>
+                  <p><span>P2</span>Gasto por aluno é uma divisão: orçamento &divide; alunos. Mantido o numerador e caindo o denominador, o gasto por aluno cresce sem um real de imposto novo — isto é aritmética, não projeção.</p>
+                  <p class="conclusao"><span>&there4;</span>Fixar constitucionalmente o orçamento da educação converte a transição demográfica no financiamento automático da carreira de elite dos Pilares 1 e 2.</p>
+                  <p class="refuta"><strong>Como refutar:</strong> a única premissa empírica é a demográfica, monitorável ano a ano nas projeções do IBGE; uma reversão sustentada da fecundidade a derrubaria — e nenhum demógrafo a projeta.</p>
+                </div>
                 <p class="academic-p">
                   O Brasil adentrou a fase aguda de seu
                   <strong>dividendo demográfico</strong>. A taxa de fecundidade
-                  caiu para 1.53 filhos por mulher (abaixo da taxa de
-                  reposição). Consequentemente, o IBGE projeta uma redução
-                  dramática da população em idade escolar obrigatória nas
-                  próximas décadas.
+                  caiu de 2,32 (2000) para <strong>1,57 filhos por mulher em
+                  2023</strong> — abaixo da taxa de reposição — e o IBGE projeta
+                  1,44 em 2041. Os nascimentos caíram de 3,6 milhões/ano (2000)
+                  para 2,6 milhões (2022), rumo a 1,5 milhão em 2070: a
+                  população em idade escolar obrigatória encolherá de forma
+                  contínua nas próximas décadas.
                 </p>
                 <p class="academic-p">
                   Do ponto de vista da matemática fiscal, fixar
@@ -505,6 +730,13 @@
                         Federação.</em
                       >
                     </li>
+                    <li>
+                      <strong>IBGE — Agência de Notícias (2024).</strong>
+                      <em>População do país vai parar de crescer em 2041.</em>
+                      (Síntese oficial das Projeções 2024: fecundidade 1,57 em 2023,
+                      mínimo de 1,44 em 2041; pico populacional em 2041.)
+                      <a href="https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/41056-populacao-do-pais-vai-parar-de-crescer-em-2041" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -523,6 +755,13 @@
             <details>
               <summary>Expandir Embasamento Científico</summary>
               <div class="fold-content">
+                <div class="silogismo">
+                  <h5>Forma do argumento</h5>
+                  <p><span>P1</span>Gestores municipais respondem a incentivos fiscais: maximizam receita de transferências (teoria da escolha pública).</p>
+                  <p><span>P2</span>Quando o Ceará atrelou a cota-parte do ICMS ao resultado de alfabetização (PAIC, 2007), a aprendizagem subiu de forma robusta e persistente — efeito identificado por tripla diferença contra estados vizinhos (Costa &amp; Carnoy, 2015) — e o estado com o 5º menor PIB per capita passou a ter 10 municípios entre os 20 melhores Idebs do país (Banco Mundial, 2020).</p>
+                  <p class="conclusao"><span>&there4;</span>Atrelar receita a resultado alinha a causa eficiente do sistema — o gestor — ao fim educacional; o mecanismo não é hipótese: já operou em escala no Brasil.</p>
+                  <p class="refuta"><strong>Como refutar:</strong> mostre que a replicação fora do Ceará falha sistematicamente. A EC 108/2020 nacionalizou o desenho; os resultados estaduais são públicos e acompanháveis ano a ano.</p>
+                </div>
                 <p class="academic-p">
                   A teoria da escolha pública assume que gestores locais
                   maximizam transferências intergovernamentais não-vinculadas. O
@@ -543,14 +782,6 @@
                   <h5>Referências Chave</h5>
                   <ul>
                     <li>
-                      <strong>Loureiro, A., Cruz, L., et al. (2020).</strong>
-                      <em
-                        >The State of Ceará in Brazil is a Role Model for
-                        Reducing Learning Poverty.</em
-                      >
-                      Banco Mundial.
-                    </li>
-                    <li>
                       <strong>Costa, L. O., & Carnoy, M. (2015).</strong>
                       <em
                         >The effectiveness of an early-grade literacy
@@ -558,6 +789,16 @@
                         students.</em
                       >
                       Educational Evaluation and Policy Analysis.
+                    
+                      <a href="https://journals.sagepub.com/doi/10.3102/0162373715571437" target="_blank" rel="noopener">[fonte]</a>
+                    </li>
+                    <li>
+                      <strong>Banco Mundial — Loureiro, A., Cruz, L., Lautharte, I., &amp; Evans, D. (2020).</strong>
+                      <em>The State of Ceará in Brazil is a Role Model for Reducing
+                      Learning Poverty.</em> (O estado com o 5º menor PIB per capita
+                      registrou o maior avanço do Ideb desde 2005; 10 dos 20 melhores
+                      municípios do país, com Sobral em 1º.)
+                      <a href="https://documents1.worldbank.org/curated/en/281071593675958517/pdf/The-State-of-Ceara-in-Brazil-is-a-Role-Model-for-Reducing-Learning-Poverty.pdf" target="_blank" rel="noopener">[fonte]</a>
                     </li>
                   </ul>
                 </div>
@@ -818,6 +1059,8 @@
                       Educação & Sociedade. (Estudo que demonstra como o
                       indicador de fluxo pode mascarar a baixa aprendizagem em
                       municípios que forçam a aprovação).
+                    
+                      <a href="https://www.scielo.br/j/es/a/JLzr4qdx89rjrNXnydNcvcy/?lang=pt" target="_blank" rel="noopener">[fonte]</a>
                     </li>
                     <li>
                       <strong>Koretz, D. (2017).</strong>
@@ -839,6 +1082,21 @@
       </div>
     </section>
     <!-- FIM DO NOVO BLOCO -->
+
+      <div class="container">
+        <div class="integridade">
+          <strong>Nota de integridade das referências.</strong> Em 29/08/2026,
+          as referências com marcação <em>[fonte]</em> foram conferidas contra
+          as páginas dos editores e repositórios originais (AER, Econometrica,
+          JPE, J. of Labor Economics, EEPA, SciELO, Banco Mundial, BID, FCC,
+          IBGE): autoria, ano, veículo e achado central conferem com o que está
+          citado. As demais permanecem <strong>pendentes de conferência contra
+          o texto original</strong> e não devem ser usadas publicamente antes
+          disso. Encontrou citação errada? Vale a regra da casa: aponte, que
+          corrigimos e registramos.
+        </div>
+      </div>
+
     <footer>
       <div class="container">
         <p>

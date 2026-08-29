@@ -34,6 +34,12 @@
       ['#propostas', 'As propostas'],
       ['#doutrina', 'Nossas regras'],
     ],
+    '/propostas/educacao.html': [
+      ['#logica', 'A arquitetura lógica'],
+      ['#pilares', 'Os 4 pilares'],
+      ['#antifragilidade', 'Vulnerabilidades e correções'],
+      ['#reforma-ideb', 'O Ideb ajustado'],
+    ],
   };
 
   var aqui = location.pathname === '/index.html' ? '/' : location.pathname;
