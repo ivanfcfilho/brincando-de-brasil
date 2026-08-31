@@ -117,9 +117,14 @@
   .rule p{font-size:.86rem;color:var(--ink-dim);line-height:1.6}
   @media (max-width:860px){ .rules{grid-template-columns:1fr} }
 
-  /* governo a governo — a faixa de dados da home */
-  .gov-faixa{padding:2.6rem 0 2.9rem;border-bottom:1px solid var(--line);
-    background:linear-gradient(180deg,rgba(245,217,10,.035),transparent 60%)}
+  /* governo a governo — o topo da home */
+  .gov-faixa{padding:3.2rem 0 3rem;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(245,217,10,.05),transparent 55%)}
+  .gov-faixa h1{
+    font-weight:900;font-size:clamp(2.1rem,4.6vw,3.5rem);line-height:1.02;
+    letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;margin-top:.2rem;
+  }
+  .gov-faixa h1 .hit{color:var(--volt)}
   .gov-cab{display:grid;grid-template-columns:1.15fr .85fr;gap:2rem;align-items:end;
     margin-bottom:1.8rem}
   @media (max-width:880px){.gov-cab{grid-template-columns:1fr;gap:1.1rem}}
@@ -136,6 +141,18 @@
   @media (max-width:600px){.gov-caixa{padding:1.1rem .95rem}}
   .gov-pe{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;
     margin-top:1.5rem}
+
+  /* quem fala aqui — a identidade do site, agora abaixo dos dados */
+  .quem{display:grid;grid-template-columns:.95fr 1.05fr;gap:2.4rem;align-items:start;margin-top:1.8rem}
+  @media (max-width:880px){.quem{grid-template-columns:1fr;gap:1.6rem}}
+  .quem .marca{
+    font-weight:900;font-size:clamp(2.2rem,5vw,3.2rem);line-height:.98;
+    letter-spacing:-.02em;text-transform:uppercase;
+  }
+  .quem .marca .hit{color:var(--volt)}
+  .quem .lede{margin-top:1.2rem;font-size:1.05rem;color:var(--ink-dim);max-width:46ch}
+  .quem .lede b{color:var(--ink)}
+  .quem .acoes{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.6rem}
 
   /* placar */
   .placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
@@ -159,30 +176,12 @@
   <span class="sim" id="selo">DADOS OFICIAIS</span>
 </div>
 
-<header class="hero">
-  <div class="wrap">
-    <p class="eyebrow">um cidadão comum · uma IA · dados do governo</p>
-    <h1>Brincando<br>de <span class="hit">Brasil</span>.</h1>
-    <p class="lede">
-      Este site é uma brincadeira séria. A gente pega os números que o próprio
-      governo publica — <b>quem votou onde</b> e <b>para onde foi o dinheiro</b> —
-      e monta ideias para consertar o Brasil. Tudo explicado <b>passo a passo,
-      para qualquer pessoa entender</b>. O nome é uma ironia: se dá para fazer
-      isso de brincadeira, por que em Brasília não fazem a sério?
-    </p>
-    <div class="acoes">
-      <a class="btn primary" href="/como-funciona.html">Começar pelo começo →</a>
-      <a class="btn" href="#ideias">Ver as ideias</a>
-    </div>
-  </div>
-</header>
-
-<section class="gov-faixa" id="governos">
+<header class="hero gov-faixa" id="governos">
   <div class="wrap">
     <div class="gov-cab">
       <div>
-        <p class="sec-eyebrow">O Brasil, governo a governo</p>
-        <h2>Oito presidentes desde 1990. <span class="hit">Os números de cada um.</span></h2>
+        <p class="eyebrow">O Brasil, governo a governo</p>
+        <h1>Oito presidentes desde 1990.<br><span class="hit">Os números de cada um.</span></h1>
         <p class="sub">Inflação, crescimento, desemprego, fome, pobreza,
         desigualdade, saúde e educação — direto das tabelas do IBGE. Clique
         para trocar o indicador.</p>
@@ -203,12 +202,34 @@
       <a class="btn" href="/presidentes.html#fez">O que cada um fez (31 leis)</a>
     </div>
   </div>
-</section>
+</header>
 
 <section class="block" id="comoassim">
   <div class="wrap">
-    <p class="sec-eyebrow">Como assim, "brincando"?</p>
-    <h2>Três coisas para saber antes de continuar.</h2>
+    <p class="sec-eyebrow">Quem está mostrando isso</p>
+
+    <div class="quem">
+      <div>
+        <p class="marca">Brincando<br>de <span class="hit">Brasil</span>.</p>
+      </div>
+      <div>
+        <p class="lede">
+          Este site é uma brincadeira séria. Um <b>cidadão comum</b> e uma
+          <b>inteligência artificial</b> pegam os números que o próprio governo
+          publica — <b>quem votou onde</b>, <b>para onde foi o dinheiro</b> e
+          <b>o que aconteceu em cada governo</b> — e montam ideias para
+          consertar o Brasil. Tudo explicado <b>passo a passo, para qualquer
+          pessoa entender</b>. O nome é uma ironia: se dá para fazer isso de
+          brincadeira, por que em Brasília não fazem a sério?
+        </p>
+        <div class="acoes">
+          <a class="btn primary" href="/como-funciona.html">Começar pelo começo →</a>
+          <a class="btn" href="#ideias">Ver as ideias</a>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:2.8rem">Três coisas para saber antes de continuar.</h2>
 
     <div class="ex-grid">
       <div class="ex-card">

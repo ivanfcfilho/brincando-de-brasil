@@ -25,7 +25,7 @@
   var SECOES = {
     '/': [
       ['#governos', 'O Brasil, governo a governo'],
-      ['#comoassim', 'Como assim, "brincando"?'],
+      ['#comoassim', 'Quem está mostrando isso'],
       ['#aula', 'Comece por aqui'],
       ['#ideias', 'As ideias'],
       ['#regras', 'As regras'],
