@@ -1,0 +1,30 @@
+# O job diário no servidor: checa as fontes oficiais, baixa o que mudou,
+# ingere e confere as invariantes.
+#
+# Serviço SEPARADO do que serve o site, e de propósito: este escreve em
+# data/ (baixa o ZIP da CGU) e o outro é somente-leitura. Juntar os dois
+# obrigaria a afrouxar a proteção do serviço que fica exposto à internet.
+#
+#   sudo cp deploy/brincandodebrasil-atualizar.{service,timer} /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now brincandodebrasil-atualizar.timer
+[Unit]
+Description=Brincando de Brasil — checa as fontes oficiais e ingere o que mudou
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=kakashi
+Group=kakashi
+WorkingDirectory=/home/kakashi/brincandodebrasil
+EnvironmentFile=/home/kakashi/brincandodebrasil/.env
+ExecStart=/home/kakashi/brincandodebrasil/.venv/bin/python pipeline/atualizar.py
+# A CGU republica de madrugada; falha de rede não deve derrubar o timer.
+Restart=no
+TimeoutStartSec=3h
+StandardOutput=append:/home/kakashi/brincandodebrasil/data/atualizar.log
+StandardError=append:/home/kakashi/brincandodebrasil/data/atualizar.log
+
+[Install]
+WantedBy=multi-user.target
