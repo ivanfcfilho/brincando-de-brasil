@@ -270,6 +270,18 @@ class TestLanding(unittest.TestCase):
         r = subprocess.run([node, script], capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
+    def test_render_comparador_de_governos(self):
+        """O componente que leva o dado mais delicado do site para a PRIMEIRA
+        página. Cobre, entre outras coisas, que a ordem seja cronológica: por
+        valor, o gráfico viraria um ranking de presidentes."""
+        node = shutil.which("node") or shutil.which("nodejs")
+        if not node:
+            self.skipTest("node não instalado")
+        script = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "test_governos.cjs")
+        r = subprocess.run([node, script], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
     def test_render_presidentes_e_as_ressalvas(self):
         """Inclui as frases de cautela como se fossem código: sem elas a
         página vira um ranking de presidentes com cara de dado oficial."""

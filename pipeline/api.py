@@ -58,6 +58,7 @@ PAGINAS = {
     "/como-funciona.html": "como-funciona.html",
     "/presidentes.html": "presidentes.html",
     "/menu.js": "menu.js",
+    "/governos.js": "governos.js",
     "/propostas/educacao.html": os.path.join("propostas", "educacao.html"),
     "/propostas/voto-distrital.html": os.path.join("propostas", "voto-distrital.html"),
 }

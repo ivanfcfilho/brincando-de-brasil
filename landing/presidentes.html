@@ -3,6 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <script src="/menu.js" defer></script>
+<script src="/governos.js" defer></script>
 <style>
   :root{
     --bg:#0B0F14; --panel:#111820; --panel-2:#0E141B; --line:#1E2935;
@@ -157,9 +158,10 @@
 
   <section id="comparar">
     <h2 class="sec">Compare um indicador de cada vez</h2>
-    <div class="abas" role="tablist" id="abas"></div>
-    <div class="indic-cab" id="indic-cab"></div>
-    <ul class="barras" id="barras"></ul>
+    <!-- O comparador é o componente compartilhado com a home
+         (landing/governos.js). Aqui em versão completa: todos os
+         indicadores, inclusive os de série curta. -->
+    <div id="gov-comparador"></div>
   </section>
 
   <section id="tabela">
@@ -223,8 +225,7 @@
 <script>
 (function(){
   'use strict';
-  var abas=document.getElementById('abas'), cab=document.getElementById('indic-cab');
-  var barras=document.getElementById('barras'), tab=document.getElementById('tab');
+  var tab=document.getElementById('tab');
   var govs=document.getElementById('govs'), selo=document.getElementById('selo');
   var lista=document.getElementById('listafontes');
   var D=null, atual=null;
@@ -248,52 +249,6 @@
              ideb_anos_iniciais:'Ideb'};
 
   function series(){ return ORDEM.filter(function(s){return D.series[s]}); }
-
-  function pintaAbas(){
-    abas.innerHTML=series().map(function(s){
-      return '<button role="tab" data-s="'+s+'" aria-selected="'+(s===atual)+'">'
-        + esc(CURTO[s]||D.series[s].nome)+'</button>';
-    }).join('');
-  }
-
-  function pintaIndicador(){
-    var s=D.series[atual];
-    cab.innerHTML='<h3>'+esc(s.nome)+' <span style="color:#5C6B7A;font-size:.8rem">['
-      + esc(s.unidade)+']</span></h3>'
-      + '<p class="obs">'+esc(s.observacao||'')
-      + (s.url?' <a href="'+esc(s.url)+'" target="_blank" rel="noopener">ver na fonte →</a>':'')
-      + '</p>';
-
-    var vals=D.presidentes.map(function(p){
-      var r=p.indicadores[atual]; return r?Number(r.valor):null; });
-    var validos=vals.filter(function(v){return v!=null});
-    var max=Math.max.apply(null,validos.map(Math.abs).concat([0]))||1;
-
-    barras.innerHTML=D.presidentes.map(function(p,i){
-      var r=p.indicadores[atual];
-      var per=p.inicio.slice(0,4)+'–'+(p.fim?p.fim.slice(0,4):'hoje');
-      var h='<li><div class="quem">'+esc(p.nome)+'<i>'+esc(p.partido)+' · '+per+'</i></div>';
-      if(!r){
-        h+='<div class="trilho vazio"></div>'
-          +'<div class="val" style="color:#5C6B7A;font-size:.78rem">sem dado</div></li>';
-        return h;
-      }
-      var v=Number(r.valor);
-      var larg=Math.abs(v)/max*100;
-      var rot;
-      if(r.modo==='inicio_fim'){
-        rot=nfmt(r.de,casas(r.de))+' → '+nfmt(r.para,casas(r.para));
-      } else {
-        rot=nfmt(v,casas(v));
-      }
-      h+='<div class="trilho"><span class="'+(v<0?'neg':'')+'" style="width:'
-        + larg.toFixed(1)+'%"></span></div>'
-        +'<div class="val">'+rot
-        +'<small>'+(r.completo?esc(r.cobertura):'só '+esc(r.cobertura))+'</small>'
-        +'</div></li>';
-      return h;
-    }).join('');
-  }
 
   function pintaTabela(){
     var ss=series();
@@ -351,23 +306,23 @@
     lista.innerHTML=links.join(' · ');
   }
 
-  abas.addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b)return;
-    atual=b.dataset.s; pintaAbas(); pintaIndicador();
-  });
-
   fetch('/api/presidentes')
     .then(function(r){return r.json().then(function(j){return {ok:r.ok,corpo:j}})})
     .then(function(r){
       if(!r.ok) throw new Error(r.corpo.erro||'erro');
       D=r.corpo;
       atual=series()[0];
-      pintaAbas(); pintaIndicador(); pintaTabela(); pintaProgramas(); pintaFontes();
+      pintaTabela(); pintaProgramas(); pintaFontes();
+      if(window.BB && window.BB.governos){
+        window.BB.governos.montar(document.getElementById('gov-comparador'),
+                                  {compacto:false});
+      }
       selo.textContent='DADOS OFICIAIS · IBGE + PLANALTO';
     })
     .catch(function(){
       selo.textContent='SERVIDOR FORA DO AR';
-      cab.innerHTML='<p class="erro">Servidor fora do ar. Rode '
+      document.getElementById('gov-comparador').innerHTML=
+        '<p class="erro">Servidor fora do ar. Rode '
         +'<b>python3.13 pipeline/api.py</b> e recarregue a página.</p>';
     });
 })();

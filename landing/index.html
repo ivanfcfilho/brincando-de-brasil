@@ -3,6 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <script src="/menu.js" defer></script>
+<script src="/governos.js" defer></script>
 <style>
   :root{
     --bg:#0B0F14;
@@ -116,6 +117,26 @@
   .rule p{font-size:.86rem;color:var(--ink-dim);line-height:1.6}
   @media (max-width:860px){ .rules{grid-template-columns:1fr} }
 
+  /* governo a governo — a faixa de dados da home */
+  .gov-faixa{padding:2.6rem 0 2.9rem;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(245,217,10,.035),transparent 60%)}
+  .gov-cab{display:grid;grid-template-columns:1.15fr .85fr;gap:2rem;align-items:end;
+    margin-bottom:1.8rem}
+  @media (max-width:880px){.gov-cab{grid-template-columns:1fr;gap:1.1rem}}
+  .gov-cab h2{font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.1;
+    letter-spacing:-.02em;text-wrap:balance}
+  .gov-cab h2 .hit{color:var(--volt)}
+  .gov-cab .sub{font-size:.98rem;color:var(--ink-dim);margin-top:.7rem;max-width:52ch}
+  .gov-ressalva{background:var(--panel-2);border:1px solid var(--line);
+    border-left:3px solid var(--volt);border-radius:3px;padding:.95rem 1.05rem;
+    font-size:.86rem;color:var(--ink-dim);line-height:1.65}
+  .gov-ressalva b{color:var(--ink)}
+  .gov-caixa{background:var(--panel);border:1px solid var(--line);border-radius:5px;
+    padding:1.4rem 1.35rem}
+  @media (max-width:600px){.gov-caixa{padding:1.1rem .95rem}}
+  .gov-pe{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;
+    margin-top:1.5rem}
+
   /* placar */
   .placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
     gap:1rem;margin-top:2rem}
@@ -155,6 +176,33 @@
     </div>
   </div>
 </header>
+
+<section class="gov-faixa" id="governos">
+  <div class="wrap">
+    <div class="gov-cab">
+      <div>
+        <p class="sec-eyebrow">O Brasil, governo a governo</p>
+        <h2>Oito presidentes desde 1990. <span class="hit">Os números de cada um.</span></h2>
+        <p class="sub">Inflação, crescimento, desemprego e educação, direto das
+        tabelas do IBGE. Clique para trocar o indicador.</p>
+      </div>
+      <div class="gov-ressalva">
+        <b>Leia isto antes do gráfico.</b> Estes números mostram <b>o que
+        aconteceu no país durante o mandato</b> — não o que o presidente
+        causou. Crise mundial, preço de commodity e política começada dez anos
+        antes entram na conta. Por isso aqui <b>não tem nota nem ranking</b>:
+        tem o dado oficial e o link da fonte. A conclusão é sua.
+      </div>
+    </div>
+
+    <div class="gov-caixa"><div id="gov-comparador"></div></div>
+
+    <div class="gov-pe">
+      <a class="btn primary" href="/presidentes.html">Ver o quadro completo →</a>
+      <a class="btn" href="/presidentes.html#fez">O que cada um fez (31 leis)</a>
+    </div>
+  </div>
+</section>
 
 <section class="block" id="comoassim">
   <div class="wrap">
@@ -364,6 +412,16 @@
 <script>
 (function () {
   function fmt(n) { return Number(n).toLocaleString('pt-BR'); }
+
+  // O comparador entre governos é o mesmo componente de /presidentes.html
+  // (landing/governos.js). Na home ele entra em versão compacta: só os quatro
+  // indicadores que qualquer pessoa reconhece.
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.BB && window.BB.governos) {
+      window.BB.governos.montar(document.getElementById('gov-comparador'),
+                                { compacto: true });
+    }
+  });
   fetch('/api/saude').then(function (r) { return r.json(); }).then(function (s) {
     document.getElementById('pc-dep').textContent = fmt(s.deputados_eleitos);
     document.getElementById('pc-mun').textContent = fmt(s.municipios);

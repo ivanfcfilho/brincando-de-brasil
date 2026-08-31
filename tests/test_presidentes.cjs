@@ -37,16 +37,19 @@ global.fetch = () => Promise.reject(new Error('sem rede no teste'));
 global.setTimeout = (f) => f();
 
 const corte = js.lastIndexOf('})();');
+// O comparador de barras saiu daqui para landing/governos.js (compartilhado
+// com a home) e tem teste próprio, tests/test_governos.cjs. O que sobrou nesta
+// página — e é o que este arquivo cobre — é a tabela completa, a lista de
+// programas e as ressalvas.
 js = js.slice(0, corte)
    + 'global.__D = function(d){ D = d; atual = series()[0]; '
-   + 'pintaAbas(); pintaIndicador(); pintaTabela(); pintaProgramas(); pintaFontes(); };\n'
+   + 'pintaTabela(); pintaProgramas(); pintaFontes(); };\n'
    + js.slice(corte);
 eval(js);
 
 const dados = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixture_presidentes.json'), 'utf8'));
 global.__D(dados);
 
-const barras = registro['barras'].innerHTML;
 const tabela = registro['tab'].innerHTML;
 const govs = registro['govs'].innerHTML;
 const estatico = html;
@@ -70,12 +73,10 @@ ok('explica por que PIB per capita ficou fora', /sem corrigir a inflação/.test
 
 // ---- os oito governos ----
 ['Fernando Collor','Itamar Franco','Fernando Henrique','Lula','Dilma','Michel Temer','Jair Bolsonaro']
-  .forEach(function(n){ ok('aparece '+n, barras.indexOf(n) >= 0 || tabela.indexOf(n) >= 0); });
+  .forEach(function(n){ ok('aparece '+n, tabela.indexOf(n) >= 0); });
 
 // ---- números formatados em português, sem lixo ----
-ok('inflação da hiperinflação aparece', /1\.518|963/.test(barras) || /1\.518|963/.test(tabela));
-ok('sem undefined nas barras', !/undefined/.test(barras));
-ok('sem NaN nas barras', !/NaN/.test(barras));
+ok('inflação da hiperinflação aparece', /1\.518|963/.test(tabela));
 ok('sem undefined na tabela', !/undefined/.test(tabela));
 ok('sem NaN na tabela', !/NaN/.test(tabela));
 
@@ -88,7 +89,8 @@ const faltamPib = dados.presidentes.filter(function (p) {
 }).map(function (p) { return p.nome; });
 ok('Collor e Itamar aparecem sem dado de PIB (a série começa em 1996)',
    faltamPib.length === 2, faltamPib.join(', '));
-ok('a página tem como representar ausência', /sem dado/.test(html));
+// (a representação de "sem dado" nas barras é do componente compartilhado e
+//  está coberta em tests/test_governos.cjs; aqui basta a tabela)
 ok('célula vazia na tabela vira travessão', /—/.test(tabela));
 
 // ---- auditabilidade: quais anos entraram em cada número ----
