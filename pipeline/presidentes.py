@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Quadro comparativo entre os governos, desde 1990.
+"""Quadro comparativo entre os governos, desde 1995.
 
 AVISO QUE VALE MAIS QUE O CÓDIGO
 ================================
@@ -38,23 +38,28 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import db as bd
 from consulta import proveniencia
 
-# Mandatos presidenciais desde 1990. Fatos históricos, digitados da
+# Mandatos presidenciais desde 1995. Fatos históricos, digitados da
 # Constituição e dos atos de posse — não derivados de dado nenhum, que é o
 # que os torna uma referência independente.
 #
+# POR QUE 1995, E NÃO 1990
+# ------------------------
+# Collor e Itamar governaram sob hiperinflação: 1.621% em 1990, 2.477% em
+# 1993. Numa tabela comparativa esses números não informam, deformam — a
+# coluna da inflação vira "os dois primeiros e o resto", e todo indicador de
+# renda medido em cruzeiro é incomparável com o de depois. Mais: quase
+# nenhuma das séries sociais do IBGE (desemprego, pobreza, desigualdade,
+# escola) existe antes de 1992, então as colunas deles seriam vazias.
+#
+# O Real, de julho de 1994, é a divisória: a partir de 1995 os números medem
+# a mesma coisa que medem hoje. A série começa aí — e este comentário fica
+# aqui porque cortar o começo de uma série é uma escolha editorial, e escolha
+# editorial escondida é meio caminho para número desonesto.
+#
 # `anos` é a aplicação da regra "quem governou a maior parte do ano":
-#   1990 Collor toma posse em 15/03  → 9 meses e meio, é dele
-#   1992 Collor se afasta em 02/10   → 9 meses, é dele
 #   1995 FHC toma posse em 01/01     → ano inteiro
 #   2016 Dilma é afastada em 31/08   → 8 meses, é dela
 PRESIDENTES = [
-    {"id": "collor", "nome": "Fernando Collor", "partido": "PRN",
-     "inicio": "1990-03-15", "fim": "1992-10-02", "anos": list(range(1990, 1993)),
-     "nota": "Afastado por impeachment em 1992. Governou 2 anos e meio."},
-    {"id": "itamar", "nome": "Itamar Franco", "partido": "PMDB",
-     "inicio": "1992-10-02", "fim": "1995-01-01", "anos": [1993, 1994],
-     "nota": "Assumiu como vice. O Plano Real foi lançado no governo dele, "
-             "em julho de 1994."},
     {"id": "fhc", "nome": "Fernando Henrique Cardoso", "partido": "PSDB",
      "inicio": "1995-01-01", "fim": "2003-01-01", "anos": list(range(1995, 2003)),
      "nota": "Dois mandatos."},
@@ -88,11 +93,17 @@ RESUMO = {
     "ipca": "media_geometrica",
     "pib": "media_geometrica",
     "desemprego": "media",
+    "desemprego_pme": "media",
+    "desemprego_pme_antiga": "media",
     "fome": "inicio_fim",
     "pobreza": "inicio_fim",
     "gini": "inicio_fim",
+    "gini_pnad_antiga": "inicio_fim",
     "mortalidade_infantil_antiga": "inicio_fim",
     "mortalidade_infantil": "inicio_fim",
+    "mortalidade_menores5": "inicio_fim",
+    "mortalidade_neonatal": "inicio_fim",
+    "mortalidade_materna": "inicio_fim",
     "esperanca_vida": "inicio_fim",
     "ideb_anos_iniciais": "inicio_fim",
 }
@@ -189,8 +200,12 @@ def quadro(con):
 
 
 def imprimir(q):
-    ordem = ["ipca", "pib", "desemprego", "fome", "pobreza", "gini",
+    ordem = ["ipca", "pib",
+             "desemprego", "desemprego_pme", "desemprego_pme_antiga",
+             "fome", "pobreza", "gini", "gini_pnad_antiga",
              "esperanca_vida",
+             "mortalidade_menores5", "mortalidade_neonatal",
+             "mortalidade_materna",
              "mortalidade_infantil_antiga", "mortalidade_infantil",
              "ideb_anos_iniciais"]
     for sid in ordem:

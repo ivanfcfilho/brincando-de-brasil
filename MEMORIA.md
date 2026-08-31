@@ -192,7 +192,38 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
    campo nesses anos; o número conhecido de 2022 (33 milhões) é da Rede
    PENSSAN, não governamental, e NÃO entra numa base que promete só fonte
    oficial. O "sem dado" na linha do Bolsonaro é fato, não descuido.
-20. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
+20. **O quadro dos governos começa em 1995, não em 1990** (decidido em
+   2026-08-31). Collor e Itamar governaram sob hiperinflação — 1.621% em 1990,
+   2.477% em 1993 — e quase nenhuma série social do IBGE existe antes de 1992.
+   As duas colunas deles eram uma inflação que deformava o gráfico inteiro e o
+   resto vazio. O Real (jul/1994) é a divisória: de 1995 em diante os números
+   medem a mesma coisa que medem hoje. A justificativa está no código
+   (`presidentes.py`) e nas duas páginas — corte de série é escolha editorial,
+   e escolha editorial escondida é meio caminho para número desonesto.
+21. **Três pesquisas já mediram desemprego no Brasil, e elas NÃO se emendam.**
+   PME antiga ("desemprego aberto", t13, 1991–2002, 6 regiões metropolitanas)
+   dá ~6%; PME nova (t1168, 2003–2015, mesmas RMs) dá ~9%; PNAD Contínua
+   (t6381, 2012→, país inteiro) dá ~12% no mesmo tipo de ano. Emendar as três
+   produziria uma "duplicação histórica do desemprego" que nunca houve. Estão
+   no site como três linhas separadas, com o período NO NOME DA ABA — antes de
+   a pessoa clicar. Mesma história com o Gini: a PNAD antiga (t1167,
+   1992–2011) mede só quem tem renda e dá 0,58 onde a PNAD Contínua dá 0,54.
+   Detalhe de API: tabela da PME não existe no nível `n1`; é `n110`
+   ("Total das áreas - PME"), e pedir n1 devolve HTTP 400.
+22. **A projeção da população do IBGE (t7362) preenche saúde até 2060 — e por
+   isso mesmo não entra.** Ela é a MESMA fonte das séries 3825/3834 já no
+   banco (conferido: zero divergência nos 17 anos em comum), só que estendida.
+   Mas é a revisão de 2018: crava expectativa de vida de 76,7 anos em 2020, o
+   ano em que a expectativa de vida do brasileiro CAIU. Publicar previsão
+   pré-covid como "o que aconteceu no mandato" é exatamente o erro que este
+   projeto existe para não cometer. Em vez disso entraram três indicadores
+   MEDIDOS, do painel ODS: mortalidade de menores de 5 anos (t6695,
+   2000–2023), neonatal (t6696, 1990–2022, a série de saúde medida mais longa
+   que o IBGE publica) e materna (t6694, 2009–2023). A materna tem a covid
+   visível — salta de 57,9 em 2019 para 117,4 em 2021 —, e virou invariante:
+   se essa marca sumir, alguém trocou a fonte por uma versão suavizada.
+   A expectativa de vida continua parando em 2016, e a página diz por quê.
+23. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
    vedado — CF art. 5º IV); zero disparo automatizado de WhatsApp (click-to-chat
    enviado pelo próprio cidadão); LGPD com opt-in explícito para CEP/contato.
 

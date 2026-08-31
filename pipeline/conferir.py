@@ -165,19 +165,53 @@ def conferir(con):
            r is not None and float(r["valor"]) > 1000,
            f"{float(r['valor']):.0f}%" if r else "sem dado")
 
+    # As três séries de desemprego vêm de pesquisas diferentes, mas nenhuma
+    # delas jamais chegou perto de 40% — a faixa vale para todas, e a checagem
+    # cobre as três porque foi conferindo série por id fixo que uma nova
+    # entraria no site sem passar por conferência nenhuma.
     r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
-                      WHERE serie_id='desemprego' AND (valor < 0 OR valor > 40)""")
-    checar("desemprego entre 0% e 40%", r["c"] == 0, f"{r['c']} fora da faixa")
+                      WHERE serie_id LIKE 'desemprego%'
+                        AND (valor < 0 OR valor > 40)""")
+    checar("desemprego entre 0% e 40% (as 3 séries)", r["c"] == 0,
+           f"{r['c']} fora da faixa")
 
     # Faixas de sanidade das séries sociais: Gini nacional fora de 0,3–0,8
     # nunca aconteceu na história da medição — se aparecer, é série trocada.
     r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
-                      WHERE serie_id='gini' AND (valor < 0.3 OR valor > 0.8)""")
-    checar("Gini entre 0,3 e 0,8", r["c"] == 0, f"{r['c']} fora da faixa")
+                      WHERE serie_id LIKE 'gini%' AND (valor < 0.3 OR valor > 0.8)""")
+    checar("Gini entre 0,3 e 0,8 (as 2 séries)", r["c"] == 0,
+           f"{r['c']} fora da faixa")
     r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
                       WHERE serie_id IN ('fome','pobreza')
                         AND (valor <= 0 OR valor > 60)""")
     checar("fome e pobreza entre 0% e 60%", r["c"] == 0, f"{r['c']} fora da faixa")
+
+    # Mortalidade: as três séries medidas são por MIL nascidos vivos, menos a
+    # materna, que é por CEM MIL. Trocar a unidade de uma delas é o erro mais
+    # fácil de cometer aqui e o mais difícil de notar no gráfico — 55 vira um
+    # número plausível em qualquer das duas escalas. As faixas separam.
+    r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
+                      WHERE serie_id IN ('mortalidade_menores5',
+                                         'mortalidade_neonatal',
+                                         'mortalidade_infantil',
+                                         'mortalidade_infantil_antiga')
+                        AND (valor <= 0 OR valor > 60)""")
+    checar("mortalidade infantil/neonatal/até-5 entre 0 e 60 por mil",
+           r["c"] == 0, f"{r['c']} fora da faixa")
+    r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
+                      WHERE serie_id='mortalidade_materna'
+                        AND (valor < 20 OR valor > 300)""")
+    checar("mortalidade materna entre 20 e 300 por 100 mil", r["c"] == 0,
+           f"{r['c']} fora da faixa")
+
+    # A covid tem que aparecer: em 2021 a mortalidade materna disparou porque
+    # gestante não vacinada foi grupo de risco. Se essa marca sumir da série,
+    # alguém trocou a fonte por uma versão suavizada — ou por uma projeção.
+    r = bd.um(con, """SELECT valor FROM serie_valor
+                      WHERE serie_id='mortalidade_materna' AND ano=2021""")
+    checar("a covid está na série de mortalidade materna (2021 > 100)",
+           r is not None and float(r["valor"]) > 100,
+           f"{float(r['valor']):.1f} por 100 mil" if r else "sem dado")
 
     # ---------------------------------------------------------------- Ideb
     #

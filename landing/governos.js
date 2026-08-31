@@ -17,20 +17,39 @@
 
   // A ordem é editorial: começa pelo que a pessoa sente no bolso, no
   // supermercado, antes do que ela lê no jornal.
-  var ORDEM = ['ipca', 'pib', 'desemprego', 'fome', 'pobreza', 'gini',
-               'esperanca_vida', 'mortalidade_infantil_antiga',
-               'mortalidade_infantil', 'ideb_anos_iniciais'];
+  var ORDEM = ['ipca', 'pib',
+               'desemprego', 'desemprego_pme', 'desemprego_pme_antiga',
+               'fome', 'pobreza', 'gini', 'gini_pnad_antiga',
+               'mortalidade_menores5', 'mortalidade_neonatal',
+               'mortalidade_materna', 'esperanca_vida',
+               'mortalidade_infantil', 'mortalidade_infantil_antiga',
+               'ideb_anos_iniciais'];
 
+  // O ANO NO NOME DA ABA NÃO É ENFEITE.
+  //
+  // Três pesquisas diferentes já mediram desemprego no Brasil, e duas já
+  // mediram desigualdade. Elas não se emendam: a "taxa de desemprego aberto"
+  // dos anos 1990 dá 6% onde a medida de hoje daria o dobro, porque conta
+  // gente diferente. Se as abas se chamassem só "Desemprego", alguém leria a
+  // primeira e a última em sequência e concluiria que o desemprego dobrou —
+  // conclusão falsa, tirada de dado verdadeiro. O período no nome é o que
+  // impede isso, e é por isso que ele aparece antes mesmo de a pessoa clicar.
   var CURTO = {
     ipca: 'Inflação',
     pib: 'Crescimento (PIB)',
-    desemprego: 'Desemprego',
+    desemprego: 'Desemprego (2012→)',
+    desemprego_pme: 'Desemprego nas metrópoles (2003–15)',
+    desemprego_pme_antiga: 'Desemprego nas metrópoles (1995–02)',
     fome: 'Fome',
     pobreza: 'Pobreza',
-    gini: 'Desigualdade (Gini)',
-    esperanca_vida: 'Expectativa de vida',
-    mortalidade_infantil_antiga: 'Mortalidade infantil (1990–2009)',
+    gini: 'Desigualdade (2012→)',
+    gini_pnad_antiga: 'Desigualdade (1995–2011)',
+    mortalidade_menores5: 'Morte de crianças até 5 anos',
+    mortalidade_neonatal: 'Morte de recém-nascidos',
+    mortalidade_materna: 'Morte de mães no parto',
+    esperanca_vida: 'Expectativa de vida (até 2016)',
     mortalidade_infantil: 'Mortalidade infantil (2000–2016)',
+    mortalidade_infantil_antiga: 'Mortalidade infantil (1990–2009)',
     ideb_anos_iniciais: 'Ideb'
   };
 
@@ -44,6 +63,12 @@
     pobreza: 'De cada 100 pessoas, quantas viviam abaixo da linha de pobreza.',
     gini: 'Desigualdade de renda, de 0 a 1: quanto mais perto de 1, mais a renda do país está concentrada em poucos.',
     esperanca_vida: 'Quantos anos, em média, viveria quem nascesse naquele ano.',
+    desemprego_pme: 'De cada 100 pessoas procurando trabalho nas seis maiores regiões metropolitanas, quantas não acharam. Não é o país inteiro.',
+    desemprego_pme_antiga: 'A medida antiga, mais estreita: de cada 100 pessoas que procuraram trabalho na semana da entrevista, nas seis maiores regiões metropolitanas, quantas não acharam.',
+    gini_pnad_antiga: 'A mesma ideia de desigualdade, mas medida na pesquisa antiga e só entre quem tinha alguma renda — por isso o número é mais alto que o da linha de cima.',
+    mortalidade_menores5: 'De cada mil crianças nascidas vivas, quantas morreram antes de completar 5 anos.',
+    mortalidade_neonatal: 'De cada mil bebês nascidos vivos, quantos morreram nos primeiros 27 dias.',
+    mortalidade_materna: 'De cada 100 mil crianças nascidas vivas, quantas mães morreram por causa da gravidez, do parto ou do pós-parto.',
     mortalidade_infantil_antiga: 'De cada mil bebês nascidos vivos, quantos morriam antes de completar 1 ano.',
     mortalidade_infantil: 'De cada mil bebês nascidos vivos, quantos morriam antes de completar 1 ano.',
     ideb_anos_iniciais: 'A nota das escolas municipais do 1º ao 5º ano (a cidade do meio do país).'
@@ -53,7 +78,12 @@
   // mais é melhor — mas a página também não dá nota. A cor aqui serve só para
   // indicar a direção do indicador, e a legenda diz isso com todas as letras.
   var MENOS_E_MELHOR = { ipca: true, desemprego: true,
+                         desemprego_pme: true, desemprego_pme_antiga: true,
                          fome: true, pobreza: true, gini: true,
+                         gini_pnad_antiga: true,
+                         mortalidade_menores5: true,
+                         mortalidade_neonatal: true,
+                         mortalidade_materna: true,
                          mortalidade_infantil: true,
                          mortalidade_infantil_antiga: true };
 

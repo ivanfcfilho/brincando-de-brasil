@@ -28,7 +28,7 @@ import db as bd
 
 UA = {"User-Agent": "Mozilla/5.0 (compatible; brincando-de-brasil/1.0; +dados abertos)",
       "Accept-Encoding": "gzip"}
-SIDRA = "https://apisidra.ibge.gov.br/values/t/{t}/n1/all/v/{v}/p/all{c}"
+SIDRA = "https://apisidra.ibge.gov.br/values/t/{t}/{n}/all/v/{v}/p/all{c}"
 LINK = "https://sidra.ibge.gov.br/tabela/{t}"
 
 
@@ -55,6 +55,11 @@ class Serie:
     # setor se está falando. Sem o filtro, "PIB a preços de mercado" some e a
     # série vem em branco — falha barulhenta, felizmente, e não silenciosa.
     classificacao: str = ""
+    # Nível territorial. Quase tudo aqui é "n1" (Brasil), mas a Pesquisa
+    # Mensal de Emprego nunca cobriu o país: ela media seis regiões
+    # metropolitanas, e o SIDRA publica esse recorte no nível "n110"
+    # ("Total das áreas - PME"). Pedir n1 numa tabela da PME devolve HTTP 400.
+    nivel: str = "n1"
 
 
 SERIES = {
@@ -86,6 +91,39 @@ SERIES = {
                    "as pesquisas anteriores usavam outra metodologia e outro "
                    "recorte, e encaixá-las na mesma linha seria comparar "
                    "coisas diferentes."),
+    # A PNAD Contínua começa em 2012 — de FHC a Dilma o quadro ficava vazio
+    # na linha que mais aparece em discussão de botequim. O IBGE tem o número
+    # antes disso, mas em pesquisas DIFERENTES, e o buraco não se tapa
+    # emendando uma na outra: a "taxa de desemprego aberto" da PME antiga
+    # conta quem procurou trabalho na semana, um recorte mais estreito que a
+    # "desocupação" de hoje, e por isso dá 6% onde a medida atual daria o
+    # dobro. Emendar as três produziria uma queda histórica que nunca houve.
+    #
+    # Então elas entram como TRÊS linhas separadas, cada uma dizendo de que
+    # pesquisa veio e que anos cobre. Comparar governo com governo dentro da
+    # mesma linha é legítimo; atravessar as linhas, não — e a página mostra
+    # os anos cobertos em cada coluna justamente para isso ficar visível.
+    "desemprego_pme_antiga": Serie(
+        id="desemprego_pme_antiga",
+        nome="Desemprego aberto nas regiões metropolitanas (1991–2002)",
+        unidade="%", tabela="13", variavel="8", espera_nome="desemprego aberto",
+        corte="media", nivel="n110",
+        observacao="Pesquisa Mensal de Emprego, metodologia antiga, média dos "
+                   "meses do ano. Cobre SEIS regiões metropolitanas (São "
+                   "Paulo, Rio, Belo Horizonte, Porto Alegre, Salvador e "
+                   "Recife), não o país. E mede 'desemprego aberto' — quem "
+                   "procurou trabalho na semana da entrevista —, recorte mais "
+                   "estreito que a desocupação medida hoje. Serve para "
+                   "comparar anos DENTRO desta linha, nunca com as de baixo."),
+    "desemprego_pme": Serie(
+        id="desemprego_pme",
+        nome="Desocupação nas regiões metropolitanas (2003–2015)",
+        unidade="%", tabela="1168", variavel="2498", espera_nome="desocupação",
+        corte="anual", nivel="n110",
+        observacao="Pesquisa Mensal de Emprego, metodologia de 2002, taxa "
+                   "média do ano já calculada pelo IBGE. Também cobre só as "
+                   "seis regiões metropolitanas. Ficou no ar até 2015, quando "
+                   "a PNAD Contínua a substituiu."),
     # --------------------------------------------------------- fome e renda
     "fome": Serie(
         id="fome", nome="Fome (insegurança alimentar grave)", unidade="%",
@@ -115,6 +153,21 @@ SERIES = {
         observacao="De 0 a 1: quanto mais perto de 1, mais concentrada a "
                    "renda. Calculado sobre o rendimento domiciliar per capita "
                    "da PNAD Contínua, que começa em 2012."),
+    # Mesma história do desemprego: a desigualdade só tem série contínua a
+    # partir de 2012. A PNAD antiga mediu de 1992 a 2011 — mas o Gini dela é
+    # sobre o rendimento DAS PESSOAS QUE TÊM RENDIMENTO, e o de hoje é sobre o
+    # rendimento domiciliar per capita de todo mundo. Dá 0,58 onde o atual dá
+    # 0,54. São duas perguntas diferentes, e ficam em duas linhas.
+    "gini_pnad_antiga": Serie(
+        id="gini_pnad_antiga",
+        nome="Desigualdade de renda — PNAD antiga (1992–2011)", unidade="Índice",
+        tabela="1167", variavel="1879", espera_nome="Gini",
+        observacao="Índice de Gini do rendimento mensal das pessoas de 10 anos "
+                   "ou mais COM RENDIMENTO, na PNAD anual. Base diferente da "
+                   "linha da PNAD Contínua (que usa o rendimento domiciliar "
+                   "per capita de toda a população), por isso o nível é mais "
+                   "alto. Não há medição em 1994, 2000 e 2010: nesses anos a "
+                   "PNAD não foi a campo (Censo)."),
     # ------------------------------------------------------------------ saúde
     "mortalidade_infantil_antiga": Serie(
         id="mortalidade_infantil_antiga",
@@ -127,15 +180,55 @@ SERIES = {
         nome="Mortalidade infantil", unidade="‰",
         tabela="3834", variavel="1940", espera_nome="mortalidade infantil",
         observacao="Mortes de menores de 1 ano por mil nascidos vivos."),
+    # As duas linhas de mortalidade infantil acima param em 2009 e em 2016, e
+    # as duas saem da PROJEÇÃO da população do IBGE (revisão de 2018) — ou
+    # seja, de um modelo. A projeção continua até 2060, e seria fácil puxá-la
+    # para preencher Temer, Bolsonaro e Lula 3. Seria também publicar como
+    # "o que aconteceu" uma previsão feita ANTES da covid: ela crava
+    # expectativa de vida de 76,7 anos em 2020, ano em que a expectativa de
+    # vida do brasileiro CAIU. Não entra.
+    #
+    # O que entra são três indicadores de saúde MEDIDOS, do painel dos
+    # Objetivos de Desenvolvimento Sustentável, que o IBGE calcula do registro
+    # civil e das estatísticas de saúde — não de modelo. Eles cobrem os
+    # governos recentes, inclusive a covid, com o que de fato foi contado.
+    "mortalidade_menores5": Serie(
+        id="mortalidade_menores5",
+        nome="Mortalidade de crianças até 5 anos", unidade="Óbitos por mil",
+        tabela="6695", variavel="9731", espera_nome="menores de 5 anos",
+        observacao="ODS 3.2.1. De cada mil crianças nascidas vivas, quantas "
+                   "morreram antes de completar 5 anos. Medida, ano a ano, "
+                   "desde 2000 — não é projeção."),
+    "mortalidade_neonatal": Serie(
+        id="mortalidade_neonatal",
+        nome="Mortalidade nos primeiros 27 dias de vida",
+        unidade="Óbitos por mil",
+        tabela="6696", variavel="9732", espera_nome="neonatal",
+        observacao="ODS 3.2.2. De cada mil bebês nascidos vivos, quantos "
+                   "morreram antes de completar 28 dias. É a série de saúde "
+                   "mais longa que o IBGE publica medida: começa em 1990."),
+    "mortalidade_materna": Serie(
+        id="mortalidade_materna",
+        nome="Mortalidade materna", unidade="Óbitos por 100 mil",
+        tabela="6694", variavel="9730", espera_nome="materna",
+        observacao="ODS 3.1.1. Mortes de mulheres por causas ligadas à "
+                   "gravidez, ao parto ou ao pós-parto, por 100 mil crianças "
+                   "nascidas vivas. Medida desde 2009. O salto de 2021 é a "
+                   "covid: gestante não vacinada foi grupo de risco."),
     "esperanca_vida": Serie(
         id="esperanca_vida", nome="Expectativa de vida ao nascer", unidade="Anos",
         tabela="3825", variavel="2503", espera_nome="esperança de vida",
-        observacao="Vai só até 2016: é o fim da série publicada nesta tabela."),
+        observacao="Vai só até 2016: é o fim da série publicada nesta tabela. "
+                   "O IBGE tem números depois disso, mas dentro da PROJEÇÃO "
+                   "da população feita em 2018 — previsão, não medição, e "
+                   "feita antes da covid. Para os governos recentes, olhe as "
+                   "linhas de mortalidade, que são medidas."),
 }
 
 
 def baixar(serie):
-    url = SIDRA.format(t=serie.tabela, v=serie.variavel, c=serie.classificacao)
+    url = SIDRA.format(t=serie.tabela, n=serie.nivel, v=serie.variavel,
+                       c=serie.classificacao)
     req = urllib.request.Request(url, headers=UA)
     with urllib.request.urlopen(req, timeout=180) as r:
         bruto = r.read()

@@ -12,7 +12,7 @@ Rotas:
     GET /api/consulta?cep=…    para onde foi a emenda de quem tem voto aqui
     GET /api/educacao?cep=…    como está a escola daqui, e quem responde por ela
     GET /api/sistema?uf=…      como o voto virou cadeira naquele estado, em 2022
-    GET /api/presidentes       o que aconteceu no país em cada governo, desde 1990
+    GET /api/presidentes       o que aconteceu no país em cada governo, desde 1995
     GET /api/saude             o que há no banco e de quando é
 """
 import argparse
