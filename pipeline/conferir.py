@@ -117,12 +117,82 @@ def conferir(con):
            f"{n}/513 (os que faltam assumiram ministério, "
            f"tiveram mandato cassado ou não apresentaram emenda)")
 
+    # ------------------------------------------------- sistema eleitoral
+    #
+    # A página "Como funciona a eleição" afirma que houve candidato com MAIS
+    # voto que um eleito do mesmo estado. Se uma reingestão do TSE mudasse a
+    # coluna de situação, a página passaria a ensinar uma regra que o dado já
+    # não mostra — sem erro nenhum aparecer.
+    r = bd.um(con, """
+        WITH v AS (
+            SELECT d.uf, d.situacao, vt.total_votos
+            FROM deputado d
+            JOIN vw_votos_totais vt ON vt.sq_candidato = d.sq_candidato
+        ), piso AS (
+            SELECT uf, MIN(total_votos) AS m FROM v
+            WHERE situacao LIKE 'ELEITO%' GROUP BY 1
+        )
+        SELECT COUNT(*) AS c FROM v JOIN piso p ON p.uf = v.uf
+        WHERE v.situacao = 'SUPLENTE' AND v.total_votos > p.m
+    """)
+    checar("há candidato não eleito com mais voto que um eleito da mesma UF",
+           r["c"] > 0, f"{r['c']} casos (o argumento da página do voto proporcional)")
+
+    with con.cursor() as cur:
+        cur.execute("""SELECT DISTINCT situacao FROM deputado ORDER BY 1""")
+        sits = [x["situacao"] for x in cur.fetchall()]
+    checar("situação do TSE só tem os três valores esperados",
+           set(sits) == {"ELEITO POR QP", "ELEITO POR MEDIA", "SUPLENTE"}, str(sits))
+
+    # ---------------------------------------------------------------- Ideb
+    #
+    # A planilha do INEP tem 122 colunas e o ano mora no NOME da coluna. É
+    # exatamente a forma de arquivo em que um desalinhamento de uma casa não
+    # levanta exceção nenhuma: os números continuam plausíveis, só passam a
+    # ser de outro ano ou de outra medida. A identidade abaixo é a defesa.
+    r = bd.um(con, """
+        SELECT COUNT(*) AS n,
+               COUNT(*) FILTER (WHERE ABS(ideb - ROUND(nota * fluxo, 1)) > 0.1)
+                   AS fora
+        FROM ideb
+        WHERE ideb IS NOT NULL AND nota IS NOT NULL AND fluxo IS NOT NULL
+    """)
+    checar("Ideb = nota × fluxo, em toda linha medida", r["fora"] == 0,
+           f"{r['fora']} divergentes em {r['n']} medições")
+
+    r = bd.um(con, """
+        SELECT COUNT(*) FILTER (WHERE ideb  < 0 OR ideb  > 10) AS ideb_fora,
+               COUNT(*) FILTER (WHERE nota  < 0 OR nota  > 10) AS nota_fora,
+               COUNT(*) FILTER (WHERE fluxo < 0 OR fluxo > 1)  AS fluxo_fora
+        FROM ideb
+    """)
+    fora = dict(r)
+    checar("Ideb e nota entre 0 e 10, fluxo entre 0 e 1",
+           not any(fora.values()), str(fora))
+
+    n = bd.um(con, """SELECT COUNT(DISTINCT i.cod_ibge) AS c FROM ideb i
+                      LEFT JOIN municipio m ON m.cod_ibge = i.cod_ibge
+                      WHERE m.cod_ibge IS NULL""")["c"]
+    checar("todo município do INEP resolve para a tabela `municipio`", n == 0,
+           f"{n} sem correspondência")
+
+    # Cobertura: os anos iniciais são quase todos municipais. Uma queda brusca
+    # aqui significa etapa não ingerida ou rede lida com o nome errado — e o
+    # sintoma seria a página dizer "sem medição" para meio país.
+    n = bd.um(con, """SELECT COUNT(*) AS c FROM ideb
+                      WHERE etapa='anos_iniciais' AND rede='Municipal'
+                        AND ano=2023 AND ideb IS NOT NULL""")["c"]
+    checar("≥5.000 municípios com Ideb 2023 dos anos iniciais (rede municipal)",
+           n >= 5000, f"{n} municípios")
+
     with con.cursor() as cur:
         cur.execute("""SELECT fonte_id, COUNT(*) AS c FROM snapshot
                        WHERE ingerido_em IS NOT NULL GROUP BY 1""")
         fontes = {r["fonte_id"]: r["c"] for r in cur.fetchall()}
-    checar("as duas fontes têm snapshot ingerido",
-           {"cgu_emendas", "tse_munzona_2022"} <= set(fontes), str(fontes))
+    exigidas = {"cgu_emendas", "tse_munzona_2022", "inep_ideb_anos_iniciais",
+                "inep_ideb_anos_finais", "inep_ideb_ensino_medio"}
+    checar("todas as fontes têm snapshot ingerido", exigidas <= set(fontes),
+           str(sorted(exigidas - set(fontes)) or f"{len(fontes)} fontes"))
 
     print(f"\n{'TUDO OK' if not falhas else 'FALHAS: ' + ', '.join(falhas)}")
     return 0 if not falhas else 1

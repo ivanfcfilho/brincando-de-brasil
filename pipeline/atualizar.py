@@ -67,6 +67,10 @@ def ingerir(fonte):
             import ingest_tse
             sys.argv = ["ingest_tse", "--ano", fonte.id.rsplit("_", 1)[1]]
             return ingest_tse.main()
+        if fonte.id.startswith("inep_ideb_"):
+            import ingest_ideb
+            sys.argv = ["ingest_ideb", "--etapa", fonte.id[len("inep_ideb_"):]]
+            return ingest_ideb.main()
     finally:
         sys.argv = argv
     print(f"  sem ingestor para {fonte.id} — arquivo baixado, nada ingerido")

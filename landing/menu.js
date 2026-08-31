@@ -13,8 +13,9 @@
   // estudos e detalhe técnico).
   var SIMPLES = [
     ['/', 'Início'],
+    ['/como-funciona.html', 'Como funciona a eleição'],
     ['/dinheiro.html', 'Ideia #01 · Seu dinheiro'],
-    ['/propostas/educacao.html', 'Ideia #02 · Educação'],
+    ['/escola.html', 'Ideia #02 · Sua escola'],
   ];
   var CIENTIFICO = [
     ['/propostas/voto-distrital.html', 'Dossiê do voto distrital'],
@@ -23,6 +24,7 @@
   var SECOES = {
     '/': [
       ['#comoassim', 'Como assim, "brincando"?'],
+      ['#aula', 'Comece por aqui'],
       ['#ideias', 'As ideias'],
       ['#regras', 'As regras'],
       ['#placar', 'O placar'],
@@ -34,6 +36,20 @@
       ['#propostas', 'As propostas'],
       ['#doutrina', 'Nossas regras'],
     ],
+    '/como-funciona.html': [
+      ['#cargos', 'Quem é quem'],
+      ['#sistemas', 'A regra que muda tudo'],
+      ['#simulador', 'Mexa você mesmo'],
+      ['#real', 'Aconteceu de verdade'],
+      ['#estatistica', 'Como não ser enganado'],
+    ],
+    '/escola.html': [
+      ['#buscar', 'Digitar o CEP'],
+      ['#entenda', 'Entenda em 3 passos'],
+      ['#metodo', 'Como a gente calcula'],
+      ['#dinheiro', 'A outra metade'],
+      ['#fontes', 'De onde vem cada número'],
+    ],
     '/propostas/educacao.html': [
       ['#logica', 'A arquitetura lógica'],
       ['#pilares', 'Os 4 pilares'],
@@ -42,7 +58,24 @@
     ],
   };
 
-  var aqui = location.pathname === '/index.html' ? '/' : location.pathname;
+  // O site pode ser servido na raiz do domínio OU sob um prefixo
+  // (ex.: /brincandodebrasil, atrás de um nginx que já hospeda outra coisa).
+  // O servidor injeta window.BB_PREFIXO; sem ele, tudo funciona como antes.
+  var PREFIXO = (window.BB_PREFIXO || '').replace(/\/$/, '');
+
+  // 'aqui' é o caminho SEM o prefixo, para casar com o mapa do site abaixo,
+  // que é escrito sempre em caminhos de raiz. Sem esta normalização, nenhum
+  // item apareceria como página atual quando servido sob prefixo.
+  var caminho = location.pathname;
+  if (PREFIXO && caminho.indexOf(PREFIXO) === 0) {
+    caminho = caminho.slice(PREFIXO.length) || '/';
+  }
+  var aqui = (caminho === '/index.html' || caminho === '') ? '/' : caminho;
+
+  // Um link do mapa vira URL de verdade: âncora continua âncora.
+  function url(destino) {
+    return destino.charAt(0) === '#' ? destino : PREFIXO + destino;
+  }
 
   var css = [
     '.bb-topo{position:sticky;top:0;z-index:900;display:flex;align-items:center;gap:1rem;',
@@ -101,7 +134,7 @@
   function lista(pares, classe) {
     return pares.map(function (p) {
       var atual = classe === 'bb-item' && p[0] === aqui;
-      return '<a class="' + classe + (atual ? ' bb-atual' : '') + '" href="' + p[0] + '"' +
+      return '<a class="' + classe + (atual ? ' bb-atual' : '') + '" href="' + url(p[0]) + '"' +
         (atual ? ' aria-current="page"' : '') + '>' + esc(p[1]) + '</a>';
     }).join('');
   }
@@ -115,19 +148,19 @@
     '<header class="bb-topo">' +
     '<button class="bb-abrir" aria-label="Abrir o menu" aria-expanded="false" aria-controls="bb-menu">' +
     '<span></span><span></span><span></span></button>' +
-    '<a class="bb-marca" href="/">Brincando de <b>Brasil</b></a>' +
-    '<a class="bb-cta" href="/dinheiro.html#buscar">Buscar por CEP</a>' +
+    '<a class="bb-marca" href="' + url('/') + '">Brincando de <b>Brasil</b></a>' +
+    '<a class="bb-cta" href="' + url('/dinheiro.html') + '#buscar">Buscar por CEP</a>' +
     '</header>' +
     '<div class="bb-veu" hidden></div>' +
     '<aside class="bb-menu" id="bb-menu" aria-label="Menu do site" hidden>' +
     '<div class="bb-cab">' +
-    '<a class="bb-marca" href="/">Brincando de <b>Brasil</b></a>' +
+    '<a class="bb-marca" href="' + url('/') + '">Brincando de <b>Brasil</b></a>' +
     '<button class="bb-fechar" aria-label="Fechar o menu">✕</button>' +
     '</div>' +
     '<h2>Versão simples</h2>' + lista(SIMPLES, 'bb-item') +
     (secoes.length ? '<h2>Nesta página</h2>' + lista(secoes, 'bb-sec') : '') +
     '<h2>Para quem quer ir fundo</h2>' + lista(CIENTIFICO, 'bb-item') +
-    '<a class="bb-cta" href="/dinheiro.html#buscar">Buscar por CEP</a>' +
+    '<a class="bb-cta" href="' + url('/dinheiro.html') + '#buscar">Buscar por CEP</a>' +
     '<p class="bb-nota">Todo número do site tem link para a fonte oficial do governo.</p>' +
     '</aside>';
 

@@ -15,6 +15,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(
                                 "pipeline"))
 from nomes import (_compativel, casar_autor, chave_municipio, indice_por_nome,
                    norm, parse_valor)
+from xlsx import _coluna, numero
+import api
 
 
 class TestNormalizacao(unittest.TestCase):
@@ -173,6 +175,76 @@ class TestCentroide(unittest.TestCase):
         self.assertAlmostEqual(lon, 11.0, places=6)
 
 
+class TestPrefixo(unittest.TestCase):
+    """O site precisa funcionar na raiz de um domínio E sob um prefixo de
+    caminho (`/brincandodebrasil`), porque o servidor de produção já hospeda
+    outro site. Todo link interno é de raiz; sob prefixo, sem reescrita, eles
+    apontariam para fora da aplicação e a página abriria quebrada."""
+
+    HTML = (b'<script src="/menu.js"></script>'
+            b'<a href="/escola.html">a</a>'
+            b'<a href="https://gov.br/x">fora</a>'
+            b'<a href="#ancora">ancora</a>'
+            b"<script>fetch('/api/saude')</script>")
+
+    def setUp(self):
+        self._antes = api.PREFIXO
+
+    def tearDown(self):
+        api.PREFIXO = self._antes
+
+    def test_sem_prefixo_nada_muda(self):
+        api.PREFIXO = ""
+        self.assertEqual(api.Handler._com_prefixo(self.HTML), self.HTML)
+
+    def test_com_prefixo_reescreve_so_o_que_e_da_raiz(self):
+        api.PREFIXO = "/brincandodebrasil"
+        saida = api.Handler._com_prefixo(self.HTML).decode()
+        self.assertIn('src="/brincandodebrasil/menu.js"', saida)
+        self.assertIn('href="/brincandodebrasil/escola.html"', saida)
+        self.assertIn("fetch('/brincandodebrasil/api/saude')", saida)
+        # Link externo e âncora não podem ser tocados: prefixar um domínio de
+        # terceiro quebraria a rastreabilidade à fonte oficial, que é a
+        # promessa central do projeto.
+        self.assertIn('href="https://gov.br/x"', saida)
+        self.assertIn('href="#ancora"', saida)
+
+    def test_publica_o_prefixo_para_o_menu(self):
+        # O menu.js monta os links em JavaScript e não passa pela reescrita:
+        # sem esta variável, a navegação inteira apontaria para a raiz.
+        api.PREFIXO = "/brincandodebrasil"
+        saida = api.Handler._com_prefixo(self.HTML).decode()
+        self.assertIn('window.BB_PREFIXO="/brincandodebrasil"', saida)
+
+
+class TestPlanilhaIdeb(unittest.TestCase):
+    """O leitor de .xlsx do Ideb. Os dois casos abaixo são as armadilhas que
+    fariam a planilha ser lida errada SEM levantar exceção — o tipo de erro
+    que este projeto trata como o mais perigoso."""
+
+    def test_coluna_pela_referencia_e_nao_pela_ordem(self):
+        # Célula vazia não aparece no XML: numa linha esparsa, quem conta
+        # elementos desalinha a planilha inteira e carimba o valor de uma
+        # coluna na outra. A posição TEM que vir da referência.
+        self.assertEqual(_coluna("A1"), 0)
+        self.assertEqual(_coluna("D12"), 3)
+        self.assertEqual(_coluna("Z1"), 25)
+        self.assertEqual(_coluna("AA1"), 26)
+        self.assertEqual(_coluna("DR14517"), 121)   # a última coluna do arquivo
+
+    def test_ausencia_nao_vira_zero(self):
+        # O INEP marca rede não divulgada com '-'. Virar 0.0 criaria um
+        # município com "Ideb zero" que entra em toda média como se fosse
+        # medição real.
+        self.assertIsNone(numero("-"))
+        self.assertIsNone(numero(""))
+        self.assertIsNone(numero("ND"))
+        self.assertIsNone(numero(None))
+        self.assertEqual(numero("5.9"), 5.9)
+        self.assertEqual(numero("5,9"), 5.9)        # planilha em pt-BR
+        self.assertEqual(numero("0"), 0.0)          # zero medido é zero
+
+
 class TestLanding(unittest.TestCase):
     """A renderização da landing roda em Node contra uma resposta real da API
     (tests/fixture_consulta.json). Se o Node não existir, o teste é pulado —
@@ -184,6 +256,26 @@ class TestLanding(unittest.TestCase):
             self.skipTest("node não instalado")
         script = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                               "test_landing.cjs")
+        r = subprocess.run([node, script], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_render_como_funciona_e_a_conta_das_cadeiras(self):
+        """Inclui a matemática do simulador — a única conta que o site FAZ,
+        em vez de só mostrar. Errar ali seria ensinar errado."""
+        node = shutil.which("node") or shutil.which("nodejs")
+        if not node:
+            self.skipTest("node não instalado")
+        script = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "test_como_funciona.cjs")
+        r = subprocess.run([node, script], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_render_escola_com_dados_reais(self):
+        node = shutil.which("node") or shutil.which("nodejs")
+        if not node:
+            self.skipTest("node não instalado")
+        script = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "test_escola.cjs")
         r = subprocess.run([node, script], capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 

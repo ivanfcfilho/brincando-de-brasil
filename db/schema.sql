@@ -27,8 +27,13 @@ CREATE TABLE IF NOT EXISTS fonte (
     id            TEXT PRIMARY KEY,
     descricao     TEXT NOT NULL,
     url           TEXT NOT NULL,
-    periodicidade TEXT NOT NULL CHECK (periodicidade IN ('diaria','eleicao'))
+    periodicidade TEXT NOT NULL CHECK (periodicidade IN ('diaria','eleicao','bienal'))
 );
+-- O Ideb sai a cada dois anos; a checagem diária dele seria desperdício, e
+-- marcar 'diaria' faria o job baixar 50 MB atrás de um arquivo que não muda.
+ALTER TABLE fonte DROP CONSTRAINT IF EXISTS fonte_periodicidade_check;
+ALTER TABLE fonte ADD CONSTRAINT fonte_periodicidade_check
+    CHECK (periodicidade IN ('diaria','eleicao','bienal'));
 
 -- Registro de TODA verificação, inclusive as que não acharam mudança:
 -- "nós olhamos e nada mudou" também é afirmação que precisa de prova.
@@ -182,6 +187,43 @@ CREATE INDEX IF NOT EXISTS ix_fav_autor ON emenda_favorecido(cod_autor, ano);
 CREATE INDEX IF NOT EXISTS ix_fav_mun   ON emenda_favorecido(uf_favorecido, municipio_favorecido);
 CREATE INDEX IF NOT EXISTS ix_fav_ibge  ON emenda_favorecido(cod_ibge_favorecido);
 
+-- Ideb por município, etapa e rede (INEP). É a segunda métrica do projeto:
+-- a primeira mostra para onde o dinheiro foi, esta mostra o que aconteceu
+-- com o resultado. As duas se ligam por `cod_ibge`.
+--
+-- Guardamos os TRÊS componentes, não só o índice, porque o índice esconde a
+-- pergunta interessante:
+--
+--     ideb = nota × fluxo
+--
+-- `nota` é o desempenho no Saeb (0 a 10) e `fluxo` é a taxa de aprovação
+-- (0 a 1). Dois municípios com o mesmo Ideb podem ter chegado lá por
+-- caminhos opostos — um ensinando, outro aprovando. Publicar só o Ideb
+-- apagaria exatamente a distinção que a proposta de educação discute, e é
+-- por isso que as três colunas existem separadas.
+--
+-- REDE vale 'Municipal', 'Estadual', 'Federal' ou 'Pública'. NÃO são
+-- categorias disjuntas: 'Pública' é o agregado das outras três. Somar todas
+-- conta o mesmo aluno mais de uma vez — toda consulta precisa escolher uma.
+-- Na prática: os anos iniciais são quase todos municipais (5.433 municípios
+-- têm rede municipal medida, contra 3.482 com rede estadual), e o ensino
+-- médio é quase todo estadual (5.559 contra 103). Quem responde pela escola
+-- muda conforme a etapa, e é por isso que a rede não pode ser escondida.
+CREATE TABLE IF NOT EXISTS ideb (
+    cod_ibge    INTEGER NOT NULL,
+    etapa       TEXT NOT NULL,       -- anos_iniciais | anos_finais | ensino_medio
+    rede        TEXT NOT NULL,       -- Municipal | Estadual | Federal | Pública
+    ano         INTEGER NOT NULL,
+    ideb        NUMERIC(4,2),        -- VL_OBSERVADO   (o índice divulgado)
+    nota        NUMERIC(8,4),        -- VL_NOTA_MEDIA  (Saeb, 0–10)
+    fluxo       NUMERIC(8,6),        -- VL_INDICADOR_REND (aprovação, 0–1)
+    meta        NUMERIC(4,2),        -- VL_PROJECAO    (a meta daquele ano)
+    snapshot_id BIGINT REFERENCES snapshot(id),
+    PRIMARY KEY (cod_ibge, etapa, rede, ano)
+);
+CREATE INDEX IF NOT EXISTS ix_ideb_mun   ON ideb(cod_ibge, ano);
+CREATE INDEX IF NOT EXISTS ix_ideb_etapa ON ideb(etapa, rede, ano);
+
 -- -------------------------------------------------------------------- mudança
 
 -- Uma linha aqui é uma TRANSIÇÃO entre dois snapshots, não um fato do
@@ -234,3 +276,18 @@ SELECT f.*, a.sq_candidato, d.uf AS uf_deputado, d.nome_urna, d.partido
 FROM emenda_favorecido f
 JOIN autor a    ON a.cod_autor = f.cod_autor
 JOIN deputado d ON d.sq_candidato = a.sq_candidato;
+
+-- O Ideb mais recente de cada município/etapa/rede, com a distância até a
+-- meta. DISTINCT ON em vez de MAX(ano): o último ano COM medição varia de
+-- município para município (rede sem aluno suficiente não é divulgada), e
+-- fixar 2023 devolveria NULL justamente para os menores.
+DROP VIEW IF EXISTS vw_ideb_atual CASCADE;
+CREATE VIEW vw_ideb_atual AS
+SELECT DISTINCT ON (i.cod_ibge, i.etapa, i.rede)
+       i.cod_ibge, i.etapa, i.rede, i.ano, i.ideb, i.nota, i.fluxo, i.meta,
+       m.nome AS municipio, m.uf,
+       (i.ideb - i.meta) AS diferenca_meta
+FROM ideb i
+JOIN municipio m ON m.cod_ibge = i.cod_ibge
+WHERE i.ideb IS NOT NULL
+ORDER BY i.cod_ibge, i.etapa, i.rede, i.ano DESC;

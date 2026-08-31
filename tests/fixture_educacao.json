@@ -1,0 +1,269 @@
+{
+    "municipio": "Aracaju",
+    "uf": "SE",
+    "cod_ibge": 2800308,
+    "etapas": [
+        {
+            "id": "anos_iniciais",
+            "titulo": "Do 1\u00ba ao 5\u00ba ano",
+            "rede": "Municipal",
+            "responsavel": "a prefeitura",
+            "cobra": "prefeito(a) e vereadores",
+            "explica": "Quase toda cidade do pa\u00eds tem rede municipal nesta etapa: \u00e9 a escola que a prefeitura administra.",
+            "medido": true,
+            "ano": 2023,
+            "ideb": "5.20",
+            "nota": "5.3069",
+            "fluxo": "0.987532",
+            "meta": null,
+            "bateu_meta": null,
+            "serie": [
+                {
+                    "ano": 2005,
+                    "ideb": "2.90",
+                    "meta": null
+                },
+                {
+                    "ano": 2007,
+                    "ideb": "3.30",
+                    "meta": "3.00"
+                },
+                {
+                    "ano": 2009,
+                    "ideb": "3.50",
+                    "meta": "3.30"
+                },
+                {
+                    "ano": 2011,
+                    "ideb": "3.60",
+                    "meta": "3.70"
+                },
+                {
+                    "ano": 2013,
+                    "ideb": "4.10",
+                    "meta": "4.00"
+                },
+                {
+                    "ano": 2015,
+                    "ideb": "4.40",
+                    "meta": "4.30"
+                },
+                {
+                    "ano": 2017,
+                    "ideb": "4.60",
+                    "meta": "4.60"
+                },
+                {
+                    "ano": 2019,
+                    "ideb": "4.80",
+                    "meta": "4.90"
+                },
+                {
+                    "ano": 2021,
+                    "ideb": "5.00",
+                    "meta": "5.20"
+                },
+                {
+                    "ano": 2023,
+                    "ideb": "5.20",
+                    "meta": null
+                }
+            ],
+            "comparacao": {
+                "meu": "5.20",
+                "n_uf": 71,
+                "n_br": 5241,
+                "mediana_uf": "4.50",
+                "mediana_br": "5.80",
+                "posicao_uf": 5
+            },
+            "ultima_meta": {
+                "ano": 2021,
+                "ideb": "5.00",
+                "meta": "5.20",
+                "bateu": false
+            }
+        },
+        {
+            "id": "anos_finais",
+            "titulo": "Do 6\u00ba ao 9\u00ba ano",
+            "rede": "Municipal",
+            "responsavel": "a prefeitura",
+            "cobra": "prefeito(a) e vereadores",
+            "explica": "Aqui a divis\u00e3o varia de cidade para cidade: parte \u00e9 da prefeitura, parte do governo do estado.",
+            "medido": true,
+            "ano": 2023,
+            "ideb": "4.30",
+            "nota": "4.7270",
+            "fluxo": "0.916523",
+            "meta": null,
+            "bateu_meta": null,
+            "serie": [
+                {
+                    "ano": 2005,
+                    "ideb": "2.50",
+                    "meta": null
+                },
+                {
+                    "ano": 2007,
+                    "ideb": "3.10",
+                    "meta": "2.60"
+                },
+                {
+                    "ano": 2009,
+                    "ideb": "3.10",
+                    "meta": "2.80"
+                },
+                {
+                    "ano": 2011,
+                    "ideb": "3.10",
+                    "meta": "3.20"
+                },
+                {
+                    "ano": 2013,
+                    "ideb": "3.10",
+                    "meta": "3.60"
+                },
+                {
+                    "ano": 2015,
+                    "ideb": "3.40",
+                    "meta": "4.10"
+                },
+                {
+                    "ano": 2017,
+                    "ideb": "3.70",
+                    "meta": "4.30"
+                },
+                {
+                    "ano": 2019,
+                    "ideb": "3.90",
+                    "meta": "4.60"
+                },
+                {
+                    "ano": 2021,
+                    "ideb": "4.40",
+                    "meta": "4.90"
+                },
+                {
+                    "ano": 2023,
+                    "ideb": "4.30",
+                    "meta": null
+                }
+            ],
+            "comparacao": {
+                "meu": "4.30",
+                "n_uf": 66,
+                "n_br": 3195,
+                "mediana_uf": "3.60",
+                "mediana_br": "4.60",
+                "posicao_uf": 4
+            },
+            "ultima_meta": {
+                "ano": 2021,
+                "ideb": "4.40",
+                "meta": "4.90",
+                "bateu": false
+            }
+        },
+        {
+            "id": "ensino_medio",
+            "titulo": "Ensino m\u00e9dio",
+            "rede": "Estadual",
+            "responsavel": "o governo do estado",
+            "cobra": "governador(a) e deputados estaduais",
+            "explica": "O ensino m\u00e9dio \u00e9 quase todo do estado \u2014 a prefeitura normalmente n\u00e3o administra essas escolas.",
+            "medido": true,
+            "ano": 2023,
+            "ideb": "3.90",
+            "nota": "4.3296",
+            "fluxo": "0.897395",
+            "meta": null,
+            "bateu_meta": null,
+            "serie": [
+                {
+                    "ano": 2017,
+                    "ideb": "3.50",
+                    "meta": null
+                },
+                {
+                    "ano": 2019,
+                    "ideb": "3.60",
+                    "meta": "3.70"
+                },
+                {
+                    "ano": 2021,
+                    "ideb": "4.20",
+                    "meta": "4.00"
+                },
+                {
+                    "ano": 2023,
+                    "ideb": "3.90",
+                    "meta": null
+                }
+            ],
+            "comparacao": {
+                "meu": "3.90",
+                "n_uf": 72,
+                "n_br": 5063,
+                "mediana_uf": "3.70",
+                "mediana_br": "4.10",
+                "posicao_uf": 22
+            },
+            "ultima_meta": {
+                "ano": 2021,
+                "ideb": "4.20",
+                "meta": "4.00",
+                "bateu": true
+            }
+        }
+    ],
+    "fonte_inep": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb",
+    "fontes": [
+        {
+            "fonte_id": "cgu_emendas",
+            "baixado_em": "2026-08-29T15:32:33.107808+00:00",
+            "publicado_em": "Sat, 29 Aug 2026 04:39:07 GMT",
+            "sha256": "649220ce9bcd72675f41407dae9b4cfbbc86c105dde58470ffd291e7d4ec97ef",
+            "arquivo": "data/raw/EmendasParlamentares.zip",
+            "descricao": "Emendas parlamentares \u2014 CGU/Portal da Transpar\u00eancia",
+            "url": "https://dadosabertos-download.cgu.gov.br/PortalDaTransparencia/saida/emendas-parlamentares/EmendasParlamentares.zip"
+        },
+        {
+            "fonte_id": "inep_ideb_anos_finais",
+            "baixado_em": "2026-08-30T22:39:47.330086+00:00",
+            "publicado_em": "Tue, 07 Jan 2025 19:01:41 GMT",
+            "sha256": "bb3b7d8a176e89f1208c6277fceed2a79724c04c11513ef5ce083fb44a861986",
+            "arquivo": "data/raw/ideb_anos_finais_2023.zip",
+            "descricao": "Ideb \u2014 anos finais do fundamental (6\u00ba ao 9\u00ba), por munic\u00edpio \u2014 INEP/MEC",
+            "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_finais_municipios_2023.zip"
+        },
+        {
+            "fonte_id": "inep_ideb_anos_iniciais",
+            "baixado_em": "2026-08-30T22:39:22.298868+00:00",
+            "publicado_em": "Tue, 13 Aug 2024 21:42:00 GMT",
+            "sha256": "866c50e858e5f4d3d0b7b380c3adc05b56f6137360d7830e23dae72284e8c9f4",
+            "arquivo": "data/raw/ideb_anos_iniciais_2023.zip",
+            "descricao": "Ideb \u2014 anos iniciais do fundamental (1\u00ba ao 5\u00ba), por munic\u00edpio \u2014 INEP/MEC",
+            "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2023.zip"
+        },
+        {
+            "fonte_id": "inep_ideb_ensino_medio",
+            "baixado_em": "2026-08-30T22:40:09.529046+00:00",
+            "publicado_em": "Tue, 13 Aug 2024 21:42:00 GMT",
+            "sha256": "2ba873fca465dc75d2a8b64559c711cf5685c960e1c6a88c655d449f05f30afc",
+            "arquivo": "data/raw/ideb_ensino_medio_2023.zip",
+            "descricao": "Ideb \u2014 ensino m\u00e9dio, por munic\u00edpio \u2014 INEP/MEC",
+            "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_ensino_medio_municipios_2023.zip"
+        },
+        {
+            "fonte_id": "tse_munzona_2022",
+            "baixado_em": "2026-08-29T15:03:56.387238+00:00",
+            "publicado_em": null,
+            "sha256": "64dec552548377d9e958b72b2f9ef30a05aec331b04ec1368da4f1f5cababf21",
+            "arquivo": "data/raw/votacao_candidato_munzona_2022.zip",
+            "descricao": "Vota\u00e7\u00e3o nominal por munic\u00edpio/zona \u2014 TSE, elei\u00e7\u00e3o 2022",
+            "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_candidato_munzona/votacao_candidato_munzona_2022.zip"
+        }
+    ],
+    "cep": "49010-000"
+}

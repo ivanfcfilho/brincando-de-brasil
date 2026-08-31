@@ -1,0 +1,447 @@
+<title>Ideia #02 — A escola da sua cidade · Brincando de Brasil</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="/menu.js" defer></script>
+<style>
+  :root{
+    --bg:#0B0F14; --panel:#111820; --panel-2:#0E141B; --line:#1E2935;
+    --ink:#E9EEF4; --ink-dim:#93A1B0; --ink-faint:#5C6B7A;
+    --volt:#F5D90A; --volt-dim:rgba(245,217,10,.14);
+    --alert:#FF5C5C; --ok:#39D98A; --azul:#5AB2FF;
+    --mono:'IBM Plex Mono',ui-monospace,'Cascadia Mono',Menlo,monospace;
+    --sans:'Archivo','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--volt)}
+  ::selection{background:var(--volt);color:#0B0F14}
+  :focus-visible{outline:2px solid var(--volt);outline-offset:2px}
+
+  .strip{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;
+    align-items:center;padding:.55rem 1.25rem;background:var(--panel-2);
+    border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.72rem;
+    letter-spacing:.06em;color:var(--ink-faint)}
+  .strip .dot{color:var(--volt)}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 1.25rem}
+
+  .hero{padding:3.4rem 0 3.2rem;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.28em;
+    color:var(--volt);text-transform:uppercase;margin-bottom:1.4rem}
+  .eyebrow::before{content:"// "}
+  h1{font-weight:900;font-size:clamp(2.1rem,4.6vw,3.5rem);line-height:1.03;
+    letter-spacing:-.015em;text-wrap:balance;text-transform:uppercase;max-width:16ch}
+  h1 .hit{color:var(--volt)}
+  .lede{margin-top:1.5rem;max-width:58ch;font-size:1.1rem;color:var(--ink-dim)}
+
+  .cepbar{margin-top:2.4rem;display:flex;gap:.6rem;flex-wrap:wrap;max-width:560px}
+  .cepbar input{flex:1 1 260px;background:var(--panel);border:1px solid var(--line);
+    border-radius:4px;color:var(--ink);font-family:var(--mono);font-size:1.15rem;
+    letter-spacing:.12em;padding:.9rem 1.1rem}
+  .cepbar input::placeholder{color:var(--ink-faint);letter-spacing:.05em}
+  .cepbar input:focus{border-color:var(--volt);outline:none}
+  .cepbar button{background:var(--volt);color:#0B0F14;border:0;border-radius:4px;
+    cursor:pointer;font-family:var(--sans);font-weight:800;font-size:.95rem;
+    letter-spacing:.1em;text-transform:uppercase;padding:.9rem 1.6rem}
+  .cepbar button:hover{background:#ffe83d}
+  .cep-hint{margin-top:.7rem;font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}
+
+  section{padding:3rem 0;border-bottom:1px solid var(--line)}
+  h2.sec{font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--volt);margin-bottom:1.5rem}
+  h2.sec::before{content:"// "}
+  h3{font-size:1.35rem;line-height:1.2;margin-bottom:.7rem;letter-spacing:-.01em}
+  p+p{margin-top:.9rem}
+  .dim{color:var(--ink-dim)}
+
+  .result{display:none}
+  .result.on{display:block}
+  .term{background:#070B0F;border:1px solid var(--line);border-radius:6px;
+    font-family:var(--mono);font-size:.8rem;line-height:1.9;padding:1rem 1.2rem;
+    color:var(--ink-dim);min-height:3.2rem}
+  .term .ln{display:block;white-space:pre-wrap}
+  .term .ok{color:var(--ok)} .term .vt{color:var(--volt)}
+
+  .local{margin:2.2rem 0 1.4rem;font-family:var(--mono);font-size:.8rem;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .local b{color:var(--ink);font-size:1.5rem;font-family:var(--sans);
+    letter-spacing:-.01em;text-transform:none;display:block;margin-top:.3rem}
+
+  /* ---------- cartão de etapa ---------- */
+  .etapa{background:var(--panel);border:1px solid var(--line);border-radius:5px;
+    padding:1.5rem 1.4rem;margin-bottom:1.2rem}
+  .etapa.vazia{opacity:.65}
+  .etapa-cab{display:flex;flex-wrap:wrap;gap:1rem;align-items:baseline;
+    justify-content:space-between;margin-bottom:.3rem}
+  .etapa-cab h3{margin:0}
+  .selo-rede{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+    text-transform:uppercase;color:#0B0F14;background:var(--ink-dim);
+    padding:.15rem .45rem;border-radius:2px}
+
+  /* A lição cívica: quem responde por esta escola. */
+  .responde{margin:1rem 0 1.3rem;padding:.85rem 1rem;border-radius:4px;
+    background:rgba(90,178,255,.10);border-left:3px solid var(--azul)}
+  .responde .rot{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--azul);display:block;margin-bottom:.2rem}
+  .responde b{font-size:1.05rem}
+  .responde p{font-size:.85rem;color:var(--ink-dim);margin-top:.35rem}
+
+  .numeros{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:center}
+  @media (max-width:640px){.numeros{grid-template-columns:1fr;gap:1rem}}
+  .big{font-family:var(--sans);font-weight:900;font-size:3.4rem;line-height:.95;
+    letter-spacing:-.03em;color:var(--volt)}
+  .big small{display:block;font-family:var(--mono);font-size:.66rem;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+    margin-top:.45rem;letter-spacing:.14em}
+
+  .conta{font-family:var(--mono);font-size:.86rem;color:var(--ink-dim);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:4px;
+    padding:.8rem .9rem;line-height:1.9}
+  .conta .v{color:var(--ink);font-weight:600}
+  .conta .rot{color:var(--ink-faint)}
+  .conta em{font-style:normal;color:var(--volt)}
+
+  .barras{list-style:none;margin-top:1.2rem}
+  .barras li{margin-bottom:.75rem}
+  .cap{display:flex;justify-content:space-between;font-family:var(--mono);
+    font-size:.74rem;color:var(--ink-faint);margin-bottom:.28rem}
+  .cap b{color:var(--ink)}
+  .minibar{height:7px;background:var(--panel-2);border:1px solid var(--line);
+    border-radius:99px;overflow:hidden}
+  .minibar span{display:block;height:100%;border-radius:99px}
+  .minibar .amarelo{background:var(--volt)}
+  .minibar .azul{background:var(--azul)}
+  .minibar .cinza{background:var(--ink-faint)}
+
+  .meta-box{margin-top:1.2rem;padding:.75rem .9rem;border-radius:4px;
+    font-size:.88rem;border:1px solid var(--line);background:var(--panel-2)}
+  .meta-box .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;padding:.12rem .4rem;border-radius:2px;margin-right:.5rem}
+  .tag.sim{background:var(--ok);color:#06231A}
+  .tag.nao{background:var(--alert);color:#2A0808}
+
+  .comp{margin-top:1rem;font-size:.85rem;color:var(--ink-dim);
+    display:flex;flex-wrap:wrap;gap:.4rem 1.4rem}
+  .comp b{color:var(--ink)}
+
+  .serie{margin-top:1.1rem}
+  .serie svg{width:100%;height:70px;display:block;overflow:visible}
+  .serie .rot{font-family:var(--mono);font-size:.68rem;color:var(--ink-faint);
+    display:flex;justify-content:space-between;margin-top:.25rem}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  @media (max-width:860px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;
+    padding:1.2rem 1.1rem}
+  .card .n{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;
+    color:var(--volt);margin-bottom:.5rem}
+  .card h4{font-size:1.02rem;margin-bottom:.45rem}
+  .card p{font-size:.88rem;color:var(--ink-dim)}
+
+  .aviso{background:var(--panel-2);border:1px solid var(--line);
+    border-left:3px solid var(--ink-faint);border-radius:3px;
+    padding:1rem 1.1rem;font-size:.9rem;color:var(--ink-dim)}
+  .aviso b{color:var(--ink)}
+  .erro{color:var(--alert);font-size:.95rem}
+
+  .fontes{font-family:var(--mono);font-size:.76rem;color:var(--ink-faint);
+    line-height:2}
+  .fontes a{color:var(--ink-dim)}
+  footer{padding:2.4rem 0 3rem;font-family:var(--mono);font-size:.74rem;
+    color:var(--ink-faint)}
+</style>
+
+<div class="strip">
+  <span><span class="dot">●</span> IDEIA #02 · A ESCOLA DA SUA CIDADE</span>
+  <span id="selo">CARREGANDO…</span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero" id="buscar">
+    <p class="eyebrow">Ideia #02</p>
+    <h1>A escola da sua cidade tem <span class="hit">nota</span>. E tem <span class="hit">dono</span>.</h1>
+    <p class="lede">
+      O governo mede a escola pública de todo município do Brasil e publica a nota:
+      é o <b>Ideb</b>. Quase ninguém olha — e quase ninguém sabe que, dependendo da
+      série, quem responde por aquela escola é o <b>prefeito</b> ou o <b>governador</b>.
+      Digite seu CEP e veja as duas coisas.
+    </p>
+
+    <form class="cepbar" id="form" autocomplete="off">
+      <label for="cep" class="sr-only" hidden>Seu CEP</label>
+      <input id="cep" name="cep" inputmode="numeric" placeholder="00000-000"
+             aria-label="Digite o seu CEP">
+      <button type="submit">Ver minha cidade</button>
+    </form>
+    <p class="cep-hint">O CEP só serve para descobrir a cidade. Nada é guardado.</p>
+  </header>
+
+  <section class="result" id="result">
+    <h2 class="sec">Buscando</h2>
+    <div class="term" id="term"></div>
+    <div id="saida"></div>
+  </section>
+
+  <section id="entenda">
+    <h2 class="sec">Entenda em 3 passos</h2>
+    <div class="cards">
+      <div class="card">
+        <p class="n">01</p>
+        <h4>O que é o Ideb</h4>
+        <p>Uma nota de <b>0 a 10</b> que o governo federal dá para a rede pública de
+        cada cidade, a cada dois anos. Ela junta duas coisas: o quanto os alunos
+        acertaram numa prova nacional e o quanto deles passou de ano.</p>
+      </div>
+      <div class="card">
+        <p class="n">02</p>
+        <h4>A conta por trás</h4>
+        <p>É uma multiplicação: <b>nota da prova × taxa de aprovação</b>. Duas cidades
+        podem ter o mesmo Ideb por caminhos opostos — uma ensinando mais, outra
+        aprovando mais. Por isso a gente mostra as duas parcelas, não só o resultado.</p>
+      </div>
+      <div class="card">
+        <p class="n">03</p>
+        <h4>Quem responde</h4>
+        <p>Do <b>1º ao 9º ano</b>, a escola costuma ser da <b>prefeitura</b>. No
+        <b>ensino médio</b>, é quase sempre do <b>governo do estado</b>. Cobrar o
+        político errado é o mesmo que não cobrar.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodo">
+    <h2 class="sec">Como a gente calcula</h2>
+    <h3>Nada aqui é opinião nossa. É o arquivo do governo, lido por um programa.</h3>
+    <p class="dim">
+      Os números vêm das planilhas oficiais do <b>INEP</b> (o instituto do Ministério
+      da Educação que aplica as provas), baixadas direto do servidor do governo,
+      conferidas contra o <em>md5</em> que o próprio INEP publica junto do arquivo e
+      guardadas com o <em>sha256</em> de cada download. Se o INEP publicar um número
+      diferente amanhã, esta página muda junto.
+    </p>
+    <p class="dim">
+      A comparação usa a <b>mediana</b> — a cidade do meio da fila —, não a média,
+      porque uma cidade muito boa ou muito ruim entorta a média e faz o retrato
+      parecer o que não é.
+    </p>
+    <br>
+    <div class="aviso">
+      <b>O que este número não diz.</b> Ideb baixo não prova que a prefeitura fez
+      corpo mole, e Ideb alto não prova que fez tudo certo. O que mais explica a nota
+      de uma escola, em qualquer país, é a renda das famílias que estudam nela.
+      A gente publica o valor, a meta que o próprio poder público assinou e a
+      comparação com as cidades vizinhas. <b>A conclusão é sua.</b>
+    </div>
+  </section>
+
+  <section id="dinheiro">
+    <h2 class="sec">A outra metade</h2>
+    <h3>Você viu a nota. Falta ver o dinheiro.</h3>
+    <p class="dim">
+      Na <a href="/dinheiro.html">Ideia #01</a> a gente mostra para onde foi a verba
+      dos deputados federais que receberam voto na sua cidade — e a distância, em
+      quilômetros, entre o lugar que votou e o lugar que recebeu.
+      E no <a href="/propostas/educacao.html">dossiê da educação</a> está a proposta
+      de mudar a própria conta do Ideb, para que aprovar sem ensinar deixe de
+      compensar.
+    </p>
+  </section>
+
+  <section id="fontes">
+    <h2 class="sec">De onde vem cada número</h2>
+    <p class="fontes" id="listafontes">
+      <a href="https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb"
+         target="_blank" rel="noopener">INEP — Ideb, resultados por município</a> ·
+      <a href="https://viacep.com.br/" target="_blank" rel="noopener">ViaCEP — CEP para município</a>
+    </p>
+  </section>
+
+  <footer>
+    Brincando de Brasil · dados abertos oficiais · todo número tem link para a fonte
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var form=document.getElementById('form'), input=document.getElementById('cep');
+  var result=document.getElementById('result'), term=document.getElementById('term');
+  var saida=document.getElementById('saida'), selo=document.getElementById('selo');
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var running=false;
+
+  function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+  function num(v){return Number(v||0)}
+  function n2(v){return num(v).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})}
+  // Na linha da conta a multiplicação fica exposta, e com uma casa decimal
+  // ela pode parecer não fechar (5,3 × 98,8% = 5,24, não 5,2). Duas casas na
+  // nota fazem o leitor conferir e bater — que é o ponto de mostrar a conta.
+  function n2b(v){return num(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function pct(v){return (100*num(v)).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%'}
+
+  fetch('/api/saude').then(function(r){return r.json()}).then(function(d){
+    var f=(d.fontes||[]).filter(function(x){return x.fonte_id.indexOf('inep_ideb')===0})[0];
+    var quando=f?new Date(f.baixado_em).toLocaleDateString('pt-BR'):'—';
+    selo.textContent='DADOS OFICIAIS · INEP '+quando;
+  }).catch(function(){ selo.textContent='SERVIDOR FORA DO AR'; });
+
+  input.addEventListener('input',function(){
+    var d=input.value.replace(/\D/g,'').slice(0,8);
+    input.value=d.length>5?d.slice(0,5)+'-'+d.slice(5):d;
+  });
+
+  function linhas(term, lista, done){
+    var i=0;
+    (function next(){
+      if(i<lista.length){
+        var s=document.createElement('span');
+        s.className='ln'; s.innerHTML=lista[i++];
+        term.appendChild(s);
+        setTimeout(next, reduced?0:240);
+      } else { done(); }
+    })();
+  }
+
+  // Linha do tempo do Ideb. SVG inline: some com a página se o JS falhar, e
+  // não custa uma biblioteca de gráfico para desenhar dez pontos.
+  function serie(pontos){
+    if(!pontos || pontos.length<2) return '';
+    var w=560, h=64, pad=6;
+    var vals=pontos.map(function(p){return num(p.ideb)});
+    var mn=Math.min.apply(null,vals), mx=Math.max.apply(null,vals);
+    if(mx-mn<0.6){ var meio=(mx+mn)/2; mn=meio-0.3; mx=meio+0.3; }
+    var passo=pontos.length>1?(w-2*pad)/(pontos.length-1):0;
+    var pt=pontos.map(function(p,i){
+      var x=pad+i*passo;
+      var y=pad+(h-2*pad)*(1-(num(p.ideb)-mn)/(mx-mn));
+      return [x,y];
+    });
+    var d=pt.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' ');
+    var bolas=pt.map(function(p,i){
+      var ult=i===pt.length-1;
+      return '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(ult?4:2.6)+'" '
+        + 'fill="'+(ult?'#F5D90A':'#5C6B7A')+'"></circle>';
+    }).join('');
+    return '<div class="serie">'
+      + '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" role="img" '
+      + 'aria-label="Evolução do Ideb de '+pontos[0].ano+' a '+pontos[pontos.length-1].ano+'">'
+      + '<path d="'+d+'" fill="none" stroke="#F5D90A" stroke-width="2" '
+      + 'stroke-linejoin="round" stroke-linecap="round" opacity=".85"></path>'
+      + bolas + '</svg>'
+      + '<div class="rot"><span>'+pontos[0].ano+' · '+n2(pontos[0].ideb)+'</span>'
+      + '<span>'+pontos[pontos.length-1].ano+' · '+n2(pontos[pontos.length-1].ideb)+'</span></div>'
+      + '</div>';
+  }
+
+  function cartao(e){
+    if(!e.medido){
+      return '<div class="etapa vazia"><div class="etapa-cab"><h3>'+esc(e.titulo)+'</h3>'
+        + '<span class="selo-rede">sem medição</span></div>'
+        + '<p class="dim">O INEP não divulgou nota da rede '
+        + esc(String(e.rede).toLowerCase())+' desta cidade nesta etapa. '
+        + 'Isso costuma acontecer quando a cidade não tem essa rede, ou tem alunos '
+        + 'de menos para a nota ser confiável.</p></div>';
+    }
+    var c=e.comparacao||{};
+    var h='<div class="etapa">'
+      + '<div class="etapa-cab"><h3>'+esc(e.titulo)+'</h3>'
+      + '<span class="selo-rede">rede '+esc(String(e.rede).toLowerCase())+'</span></div>'
+
+      + '<div class="responde"><span class="rot">Quem responde por esta escola</span>'
+      + '<b>'+esc(e.cobra)+'</b><p>'+esc(e.explica)+'</p></div>'
+
+      + '<div class="numeros">'
+      + '<div class="big">'+n2(e.ideb)+'<small>Ideb '+e.ano+'</small></div>'
+      + '<div class="conta">'
+      + '<span class="rot">a conta:</span> <span class="v">'+n2b(e.nota)+'</span> '
+      + '<span class="rot">de nota na prova</span> <em>×</em> '
+      + '<span class="v">'+pct(e.fluxo)+'</span> <span class="rot">de alunos aprovados</span> '
+      + '<em>=</em> <span class="v">'+n2(e.ideb)+'</span> '
+      + '<span class="rot">(arredondado)</span>'
+      + '</div></div>'
+
+      + '<ul class="barras">'
+      + '<li><div class="cap"><span>Nota na prova (de 0 a 10)</span><b>'+n2b(e.nota)+'</b></div>'
+      + '<div class="minibar"><span class="amarelo" style="width:'
+      + Math.max(0,Math.min(100,10*num(e.nota))).toFixed(1)+'%"></span></div></li>'
+      + '<li><div class="cap"><span>Alunos que passaram de ano</span><b>'+pct(e.fluxo)+'</b></div>'
+      + '<div class="minibar"><span class="azul" style="width:'
+      + Math.max(0,Math.min(100,100*num(e.fluxo))).toFixed(1)+'%"></span></div></li>'
+      + '</ul>';
+
+    var u=e.ultima_meta;
+    if(u){
+      h+='<div class="meta-box"><span class="tag '+(u.bateu?'sim':'nao')+'">'
+        + (u.bateu?'cumpriu':'não cumpriu')+'</span>'
+        + 'A meta oficial para <b>'+u.ano+'</b> era <b>'+n2(u.meta)+'</b>. '
+        + 'A cidade fez <b>'+n2(u.ideb)+'</b>.'
+        + '</div>';
+    }
+
+    h+='<div class="comp">'
+      + '<span>Entre as cidades do '+esc(e.uf||'')+': <b>'+(c.posicao_uf||'—')
+      + 'º de '+(c.n_uf||'—')+'</b></span>'
+      + '<span>Cidade do meio no estado: <b>'+n2(c.mediana_uf)+'</b></span>'
+      + '<span>Cidade do meio no país: <b>'+n2(c.mediana_br)+'</b></span>'
+      + '</div>';
+
+    h+=serie(e.serie||[]);
+    return h+'</div>';
+  }
+
+  function render(d){
+    var h='<div class="local">sua cidade<b>'+esc(d.municipio)+'/'+esc(d.uf)+'</b></div>';
+    (d.etapas||[]).forEach(function(e){ e.uf=d.uf; h+=cartao(e); });
+    h+='<div class="aviso" style="margin-top:1.4rem">'
+      + '<b>Reparou na segunda barra?</b> Quando quase todo mundo passa de ano mas a '
+      + 'nota da prova é baixa, o Ideb sobe sem que o aprendizado tenha subido junto. '
+      + 'É essa brecha que a nossa <a href="/propostas/educacao.html">proposta para a '
+      + 'educação</a> quer fechar.</div>';
+    saida.innerHTML=h;
+  }
+
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    if(running)return;
+    var cep=input.value.replace(/\D/g,'');
+    if(cep.length!==8){
+      input.focus();
+      input.setCustomValidity('O CEP precisa ter 8 números');
+      input.reportValidity();
+      setTimeout(function(){input.setCustomValidity('')},1500);
+      return;
+    }
+    running=true;
+    saida.innerHTML=''; term.innerHTML='';
+    result.classList.add('on');
+    result.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
+
+    var pedido=fetch('/api/educacao?cep='+cep).then(function(r){
+      return r.json().then(function(j){ return {ok:r.ok, corpo:j} });
+    });
+
+    linhas(term,[
+      '&gt; CEP '+esc(input.value)+' → cidade … <span class="ok">ok</span>',
+      '&gt; INEP / Ideb por município, todas as edições … <span class="ok">ok</span>',
+      '&gt; separando a nota da prova e a taxa de aprovação … <span class="vt">pronto</span>'
+    ], function(){
+      pedido.then(function(r){
+        running=false;
+        if(!r.ok){
+          saida.innerHTML='<p class="erro">'+esc(r.corpo.erro||'erro na consulta')+'</p>';
+          return;
+        }
+        render(r.corpo);
+      }).catch(function(){
+        running=false;
+        saida.innerHTML='<p class="erro">Servidor fora do ar. Rode '
+          +'<b>python3.13 pipeline/api.py</b> e recarregue a página.</p>';
+      });
+    });
+  });
+})();
+</script>

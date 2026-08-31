@@ -15,9 +15,14 @@ Uso:
 """
 import argparse
 import os
+import sys
 import time
 import urllib.request
 from dataclasses import dataclass
+from urllib.parse import urlparse
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import tls
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(RAIZ, "data", "raw")
@@ -53,6 +58,42 @@ FONTES = {
         periodicidade="eleicao",
         cliente="curl_cffi",   # o CDN do TSE (Akamai) bloqueia urllib por TLS
     ),
+    "inep_ideb_anos_iniciais": Fonte(
+        id="inep_ideb_anos_iniciais",
+        descricao="Ideb — anos iniciais do fundamental (1º ao 5º), por município — INEP/MEC",
+        url=("https://download.inep.gov.br/ideb/resultados/"
+             "divulgacao_anos_iniciais_municipios_2023.zip"),
+        arquivo="ideb_anos_iniciais_2023.zip",
+        periodicidade="bienal",
+        # O INEP manda só o certificado folha e omite o intermediário da RNP;
+        # `tls.py` devolve o elo que falta para que a verificação continue
+        # LIGADA. Ver o cabeçalho daquele módulo — é o oposto de verify=False.
+        cliente="curl_cffi",
+    ),
+    "inep_ideb_anos_finais": Fonte(
+        id="inep_ideb_anos_finais",
+        descricao="Ideb — anos finais do fundamental (6º ao 9º), por município — INEP/MEC",
+        url=("https://download.inep.gov.br/ideb/resultados/"
+             "divulgacao_anos_finais_municipios_2023.zip"),
+        arquivo="ideb_anos_finais_2023.zip",
+        periodicidade="bienal",
+        # O INEP manda só o certificado folha e omite o intermediário da RNP;
+        # `tls.py` devolve o elo que falta para que a verificação continue
+        # LIGADA. Ver o cabeçalho daquele módulo — é o oposto de verify=False.
+        cliente="curl_cffi",
+    ),
+    "inep_ideb_ensino_medio": Fonte(
+        id="inep_ideb_ensino_medio",
+        descricao="Ideb — ensino médio, por município — INEP/MEC",
+        url=("https://download.inep.gov.br/ideb/resultados/"
+             "divulgacao_ensino_medio_municipios_2023.zip"),
+        arquivo="ideb_ensino_medio_2023.zip",
+        periodicidade="bienal",
+        # O INEP manda só o certificado folha e omite o intermediário da RNP;
+        # `tls.py` devolve o elo que falta para que a verificação continue
+        # LIGADA. Ver o cabeçalho daquele módulo — é o oposto de verify=False.
+        cliente="curl_cffi",
+    ),
 }
 
 
@@ -70,17 +111,33 @@ def _cabecalhos_urllib(url):
                 "tamanho": int(h.get("Content-Length") or 0)}
 
 
-def _cabecalhos_curl_cffi(url):
+def _cabecalhos_curl_cffi(url, tentativas=4):
+    """Cabeçalhos via GET de 1 byte, com retry.
+
+    O CDN do TSE responde melhor a um GET de faixa que a um HEAD. E o
+    servidor do INEP derruba a conexão de vez em quando ("Recv failure:
+    Connection reset by peer") sem nenhum padrão — numa medição de 6
+    chamadas seguidas, 6 passaram; noutra, a primeira caiu. Num job que roda
+    sozinho de madrugada, uma queda dessas viraria "fonte inacessível" no
+    log e um dia sem dado, por nada.
+    """
     from curl_cffi import requests
-    # O CDN do TSE responde melhor a um GET de 1 byte que a um HEAD.
-    r = requests.get(url, impersonate="chrome", timeout=60,
-                     headers={"Range": "bytes=0-0"})
-    if r.status_code not in (200, 206):
-        raise RuntimeError(f"HTTP {r.status_code}")
-    cr = r.headers.get("content-range", "")
-    total = int(cr.split("/")[1]) if "/" in cr else 0
-    return {"etag": r.headers.get("etag"),
-            "last_modified": r.headers.get("last-modified"), "tamanho": total}
+    for tentativa in range(tentativas):
+        try:
+            r = requests.get(url, impersonate="chrome", timeout=60,
+                             verify=tls.verificacao(urlparse(url).hostname),
+                             headers={"Range": "bytes=0-0"})
+            if r.status_code not in (200, 206):
+                raise RuntimeError(f"HTTP {r.status_code}")
+            cr = r.headers.get("content-range", "")
+            total = int(cr.split("/")[1]) if "/" in cr else 0
+            return {"etag": r.headers.get("etag"),
+                    "last_modified": r.headers.get("last-modified"),
+                    "tamanho": total}
+        except Exception:
+            if tentativa == tentativas - 1:
+                raise
+            time.sleep(2 ** tentativa)
 
 
 def checar(fonte):
@@ -140,6 +197,7 @@ def _baixar_curl_cffi(url, dst, chunk=16 << 20, retries=6):
             for tentativa in range(retries):
                 try:
                     r = requests.get(url, impersonate="chrome", timeout=120,
+                                     verify=tls.verificacao(urlparse(url).hostname),
                                      headers={"Range": f"bytes={feito}-{fim}"})
                     if r.status_code not in (200, 206):
                         raise RuntimeError(f"HTTP {r.status_code}")

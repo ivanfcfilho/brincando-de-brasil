@@ -1,0 +1,620 @@
+<title>Como funciona a eleição no Brasil · Brincando de Brasil</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="/menu.js" defer></script>
+<style>
+  :root{
+    --bg:#0B0F14; --panel:#111820; --panel-2:#0E141B; --line:#1E2935;
+    --ink:#E9EEF4; --ink-dim:#93A1B0; --ink-faint:#5C6B7A;
+    --volt:#F5D90A; --alert:#FF5C5C; --ok:#39D98A; --azul:#5AB2FF;
+    --roxo:#B18CFF; --laranja:#FF9F45;
+    --mono:'IBM Plex Mono',ui-monospace,'Cascadia Mono',Menlo,monospace;
+    --sans:'Archivo','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--volt)}
+  ::selection{background:var(--volt);color:#0B0F14}
+  :focus-visible{outline:2px solid var(--volt);outline-offset:2px}
+
+  .strip{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;
+    align-items:center;padding:.55rem 1.25rem;background:var(--panel-2);
+    border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.72rem;
+    letter-spacing:.06em;color:var(--ink-faint)}
+  .strip .dot{color:var(--volt)}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 1.25rem}
+
+  .hero{padding:3.2rem 0 2.8rem;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.28em;
+    color:var(--volt);text-transform:uppercase;margin-bottom:1.3rem}
+  .eyebrow::before{content:"// "}
+  h1{font-weight:900;font-size:clamp(2rem,4.4vw,3.3rem);line-height:1.04;
+    letter-spacing:-.015em;text-wrap:balance;text-transform:uppercase;max-width:18ch}
+  h1 .hit{color:var(--volt)}
+  .lede{margin-top:1.4rem;max-width:60ch;font-size:1.1rem;color:var(--ink-dim)}
+
+  section{padding:3rem 0;border-bottom:1px solid var(--line)}
+  h2.sec{font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--volt);margin-bottom:1.4rem}
+  h2.sec::before{content:"// "}
+  h3{font-size:1.4rem;line-height:1.2;margin-bottom:.8rem;letter-spacing:-.01em}
+  h4{font-size:1.05rem;margin-bottom:.4rem}
+  p+p{margin-top:.9rem}
+  .dim{color:var(--ink-dim)}
+  .maxw{max-width:64ch}
+
+  /* ---------- abas dos cargos ---------- */
+  .abas{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  .abas button{background:var(--panel);border:1px solid var(--line);color:var(--ink-dim);
+    font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:.6rem 1rem;border-radius:3px;cursor:pointer}
+  .abas button[aria-selected="true"]{background:var(--volt);color:#0B0F14;
+    border-color:var(--volt);font-weight:700}
+  .abas button:hover:not([aria-selected="true"]){border-color:var(--volt);color:var(--ink)}
+
+  .cargos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+  .cargo{background:var(--panel);border:1px solid var(--line);border-radius:4px;
+    padding:1.1rem 1.05rem;border-top:3px solid var(--line)}
+  .cargo.maj{border-top-color:var(--laranja)}
+  .cargo.prop{border-top-color:var(--azul)}
+  .cargo .tipo{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;
+    text-transform:uppercase;margin-bottom:.5rem;display:inline-block;
+    padding:.12rem .4rem;border-radius:2px}
+  .cargo.maj .tipo{background:rgba(255,159,69,.16);color:var(--laranja)}
+  .cargo.prop .tipo{background:rgba(90,178,255,.16);color:var(--azul)}
+  .cargo p{font-size:.88rem;color:var(--ink-dim)}
+  .cargo .faz{margin-top:.5rem;font-size:.86rem}
+  .cargo .faz b{color:var(--ink)}
+
+  /* ---------- os dois sistemas ---------- */
+  .dois{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.4rem}
+  @media (max-width:800px){.dois{grid-template-columns:1fr}}
+  .sist{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1.3rem}
+  .sist.a{border-left:3px solid var(--laranja)}
+  .sist.b{border-left:3px solid var(--azul)}
+  .sist h4{font-size:1.15rem}
+  .sist .regra{font-family:var(--mono);font-size:.82rem;margin:.7rem 0;
+    padding:.6rem .7rem;background:var(--panel-2);border-radius:3px;color:var(--ink)}
+  .sist ul{margin:.6rem 0 0 1.1rem;font-size:.88rem;color:var(--ink-dim)}
+  .sist li{margin-bottom:.25rem}
+
+  /* ---------- simulador ---------- */
+  .sim{background:var(--panel);border:1px solid var(--line);border-radius:5px;
+    padding:1.5rem 1.4rem;margin-top:1.5rem}
+  .sim-topo{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;
+    justify-content:space-between;margin-bottom:1.2rem}
+  .vagas{font-family:var(--mono);font-size:.8rem;color:var(--ink-dim);
+    display:flex;align-items:center;gap:.6rem}
+  .vagas input{width:70px;background:var(--panel-2);border:1px solid var(--line);
+    color:var(--ink);font-family:var(--mono);font-size:1rem;padding:.35rem .5rem;
+    border-radius:3px;text-align:center}
+  .btn-reset{background:none;border:1px solid var(--line);color:var(--ink-dim);
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:.45rem .8rem;border-radius:3px;cursor:pointer}
+  .btn-reset:hover{border-color:var(--volt);color:var(--volt)}
+
+  .partidos{display:grid;gap:.9rem}
+  .part{display:grid;grid-template-columns:110px 1fr 92px;gap:.9rem;align-items:center}
+  @media (max-width:640px){.part{grid-template-columns:80px 1fr 76px;gap:.5rem}}
+  .part .nome{font-weight:700;font-size:.95rem}
+  .part .nome i{display:block;font-style:normal;font-family:var(--mono);
+    font-size:.66rem;color:var(--ink-faint);letter-spacing:.05em}
+  .part input[type=range]{width:100%;accent-color:var(--volt);cursor:pointer}
+  .part .votos{font-family:var(--mono);font-size:.86rem;text-align:right;color:var(--ink)}
+
+  .conta-sim{margin-top:1.5rem;background:var(--panel-2);border:1px solid var(--line);
+    border-radius:4px;padding:1.1rem 1.1rem;font-family:var(--mono);font-size:.84rem;
+    line-height:1.95;color:var(--ink-dim)}
+  .conta-sim .v{color:var(--volt);font-weight:600}
+  .conta-sim .k{color:var(--ink)}
+  .conta-sim hr{border:0;border-top:1px solid var(--line);margin:.7rem 0}
+
+  .cadeiras-vis{display:flex;flex-wrap:wrap;gap:5px;margin-top:1rem}
+  .cad{width:26px;height:26px;border-radius:3px;display:flex;align-items:center;
+    justify-content:center;font-family:var(--mono);font-size:.6rem;color:#0B0F14;
+    font-weight:700}
+  .cad.vazia{background:var(--panel-2);border:1px dashed var(--line)}
+
+  .legenda-cores{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin-top:.9rem;
+    font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}
+  .legenda-cores span b{display:inline-block;width:10px;height:10px;border-radius:2px;
+    margin-right:.35rem;vertical-align:middle}
+
+  /* ---------- resultado real ---------- */
+  .cepbar{margin-top:1.4rem;display:flex;gap:.6rem;flex-wrap:wrap;max-width:520px}
+  .cepbar select,.cepbar input{background:var(--panel);border:1px solid var(--line);
+    border-radius:4px;color:var(--ink);font-family:var(--mono);font-size:1rem;
+    padding:.75rem .9rem}
+  .cepbar select{flex:1 1 200px}
+  .cepbar button{background:var(--volt);color:#0B0F14;border:0;border-radius:4px;
+    cursor:pointer;font-family:var(--sans);font-weight:800;font-size:.9rem;
+    letter-spacing:.08em;text-transform:uppercase;padding:.75rem 1.3rem}
+  .cepbar button:hover{background:#ffe83d}
+
+  .caso{background:var(--panel);border:1px solid var(--line);border-radius:4px;
+    padding:1.2rem;margin-top:1rem}
+  .versus{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;
+    margin-top:.8rem}
+  @media (max-width:700px){.versus{grid-template-columns:1fr;text-align:left}}
+  .lado{padding:.9rem 1rem;border-radius:4px;background:var(--panel-2);
+    border:1px solid var(--line)}
+  .lado.perdeu{border-left:3px solid var(--alert)}
+  .lado.ganhou{border-left:3px solid var(--ok)}
+  .lado .rot{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:.3rem}
+  .lado .quem{font-weight:700;font-size:1rem}
+  .lado .part-sig{font-family:var(--mono);font-size:.74rem;color:var(--ink-dim)}
+  .lado .qtd{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin-top:.35rem;
+    display:block;font-weight:600}
+  .vs{font-family:var(--mono);font-size:.8rem;color:var(--volt);text-align:center}
+  .nota-suplente{margin-top:.7rem;font-size:.82rem;color:var(--ink-faint)}
+
+  .lista-mais{list-style:none;margin-top:1rem}
+  .lista-mais li{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;
+    border-top:1px solid var(--line);font-size:.9rem}
+  .lista-mais li b{font-family:var(--mono);color:var(--ink)}
+  .lista-mais .sig{color:var(--ink-faint);font-family:var(--mono);font-size:.76rem}
+
+  .aviso{background:var(--panel-2);border:1px solid var(--line);
+    border-left:3px solid var(--ink-faint);border-radius:3px;
+    padding:1rem 1.1rem;font-size:.9rem;color:var(--ink-dim);margin-top:1.3rem}
+  .aviso b{color:var(--ink)}
+  .aviso.forte{border-left-color:var(--volt)}
+  .erro{color:var(--alert)}
+
+  .passos{counter-reset:p;list-style:none;margin-top:1.2rem}
+  .passos li{counter-increment:p;position:relative;padding-left:2.4rem;
+    margin-bottom:1rem;color:var(--ink-dim);font-size:.94rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:0;
+    width:1.7rem;height:1.7rem;border-radius:3px;background:var(--volt);color:#0B0F14;
+    font-family:var(--mono);font-weight:700;font-size:.8rem;
+    display:flex;align-items:center;justify-content:center}
+  .passos li b{color:var(--ink)}
+
+  footer{padding:2.4rem 0 3rem;font-family:var(--mono);font-size:.74rem;
+    color:var(--ink-faint)}
+</style>
+
+<div class="strip">
+  <span><span class="dot">●</span> AULA ABERTA · COMO FUNCIONA A ELEIÇÃO</span>
+  <span id="selo">CARREGANDO…</span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero" id="topo">
+    <p class="eyebrow">Política básica</p>
+    <h1>Você votou nele. E elegeu <span class="hit">outro</span>.</h1>
+    <p class="lede">
+      Isso acontece em toda eleição de deputado e vereador no Brasil, é
+      <b>legal</b>, e quase ninguém sabe por quê. Em 2022,
+      <b id="nac-paradoxo">…</b> candidatos a deputado federal tiveram
+      <b>mais votos</b> que alguém eleito do próprio estado — e não foram eleitos. Esta página explica a regra do zero,
+      com uma eleição de mentirinha que você mesmo mexe, e depois mostra o que
+      aconteceu de verdade no seu estado.
+    </p>
+  </header>
+
+  <!-- ------------------------------------------------ 1. os cargos -->
+  <section id="cargos">
+    <h2 class="sec">Primeiro: quem é quem</h2>
+    <h3>São 7 cargos, e você não vota em todos no mesmo ano.</h3>
+    <p class="dim maxw">A eleição do Brasil é dividida em duas, alternadas de dois em
+    dois anos. Uma cuida da sua cidade, a outra do estado e do país.</p>
+
+    <div class="abas" role="tablist" id="abas">
+      <button role="tab" aria-selected="true" data-aba="geral">Eleição geral (2022, 2026…)</button>
+      <button role="tab" aria-selected="false" data-aba="municipal">Eleição municipal (2024, 2028…)</button>
+    </div>
+    <div class="cargos" id="cargos-lista"></div>
+
+    <div class="aviso">
+      <b>Repare nas cores.</b> As laranjas são decididas por <b>maioria de votos</b>:
+      ganha quem tem mais, e ponto. As azuis são decididas por
+      <b>proporção entre partidos</b> — e é aí que mora toda a confusão. A próxima
+      parte é sobre elas.
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------ 2. os dois sistemas -->
+  <section id="sistemas">
+    <h2 class="sec">A regra que muda tudo</h2>
+    <h3>Existem dois jeitos de transformar voto em cadeira.</h3>
+    <div class="dois">
+      <div class="sist a">
+        <h4>1. Majoritário — o mais votado leva</h4>
+        <p class="regra">quem tem mais voto ganha</p>
+        <p class="dim">É o que você já imagina que seja uma eleição. Vale para
+        <b>prefeito, governador, presidente e senador</b>.</p>
+        <ul>
+          <li>Seu voto vai inteiro para a pessoa.</li>
+          <li>Se ela perde, seu voto não elege mais ninguém.</li>
+          <li>Em cidade com mais de 200 mil eleitores, presidente e governador:
+          se ninguém passa de 50%, tem segundo turno.</li>
+        </ul>
+      </div>
+      <div class="sist b">
+        <h4>2. Proporcional — o partido leva, depois reparte</h4>
+        <p class="regra">o partido ganha as cadeiras · os candidatos disputam entre si</p>
+        <p class="dim">Vale para <b>vereador, deputado estadual e deputado federal</b> —
+        a maior parte de quem faz as leis.</p>
+        <ul>
+          <li>Seu voto na pessoa conta <b>primeiro para o partido dela</b>.</li>
+          <li>O partido ganha um número de cadeiras conforme o tanto de voto que
+          somou no total.</li>
+          <li>Essas cadeiras vão para os candidatos <b>mais votados dentro daquele
+          partido</b> — não os mais votados do estado.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="aviso forte">
+      <b>É daqui que sai a estranheza.</b> Um candidato com 90 mil votos pode ficar
+      de fora enquanto outro com 40 mil entra, porque o partido do segundo somou
+      mais votos no conjunto. Não é fraude nem erro de contagem: é a regra
+      funcionando como foi escrita. Você pode ver a mecânica funcionando logo
+      abaixo.
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------ 3. simulador -->
+  <section id="simulador">
+    <h2 class="sec">Agora mexa você</h2>
+    <h3>Uma eleição de mentirinha, com números redondos.</h3>
+    <p class="dim maxw">Quatro partidos disputando algumas cadeiras. Arraste os
+    votos e veja quem fica com o quê. <b>Os números são inventados de propósito</b>,
+    para a conta ficar fácil de acompanhar — a regra, essa é a de verdade.</p>
+
+    <div class="sim">
+      <div class="sim-topo">
+        <label class="vagas">Cadeiras em disputa
+          <input type="number" id="vagas" min="2" max="20" value="10">
+        </label>
+        <button class="btn-reset" id="reset" type="button">Recomeçar</button>
+      </div>
+
+      <div class="partidos" id="partidos"></div>
+
+      <div class="conta-sim" id="conta"></div>
+
+      <div class="cadeiras-vis" id="cadeiras"></div>
+      <div class="legenda-cores" id="legenda"></div>
+    </div>
+
+    <ol class="passos">
+      <li><b>Soma-se tudo</b> e divide pelo número de cadeiras. O resultado é o
+      <b>quociente eleitoral</b>: o "preço" de uma cadeira, em votos.</li>
+      <li><b>Cada partido</b> divide o total dele por esse preço. A parte inteira
+      é quantas cadeiras ele já garantiu.</li>
+      <li><b>Quase sempre sobram cadeiras</b>, porque as divisões deixam resto.
+      Elas vão, uma a uma, para o partido com a maior média — o total dele
+      dividido pelas cadeiras que já tem, mais um.</li>
+      <li><b>Dentro do partido</b>, as cadeiras ficam com os candidatos mais
+      votados dele. Por isso um candidato muito votado "puxa" companheiros de
+      chapa: o excedente dele vira cadeira do partido.</li>
+    </ol>
+
+    <div class="aviso">
+      <b>O que a simulação não mostra, para não mentir:</b> desde 2015 há duas
+      travas a mais na regra real — o candidato só assume se tiver pelo menos
+      <b>10% do quociente eleitoral</b> em votos próprios, e o partido só disputa
+      as sobras se tiver alcançado <b>80% do quociente</b>. E os votos válidos de
+      verdade incluem o <b>voto de legenda</b> (na sigla, sem candidato), que a
+      nossa base de dados não traz. Por isso a mecânica é ensinada aqui com
+      números fictícios, e o dado real aparece só onde é exato — na parte
+      seguinte.
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------ 4. de verdade -->
+  <section id="real">
+    <h2 class="sec">Aconteceu de verdade</h2>
+    <h3>Sua eleição de 2022, com nome e número.</h3>
+    <p class="dim maxw">Escolha o estado e veja quem teve mais votos e ficou de
+    fora — e quem entrou com menos. Os dados são do TSE, a apuração oficial.</p>
+
+    <form class="cepbar" id="form-uf" autocomplete="off">
+      <select id="uf" aria-label="Escolha o estado"></select>
+      <button type="submit">Ver meu estado</button>
+    </form>
+
+    <div id="saida-real"></div>
+  </section>
+
+  <!-- ------------------------------------------------ 5. ler estatística -->
+  <section id="estatistica">
+    <h2 class="sec">Bônus: como não ser enganado</h2>
+    <h3>Todo governo mostra o gráfico que favorece ele. Veja como conferir.</h3>
+    <p class="dim maxw">Esta é a parte mais útil e a menos ensinada: ler um número
+    que um político mostra na TV. Quatro perguntas resolvem quase tudo.</p>
+
+    <ol class="passos">
+      <li><b>De quando até quando?</b> O truque mais comum é escolher o pedaço do
+      gráfico. A mesma série pode "subir" ou "cair" dependendo do ano em que
+      você começa a contar. Peça a série inteira, desde o começo.</li>
+      <li><b>É o total ou é por pessoa?</b> "Investimos mais em saúde que nunca"
+      quase sempre é verdade em reais — o país cresce e o dinheiro inflaciona.
+      O número honesto é <b>por habitante e corrigido pela inflação</b>.</li>
+      <li><b>Quem realmente manda nisso?</b> Nota de escola do 1º ao 5º ano é da
+      <b>prefeitura</b>; ensino médio é do <b>estado</b>. Prefeito que promete
+      arrumar o ensino médio está prometendo o que não é dele.</li>
+      <li><b>Aconteceu junto ou por causa?</b> Um indicador melhorou durante um
+      governo não prova que foi ele. Preço de commodity, ciclo do mundo e
+      política começada dez anos antes entram na conta. Desconfie de quem
+      atribui tudo a si — dos dois lados.</li>
+    </ol>
+
+    <div class="aviso forte">
+      <b>Por que aqui não tem ranking de governo.</b> Seria o conteúdo mais fácil
+      de viralizar e o mais desonesto de produzir: os dados públicos mostram
+      <b>o que aconteceu no país</b>, não <b>o que um presidente causou</b>.
+      Separar as duas coisas exige um cuidado que um cartão de rede social não
+      comporta. O que dá para fazer com honestidade é o que está nas outras
+      páginas: mostrar o número oficial, a série inteira, quem responde pela
+      área e o link para a fonte — e deixar a conclusão com você.
+      <br><br>
+      Quer treinar? A <a href="/escola.html">nota da escola da sua cidade</a> tem
+      a série desde 2005, e a <a href="/dinheiro.html">página do dinheiro</a>
+      mostra a verba que cada deputado mandou e para onde.
+    </div>
+  </section>
+
+  <footer>
+    Brincando de Brasil · dados abertos oficiais · todo número tem link para a fonte
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ================= 1. os cargos ================= */
+  var CARGOS = {
+    geral: [
+      ['prop','Deputado federal','513 no país','Faz as leis do Brasil e aprova o Orçamento. É quem manda emenda para a sua cidade.'],
+      ['prop','Deputado estadual','varia por estado','Faz as leis do seu estado e fiscaliza o governador.'],
+      ['maj','Senador','3 por estado, 81 no total','Faz leis e aprova ministros, juízes do Supremo e embaixadores. Mandato de 8 anos.'],
+      ['maj','Governador','1 por estado','Comanda o estado: ensino médio, polícia militar, hospitais estaduais e estradas do estado.'],
+      ['maj','Presidente','1 no país','Comanda o governo federal, indica ministros e sanciona ou veta as leis.'],
+    ],
+    municipal: [
+      ['prop','Vereador','varia por cidade','Faz as leis da cidade e fiscaliza o prefeito. É o cargo mais perto de você — e o menos acompanhado.'],
+      ['maj','Prefeito','1 por cidade','Comanda a cidade: escola do 1º ao 9º ano, posto de saúde, lixo, buraco na rua e creche.'],
+    ]
+  };
+  var lista=document.getElementById('cargos-lista');
+  function pintaCargos(aba){
+    lista.innerHTML=CARGOS[aba].map(function(c){
+      return '<div class="cargo '+c[0]+'">'
+        + '<span class="tipo">'+(c[0]==='maj'?'mais votado ganha':'proporcional')+'</span>'
+        + '<h4>'+c[1]+'</h4>'
+        + '<p>'+c[2]+'</p>'
+        + '<p class="faz">'+c[3]+'</p></div>';
+    }).join('');
+  }
+  var abas=document.getElementById('abas');
+  abas.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    [].forEach.call(abas.querySelectorAll('button'),function(x){
+      x.setAttribute('aria-selected',String(x===b));
+    });
+    pintaCargos(b.dataset.aba);
+  });
+  pintaCargos('geral');
+
+  /* ================= 2. simulador ================= */
+  // Cores só para distinguir partidos fictícios — nenhuma relação com sigla real.
+  var CORES=['#F5D90A','#5AB2FF','#B18CFF','#FF9F45'];
+  var INICIAL=[48000,27000,15000,10000];
+  var NOMES=['Partido A','Partido B','Partido C','Partido D'];
+  var votos=INICIAL.slice();
+  var elVagas=document.getElementById('vagas');
+  var elPart=document.getElementById('partidos');
+  var elConta=document.getElementById('conta');
+  var elCad=document.getElementById('cadeiras');
+  var elLeg=document.getElementById('legenda');
+
+  function fmt(n){return Number(n).toLocaleString('pt-BR')}
+
+  // A regra brasileira de verdade: quociente eleitoral, quociente partidário
+  // e sobras pelas MAIORES MÉDIAS (média = votos ÷ (cadeiras + 1)).
+  function distribuir(votos, vagas){
+    var total=votos.reduce(function(a,b){return a+b},0);
+    if(!total||!vagas) return {total:0,qe:0,cadeiras:votos.map(function(){return 0}),sobras:[]};
+    var qe=Math.round(total/vagas);
+    var cad=votos.map(function(v){return qe?Math.floor(v/qe):0});
+    // Nunca distribuir mais cadeiras do que existem (acontece com quociente
+    // arredondado para baixo): o excedente volta para as sobras.
+    var usadas=cad.reduce(function(a,b){return a+b},0);
+    while(usadas>vagas){
+      var pior=-1,menor=Infinity;
+      cad.forEach(function(c,i){
+        if(c>0){var m=votos[i]/c; if(m<menor){menor=m;pior=i}}
+      });
+      if(pior<0)break;
+      cad[pior]--; usadas--;
+    }
+    var sobras=[];
+    while(usadas<vagas){
+      var alvo=-1,maior=-1;
+      votos.forEach(function(v,i){
+        var media=v/(cad[i]+1);
+        if(media>maior){maior=media;alvo=i}
+      });
+      if(alvo<0)break;
+      cad[alvo]++; usadas++;
+      sobras.push({i:alvo,media:maior});
+    }
+    return {total:total,qe:qe,cadeiras:cad,sobras:sobras};
+  }
+
+  function pintaPartidos(){
+    elPart.innerHTML=votos.map(function(v,i){
+      return '<div class="part">'
+        + '<div class="nome" style="color:'+CORES[i]+'">'+NOMES[i]
+        + '<i>arraste →</i></div>'
+        + '<input type="range" min="0" max="60000" step="1000" value="'+v+'" '
+        + 'data-i="'+i+'" aria-label="Votos do '+NOMES[i]+'">'
+        + '<div class="votos" id="v'+i+'">'+fmt(v)+'</div></div>';
+    }).join('');
+    elLeg.innerHTML=NOMES.map(function(n,i){
+      return '<span><b style="background:'+CORES[i]+'"></b>'+n+'</span>';
+    }).join('');
+  }
+
+  function render(){
+    var vagas=Math.max(2,Math.min(20,parseInt(elVagas.value,10)||10));
+    var r=distribuir(votos,vagas);
+    var h='<span class="k">1. o preço de uma cadeira</span><br>'
+      + fmt(r.total)+' votos ÷ '+vagas+' cadeiras = <span class="v">'
+      + fmt(r.qe)+' votos por cadeira</span><hr>'
+      + '<span class="k">2. o que cada partido garantiu direto</span><br>';
+    votos.forEach(function(v,i){
+      var direto=r.qe?Math.floor(v/r.qe):0;
+      h+= NOMES[i]+': '+fmt(v)+' ÷ '+fmt(r.qe)+' = <span class="v">'+direto
+        + '</span> cadeira'+(direto===1?'':'s')
+        + (v%r.qe?' <span style="color:#5C6B7A">(sobraram '+fmt(v%r.qe)+' votos)</span>':'')
+        + '<br>';
+    });
+    if(r.sobras.length){
+      h+='<hr><span class="k">3. as cadeiras que sobraram, pelas maiores médias</span><br>';
+      r.sobras.forEach(function(s,n){
+        h+='sobra '+(n+1)+' → <span class="v">'+NOMES[s.i]+'</span> '
+          + '<span style="color:#5C6B7A">(média '+fmt(Math.round(s.media))+')</span><br>';
+      });
+    }
+    h+='<hr><span class="k">resultado</span><br>';
+    r.cadeiras.forEach(function(c,i){
+      h+=NOMES[i]+': <span class="v">'+c+'</span> de '+vagas+'<br>';
+    });
+    elConta.innerHTML=h;
+
+    var quadrados='';
+    r.cadeiras.forEach(function(c,i){
+      for(var k=0;k<c;k++){
+        quadrados+='<div class="cad" style="background:'+CORES[i]+'" '
+          + 'title="'+NOMES[i]+'">'+(i+1)+'</div>';
+      }
+    });
+    var faltam=vagas-r.cadeiras.reduce(function(a,b){return a+b},0);
+    for(var k=0;k<faltam;k++) quadrados+='<div class="cad vazia"></div>';
+    elCad.innerHTML=quadrados;
+  }
+
+  elPart.addEventListener('input',function(e){
+    var i=e.target.dataset.i; if(i===undefined)return;
+    votos[i]=parseInt(e.target.value,10)||0;
+    document.getElementById('v'+i).textContent=fmt(votos[i]);
+    render();
+  });
+  elVagas.addEventListener('input',render);
+  document.getElementById('reset').addEventListener('click',function(){
+    votos=INICIAL.slice(); elVagas.value=10; pintaPartidos(); render();
+  });
+  pintaPartidos(); render();
+
+  /* ================= 3. dados reais ================= */
+  function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
+  var UFS=['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
+           'PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
+  var selUf=document.getElementById('uf');
+  selUf.innerHTML=UFS.map(function(u){return '<option value="'+u+'">'+u+'</option>'}).join('');
+  selUf.value='SE';
+
+  var saidaReal=document.getElementById('saida-real');
+
+  function renderReal(d){
+    var p=d.panorama, casos=d.paradoxo||[];
+    // O número da manchete vem do banco, nunca digitado no HTML: se a base
+    // mudar, a frase da abertura muda junto. Número cravado à mão envelhece
+    // em silêncio, que é o jeito mais fácil de a página passar a mentir.
+    if(d.nacional && d.nacional.mais_voto_sem_vaga!=null){
+      document.getElementById('nac-paradoxo').textContent =
+        Number(d.nacional.mais_voto_sem_vaga).toLocaleString('pt-BR');
+    }
+    var h='<div class="caso">'
+      + '<h4>'+esc(d.uf_nome)+' — deputado federal, 2022</h4>'
+      + '<p class="dim">'+p.total+' candidatos disputaram <b>'+p.cadeiras
+      + '</b> cadeiras. <b>'+p.por_quociente+'</b> entraram pelo quociente do '
+      + 'partido e <b>'+p.por_sobra+'</b> pelas sobras.</p>';
+
+    if(d.puxador){
+      h+='<p class="dim" style="margin-top:.6rem">O mais votado do estado foi '
+        + '<b>'+esc(d.puxador.nome_urna)+'</b> ('+esc(d.puxador.partido)+'), com '
+        + '<b>'+Number(d.puxador.total_votos).toLocaleString('pt-BR')+'</b> votos. '
+        + 'Tudo que ele fez acima do necessário virou cadeira para o partido dele.</p>';
+    }
+    h+='</div>';
+
+    if(casos.length){
+      var c=casos[0];
+      h+='<div class="caso"><h4>O caso mais gritante do estado</h4>'
+        + '<div class="versus">'
+        + '<div class="lado perdeu"><span class="rot">teve mais votos e NÃO foi eleito</span>'
+        + '<span class="quem">'+esc(c.nome_urna)+'</span>'
+        + '<span class="part-sig">'+esc(c.partido)+'</span>'
+        + '<span class="qtd">'+Number(c.total_votos).toLocaleString('pt-BR')+'</span></div>'
+        + '<div class="vs">contra</div>'
+        + '<div class="lado ganhou"><span class="rot">teve menos votos e FOI eleito</span>'
+        + '<span class="quem">'+esc(c.eleito_nome)+'</span>'
+        + '<span class="part-sig">'+esc(c.eleito_partido)+'</span>'
+        + '<span class="qtd">'+Number(c.eleito_votos).toLocaleString('pt-BR')+'</span></div>'
+        + '</div>'
+        + '<p class="nota-suplente">Diferença de <b>'
+        + Number(c.total_votos-c.eleito_votos).toLocaleString('pt-BR')
+        + '</b> votos. Os dois seguiram a regra: o partido do segundo somou mais '
+        + 'votos no conjunto do estado.</p>';
+
+      if(casos.length>1){
+        h+='<ul class="lista-mais">'
+          + casos.map(function(x){
+              return '<li><span>'+esc(x.nome_urna)
+                + ' <span class="sig">'+esc(x.partido)
+                + (x.id_camara?' · assumiu depois como suplente':'')+'</span></span>'
+                + '<b>'+Number(x.total_votos).toLocaleString('pt-BR')+'</b></li>';
+            }).join('')
+          + '</ul>';
+      }
+      h+='<div class="aviso"><b>Atenção a uma palavra.</b> "Não foi eleito" quer '
+        + 'dizer que a pessoa não entrou na apuração de 2022 — não que ela esteja '
+        + 'fora da Câmara hoje. Quem fica como <b>suplente</b> assume a vaga se um '
+        + 'titular sai, e muitos saíram para virar ministro ou secretário. Os '
+        + 'marcados acima como <b>"assumiu depois"</b> exercem mandato agora.</div>';
+      h+='</div>';
+    } else {
+      h+='<div class="caso"><p class="dim">Neste estado, nenhum candidato não '
+        + 'eleito teve mais votos que o eleito menos votado. Acontece em estados '
+        + 'com poucas cadeiras e disputa concentrada.</p></div>';
+    }
+    saidaReal.innerHTML=h;
+  }
+
+  function buscar(uf){
+    saidaReal.innerHTML='<p class="dim">consultando o TSE…</p>';
+    fetch('/api/sistema?uf='+encodeURIComponent(uf))
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,corpo:j}})})
+      .then(function(r){
+        if(!r.ok){saidaReal.innerHTML='<p class="erro">'+esc(r.corpo.erro||'erro')+'</p>';return}
+        renderReal(r.corpo);
+      })
+      .catch(function(){
+        saidaReal.innerHTML='<p class="erro">Servidor fora do ar. Rode '
+          +'<b>python3.13 pipeline/api.py</b> e recarregue a página.</p>';
+      });
+  }
+  document.getElementById('form-uf').addEventListener('submit',function(e){
+    e.preventDefault(); buscar(selUf.value);
+  });
+
+  fetch('/api/saude').then(function(r){return r.json()}).then(function(d){
+    var f=(d.fontes||[]).filter(function(x){return x.fonte_id.indexOf('tse')===0})[0];
+    document.getElementById('selo').textContent =
+      'DADOS OFICIAIS · TSE ' + (f?'2022':'—');
+  }).catch(function(){document.getElementById('selo').textContent='SERVIDOR FORA DO AR'});
+
+  buscar('SE');
+})();
+</script>

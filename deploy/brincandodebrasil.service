@@ -1,0 +1,34 @@
+# Serviço do site "Brincando de Brasil".
+#
+# Instalação (precisa de sudo):
+#   sudo cp deploy/brincandodebrasil.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now brincandodebrasil
+#
+# A porta é 8010 de propósito: 8000 e 8001 já são do studiocantare (Django e
+# websocket). Subir na 8000 derrubaria um site que está no ar.
+[Unit]
+Description=Brincando de Brasil — site de dados abertos
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=kakashi
+Group=kakashi
+WorkingDirectory=/opt/brincandodebrasil
+EnvironmentFile=/opt/brincandodebrasil/.env
+ExecStart=/opt/brincandodebrasil/.venv/bin/python pipeline/api.py \
+    --host 127.0.0.1 --porta 8010 --prefixo /brincandodebrasil
+Restart=on-failure
+RestartSec=5
+
+# O serviço só lê dados e responde HTTP: não precisa de mais que isso.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/opt/brincandodebrasil/data
+
+[Install]
+WantedBy=multi-user.target

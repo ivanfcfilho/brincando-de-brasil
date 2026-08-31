@@ -1,14 +1,23 @@
 # MEMÓRIA DO PROJETO — retomar daqui
 
 > Contexto de continuidade para a próxima sessão de trabalho.
-> Última atualização: 2026-08-29.
+> Última atualização: 2026-08-30.
 
 ## O que este projeto é
 
-"O Código de Transição" — plataforma de pressão por reforma política
-(PEC do Voto Distrital Misto + fim das emendas impositivas) via transparência
-de dados: cruzamento **origem do voto (TSE) × destino da emenda (CGU)**,
-consumível por CEP. Landing protótipo em `landing/index.html`.
+"Brincando de Brasil" — hub cívico que ensina política com dado oficial,
+consumível **por CEP**. Duas ferramentas no ar:
+
+- **Ideia #01** (`landing/dinheiro.html`): origem do voto (TSE) × destino da
+  emenda (CGU), com a distância em km.
+- **Aula aberta** (`landing/como-funciona.html`): como o voto vira cadeira,
+  com simulador interativo. É a porta de entrada nova do site.
+- **Ideia #02** (`landing/escola.html`): o **Ideb do INEP** da cidade, aberto
+  na conta que o produz, e **qual político responde por aquela escola**.
+
+O eixo editorial mudou de "plataforma de pressão" para **"ensinar política de
+um jeito fácil"**: o site é onde a pessoa vê o dado da vida dela e entende o
+mecanismo. A proposta de reforma continua, mas como destino, não como porta.
 
 ## Estado atual
 
@@ -23,7 +32,7 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
 - **Distância em km funcionando** (o número da manchete): a consulta devolve,
   por deputado, a distância média do dinheiro até o CEP, ponderada por valor.
 - **500 dos 513 eleitos** com autoria de emenda identificada.
-- 22 testes (`tests/`) e 13 invariantes (`conferir.py`), rodando no fim do job.
+- 26 testes (`tests/`) e 19 invariantes (`conferir.py`), rodando no fim do job.
 - **Menu + duas propostas.** A landing ganhou navegação fixa e, ao lado da
   manchete, um resumo das duas PECs: Voto Distrital Misto e Novo Pacto
   Educacional (este veio de um HTML do Gemini, em `landing/propostas/`).
@@ -42,6 +51,10 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
   abrir `http://127.0.0.1:8000`. Saiu de dados simulados para dados reais;
   o mapa de calor falso deu lugar a "de onde vieram os votos" × "para onde foi
   o dinheiro", ambos com a distância em km.
+- **IDEIA #02 NO AR: Ideb por município (INEP).** 319.699 linhas, 3 etapas ×
+  4 redes × 2005–2023, **5.570 dos 5.571 municípios** com nota medida e
+  **zero órfãos** (todo código do INEP casa com a tabela `municipio`).
+  `/escola.html` + `/api/educacao?cep=…` + `pipeline/educacao.py`.
 - **Job diário** (`pipeline/atualizar.py`) roda checagem por `ETag` (~1 KB),
   baixa só o que mudou, ingere e resume o diff. Rodou de verdade: detectou a
   republicação da CGU de 29/08, ingeriu e gerou 67 mil mudanças.
@@ -95,7 +108,50 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
 10. **Regra editorial inegociável**: nunca publicar inferência ("desviou") —
    só origem, destino, percentual e link para a fonte. Vale também para peça
    de campanha e anúncio.
-11. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
+11. **O INEP omite o intermediário do próprio certificado.** `download.inep.
+   gov.br` manda só a folha; todo cliente honesto recusa (`unable to get local
+   issuer certificate`). NÃO se resolveu com `verify=False` — num projeto de
+   proveniência, canal não verificado torna "veio do INEP" uma afirmação sem
+   prova. A folha publica o emissor na extensão **AIA**; esse intermediário é
+   assinado pela **GlobalSign Root R46**, já confiável no sistema. `tls.py`
+   só entrega ao verificador o elo que o servidor deveria ter mandado — a
+   validação segue LIGADA e ancorada na raiz. O .pem fica **versionado em
+   `certs/`**, não baixado em runtime (material de confiança buscado a cada
+   job é porta de entrada). Vence em 2030-11-19; `tls.py --atualizar` rebusca.
+   O servidor do INEP também derruba conexão sem padrão — a checagem tem retry.
+12. **`ideb = nota × fluxo`, e essa é a notícia.** O índice divulgado é um
+   número só e esconde a pergunta: `nota` é o Saeb (0–10) e `fluxo` é a taxa
+   de aprovação (0–1). Confirmado no dado em **284.969 medições com 0
+   divergências** — e virou invariante, porque a planilha tem 122 colunas com
+   o ano no NOME da coluna: um desalinhamento de uma casa não levantaria
+   exceção nenhuma, só produziria números plausíveis e errados. Aprovar sem
+   ensinar sobe o Ideb, e agora dá para VER isso na cidade de quem lê — é a
+   ponte empírica que faltava para o dossiê da educação.
+13. **A rede de ensino é a aula de política.** 1º ao 9º ano = prefeitura;
+   ensino médio = estado. Quase ninguém sabe, e cobrar o político errado é o
+   mesmo que não cobrar. Foi o achado mais didático do projeto até agora, e
+   custou zero cálculo — estava na coluna `REDE` o tempo todo.
+14. **Cruzar emenda com Ideb NÃO se sustenta — e quase virou número.** Só 8,9%
+   do empenhado na função Educação tem município no destino planejado, e a
+   visão por favorecido não tem função orçamentária. O join por `codigo_emenda`
+   (que não é único em `emenda`) **explodiu em produto cartesiano**: 100 mi de
+   linhas, "R$ 42 trilhões". Se tivesse ido para a tela sem conferência de
+   ordem de grandeza, era manchete falsa. Emenda também é fração mínima do
+   gasto educacional perto do FUNDEB. A fonte certa é o SIOPE/FNDE.
+15. **'SUPLENTE' no TSE ≠ 'não está na Câmara'.** A situação é a da APURAÇÃO
+   de 2022; suplente assume se um titular sai. Orlando Silva (PC do B/SP) tem
+   108.059 votos, situação SUPLENTE e `id_camara` preenchido — ele exerce
+   mandato. Quase publiquei "não se elegeu" de um deputado em exercício. O
+   `id_camara` virou o sinal de "assumiu depois" na tela, e a página só usa
+   "não foi eleito na apuração de 2022". Conferido no arquivo bruto: zero
+   candidatos com situação ambígua, então o dado está certo — a leitura é que
+   era perigosa.
+16. **Não dá para calcular o quociente eleitoral com a base atual.** Ele usa
+   votos VÁLIDOS, que incluem voto de LEGENDA, e `votacao_candidato_munzona`
+   só traz nominal. Um quociente sem legenda sai menor e com cara de oficial.
+   Por isso o simulador da página usa eleição fictícia de números redondos, e
+   o dado real só aparece onde é exato (quem teve mais voto e não entrou).
+17. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
    vedado — CF art. 5º IV); zero disparo automatizado de WhatsApp (click-to-chat
    enviado pelo próprio cidadão); LGPD com opt-in explícito para CEP/contato.
 
@@ -113,6 +169,10 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
 
 ## Próximos passos (em ordem de destrave)
 
+0. **Gasto municipal em educação por aluno (SIOPE/FNDE)** — é o que torna o
+   cruzamento dinheiro × resultado defensável. Hoje o site mostra o dinheiro
+   (Ideia #01) e o resultado (Ideia #02) lado a lado, mas não os liga, porque
+   a emenda parlamentar não sustenta a conta (ver aprendizado 14).
 1. **Percorrer a fila de `vincular.py`** (47 vínculos) e os 13 eleitos sem
    autoria — pré-requisito de qualquer publicação.
 2. Granularidade por seção eleitoral (`votacao_secao_<ano>_<UF>.zip`) → CEP real.
@@ -127,6 +187,9 @@ cd ~/codigo-de-transicao
 python3.13 pipeline/db.py --status        # o que há no banco
 python3.13 pipeline/atualizar.py          # o ciclo diário
 python3.13 pipeline/consulta.py --cep 49010-000
-python3.13 pipeline/conferir.py           # 13 invariantes
-python3.13 -m unittest discover -s tests  # 21 testes
+python3.13 pipeline/educacao.py --cep 49010-000
+python3.13 pipeline/sistema.py --uf RS
+python3.13 pipeline/conferir.py           # 17 invariantes
+python3.13 -m unittest discover -s tests  # 25 testes
+python3.13 pipeline/api.py                # e abrir /escola.html
 ```

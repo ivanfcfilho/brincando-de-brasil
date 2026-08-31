@@ -117,11 +117,11 @@
   @media (max-width:860px){ .rules{grid-template-columns:1fr} }
 
   /* placar */
-  .placar{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+  .placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
+    gap:1rem;margin-top:2rem}
   .pc{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:1.2rem 1.2rem}
   .pc .v{font-family:var(--mono);font-size:1.6rem;font-weight:600;color:var(--volt)}
   .pc .l{font-size:.8rem;color:var(--ink-faint);margin-top:.3rem;line-height:1.5}
-  @media (max-width:860px){ .placar{grid-template-columns:repeat(2,1fr)} }
   .placar-nota{font-family:var(--mono);font-size:.74rem;color:var(--ink-faint);margin-top:1.2rem;line-height:1.8}
 
   /* footer */
@@ -150,8 +150,8 @@
       isso de brincadeira, por que em Brasília não fazem a sério?
     </p>
     <div class="acoes">
-      <a class="btn primary" href="/dinheiro.html">Ver a Ideia #01 →</a>
-      <a class="btn" href="#comoassim">Como funciona</a>
+      <a class="btn primary" href="/como-funciona.html">Começar pelo começo →</a>
+      <a class="btn" href="#ideias">Ver as ideias</a>
     </div>
   </div>
 </header>
@@ -190,6 +190,43 @@
   </div>
 </section>
 
+<section class="block" id="aula">
+  <div class="wrap">
+    <p class="sec-eyebrow">Comece por aqui</p>
+    <h2>Antes das ideias: como a eleição funciona de verdade.</h2>
+    <p class="sec-lede">Dá para entender a regra do voto no Brasil em cinco
+    minutos. Depois disso, o resto do site faz muito mais sentido.</p>
+
+    <div class="ex-grid" style="margin-top:1.6rem">
+      <div class="ex-card">
+        <span class="ex-num">QUEM É QUEM</span>
+        <h3>7 cargos, e você não vota em todos juntos</h3>
+        <p>O que faz um vereador, um deputado estadual, um deputado federal e um
+        senador — e por que confundir os quatro é o começo de <b>cobrar a pessoa
+        errada</b>.</p>
+      </div>
+      <div class="ex-card">
+        <span class="ex-num">MEXA VOCÊ MESMO</span>
+        <h3>Uma eleição de mentirinha para você brincar</h3>
+        <p>Arraste os votos entre quatro partidos e veja, ao vivo, <b>as cadeiras
+        mudando de mão</b>. É a mesma regra que vale de verdade — só os números
+        é que são inventados, para a conta ficar fácil.</p>
+      </div>
+      <div class="ex-card">
+        <span class="ex-num">ACONTECEU MESMO</span>
+        <h3>Você votou nele e elegeu outro</h3>
+        <p>Em 2022, <b id="hm-paradoxo">…</b> candidatos a deputado federal tiveram mais votos
+        que alguém eleito do próprio estado — e ficaram de fora. É legal, e a
+        página mostra os nomes, no <b>seu</b> estado.</p>
+      </div>
+    </div>
+
+    <div class="acoes" style="margin-top:1.8rem">
+      <a class="btn primary" href="/como-funciona.html">Entender a eleição →</a>
+    </div>
+  </div>
+</section>
+
 <section class="block" id="ideias">
   <div class="wrap">
     <p class="sec-eyebrow">As ideias</p>
@@ -217,16 +254,24 @@
         </div>
       </article>
 
-      <article class="icard">
-        <span class="num">IDEIA #02 · EDUCAÇÃO</span>
-        <h3>Os melhores alunos virando professores</h3>
-        <p>Nos países com as melhores escolas do mundo, quem vira professor está
-        entre <b>os melhores alunos</b>. No Brasil, historicamente, é o contrário.
-        A ideia: salário e carreira bons o bastante para <b>atrair os melhores
-        para a sala de aula</b> — do jeito que o Ceará já fez com a alfabetização,
-        e deu certo. Os estudos e as fontes estão no dossiê.</p>
+      <article class="icard destaque">
+        <span class="num">IDEIA #02 · TEM FERRAMENTA</span>
+        <h3>A escola da sua cidade tem nota. E tem dono.</h3>
+        <p>Funciona assim:</p>
+        <ol>
+          <li>O governo <b>mede a escola pública</b> de toda cidade do país e
+          publica a nota — é o <b>Ideb</b>.</li>
+          <li>Essa nota é uma conta: <b>o quanto os alunos acertaram na prova ×
+          o quanto deles passou de ano</b>. A gente mostra as duas partes.</li>
+          <li><b>Digite seu CEP</b> e veja a nota da sua cidade, se ela cumpriu
+          a meta e <b>qual político responde por aquela escola</b>.</li>
+        </ol>
+        <p>Do 1º ao 9º ano quem manda quase sempre é a <b>prefeitura</b>; no
+        ensino médio, o <b>governo do estado</b>. Cobrar o político errado é o
+        mesmo que não cobrar.</p>
         <div class="rodape">
-          <a class="btn primary" href="/propostas/educacao.html">Ler a ideia</a>
+          <a class="btn primary" href="/escola.html">Digitar meu CEP</a>
+          <a class="btn" href="/propostas/educacao.html">Versão científica</a>
         </div>
       </article>
 
@@ -293,6 +338,7 @@
       <div class="pc"><div class="v" id="pc-dep">—</div><div class="l">deputados federais acompanhados</div></div>
       <div class="pc"><div class="v" id="pc-mun">—</div><div class="l">cidades brasileiras no mapa</div></div>
       <div class="pc"><div class="v" id="pc-eme">—</div><div class="l">verbas de deputados (emendas) rastreadas</div></div>
+      <div class="pc"><div class="v" id="pc-ideb">—</div><div class="l">cidades com a nota da escola medida</div></div>
       <div class="pc"><div class="v" id="pc-att">—</div><div class="l">última conferência nos dados do governo</div></div>
     </div>
     <p class="placar-nota" id="placar-nota">&gt; consultando a base…</p>
@@ -309,7 +355,8 @@
     <a href="https://dadosabertos.tse.jus.br/dataset/resultados-2022" target="_blank" rel="noopener">TSE — resultados 2022</a> ·
     <a href="https://portaldatransparencia.gov.br/download-de-dados/emendas-parlamentares" target="_blank" rel="noopener">Portal da Transparência / CGU — emendas</a> ·
     <a href="https://servicodados.ibge.gov.br/api/v1/localidades/municipios" target="_blank" rel="noopener">IBGE — municípios e malha</a> ·
-    <a href="https://dadosabertos.camara.leg.br" target="_blank" rel="noopener">Câmara — dados abertos</a></p>
+    <a href="https://dadosabertos.camara.leg.br" target="_blank" rel="noopener">Câmara — dados abertos</a> ·
+    <a href="https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb" target="_blank" rel="noopener">INEP — Ideb por município</a></p>
   </div>
 </footer>
 
@@ -320,6 +367,11 @@
     document.getElementById('pc-dep').textContent = fmt(s.deputados_eleitos);
     document.getElementById('pc-mun').textContent = fmt(s.municipios);
     document.getElementById('pc-eme').textContent = fmt(s.emendas);
+    document.getElementById('pc-ideb').textContent = fmt(s.municipios_com_ideb);
+    // Número afirmado em texto na seção "Comece por aqui": vem do banco.
+    if (s.mais_voto_sem_vaga != null) {
+      document.getElementById('hm-paradoxo').textContent = fmt(s.mais_voto_sem_vaga);
+    }
     var mais = null;
     (s.fontes || []).forEach(function (f) {
       if (!mais || f.baixado_em > mais) mais = f.baixado_em;
