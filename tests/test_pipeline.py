@@ -270,6 +270,17 @@ class TestLanding(unittest.TestCase):
         r = subprocess.run([node, script], capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
+    def test_render_presidentes_e_as_ressalvas(self):
+        """Inclui as frases de cautela como se fossem código: sem elas a
+        página vira um ranking de presidentes com cara de dado oficial."""
+        node = shutil.which("node") or shutil.which("nodejs")
+        if not node:
+            self.skipTest("node não instalado")
+        script = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "test_presidentes.cjs")
+        r = subprocess.run([node, script], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
     def test_render_escola_com_dados_reais(self):
         node = shutil.which("node") or shutil.which("nodejs")
         if not node:

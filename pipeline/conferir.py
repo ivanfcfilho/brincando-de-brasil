@@ -144,6 +144,31 @@ def conferir(con):
     checar("situação do TSE só tem os três valores esperados",
            set(sits) == {"ELEITO POR QP", "ELEITO POR MEDIA", "SUPLENTE"}, str(sits))
 
+    # --------------------------------------------- séries entre governos
+    #
+    # A página dos governos afirma números do IBGE. Série vazia ou fora de
+    # ordem de grandeza vira gráfico errado numa página que já é a mais
+    # delicada do site.
+    with con.cursor() as cur:
+        cur.execute("""SELECT s.id, COUNT(v.ano) AS n
+                       FROM serie s LEFT JOIN serie_valor v ON v.serie_id = s.id
+                       GROUP BY 1 ORDER BY 1""")
+        contagem = {r["id"]: r["n"] for r in cur.fetchall()}
+    vazias = [k for k, n in contagem.items() if n == 0]
+    checar("toda série do IBGE tem pelo menos um ano carregado", not vazias,
+           str(vazias) if vazias else f"{len(contagem)} séries")
+
+    # A hiperinflação é o melhor teste de sanidade que existe para esta base:
+    # se o IPCA de 1990 não vier na casa dos milhares, a série está trocada.
+    r = bd.um(con, "SELECT valor FROM serie_valor WHERE serie_id='ipca' AND ano=1990")
+    checar("IPCA de 1990 na casa da hiperinflação (>1000%)",
+           r is not None and float(r["valor"]) > 1000,
+           f"{float(r['valor']):.0f}%" if r else "sem dado")
+
+    r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
+                      WHERE serie_id='desemprego' AND (valor < 0 OR valor > 40)""")
+    checar("desemprego entre 0% e 40%", r["c"] == 0, f"{r['c']} fora da faixa")
+
     # ---------------------------------------------------------------- Ideb
     #
     # A planilha do INEP tem 122 colunas e o ano mora no NOME da coluna. É

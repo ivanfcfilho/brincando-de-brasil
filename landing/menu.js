@@ -14,6 +14,7 @@
   var SIMPLES = [
     ['/', 'Início'],
     ['/como-funciona.html', 'Como funciona a eleição'],
+    ['/presidentes.html', 'O que aconteceu em cada governo'],
     ['/dinheiro.html', 'Ideia #01 · Seu dinheiro'],
     ['/escola.html', 'Ideia #02 · Sua escola'],
   ];
@@ -42,6 +43,13 @@
       ['#simulador', 'Mexa você mesmo'],
       ['#real', 'Aconteceu de verdade'],
       ['#estatistica', 'Como não ser enganado'],
+    ],
+    '/presidentes.html': [
+      ['#comparar', 'Compare um indicador'],
+      ['#tabela', 'O quadro inteiro'],
+      ['#fez', 'O que cada um fez'],
+      ['#metodo', 'Como a conta é feita'],
+      ['#fontes', 'De onde vem cada número'],
     ],
     '/escola.html': [
       ['#buscar', 'Digitar o CEP'],

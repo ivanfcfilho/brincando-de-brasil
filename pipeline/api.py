@@ -12,6 +12,7 @@ Rotas:
     GET /api/consulta?cep=…    para onde foi a emenda de quem tem voto aqui
     GET /api/educacao?cep=…    como está a escola daqui, e quem responde por ela
     GET /api/sistema?uf=…      como o voto virou cadeira naquele estado, em 2022
+    GET /api/presidentes       o que aconteceu no país em cada governo, desde 1990
     GET /api/saude             o que há no banco e de quando é
 """
 import argparse
@@ -30,6 +31,8 @@ import db as bd
 from consulta import municipio_por_cep, proveniencia, resolver_municipio, responder
 from educacao import retrato
 from sistema import CADEIRAS, retrato as retrato_sistema
+from presidentes import quadro
+from programas import por_presidente
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANDING = os.path.join(RAIZ, "landing")
@@ -53,6 +56,7 @@ PAGINAS = {
     "/dinheiro.html": "dinheiro.html",
     "/escola.html": "escola.html",
     "/como-funciona.html": "como-funciona.html",
+    "/presidentes.html": "presidentes.html",
     "/menu.js": "menu.js",
     "/propostas/educacao.html": os.path.join("propostas", "educacao.html"),
     "/propostas/voto-distrital.html": os.path.join("propostas", "voto-distrital.html"),
@@ -142,6 +146,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(*self.educacao(parse_qs(rota.query)))
             if rota.path == "/api/sistema":
                 return self._json(*self.sistema(parse_qs(rota.query)))
+            if rota.path == "/api/presidentes":
+                return self._json(200, self.presidentes())
             self._json(404, {"erro": "rota não encontrada"})
         except Exception as e:
             traceback.print_exc()
@@ -214,6 +220,13 @@ class Handler(BaseHTTPRequestHandler):
         if uf not in CADEIRAS:
             return 400, {"erro": "informe uf (sigla de estado) ou cep"}
         return 200, retrato_sistema(con, uf)
+
+    def presidentes(self):
+        r = quadro(conexao())
+        # Os programas não vêm do banco: são a lista conferida contra o
+        # Planalto, em `programas.py`.
+        r["programas"] = por_presidente()
+        return r
 
 
 def _municipio_da_query(con, q):

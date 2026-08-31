@@ -224,6 +224,37 @@ CREATE TABLE IF NOT EXISTS ideb (
 CREATE INDEX IF NOT EXISTS ix_ideb_mun   ON ideb(cod_ibge, ano);
 CREATE INDEX IF NOT EXISTS ix_ideb_etapa ON ideb(etapa, rede, ano);
 
+-- Séries nacionais anuais (IBGE/SIDRA), para o quadro entre governos.
+--
+-- Uma linha por (série, ano). O ano é a chave porque a comparação entre
+-- governos é anual — e porque reduzir mensal/trimestral a um ponto por ano é
+-- uma DECISÃO metodológica que fica registrada em `serie.corte`, não
+-- escondida no código: 'dezembro' (acumulado do ano fechado), 'q4' (4º
+-- trimestre), 'media' (média dos períodos), 'anual' (já era anual).
+--
+-- `serie` guarda a procedência completa — tabela e variável do SIDRA, mais o
+-- link — porque a promessa do projeto é que qualquer pessoa possa refazer a
+-- consulta na fonte e chegar ao mesmo número.
+CREATE TABLE IF NOT EXISTS serie (
+    id           TEXT PRIMARY KEY,
+    nome         TEXT NOT NULL,
+    unidade      TEXT NOT NULL,
+    fonte        TEXT NOT NULL,
+    tabela_sidra TEXT,
+    variavel     TEXT,
+    corte        TEXT,
+    observacao   TEXT,
+    url          TEXT
+);
+
+CREATE TABLE IF NOT EXISTS serie_valor (
+    serie_id TEXT NOT NULL REFERENCES serie(id) ON DELETE CASCADE,
+    ano      INTEGER NOT NULL,
+    valor    NUMERIC(14,4) NOT NULL,
+    PRIMARY KEY (serie_id, ano)
+);
+CREATE INDEX IF NOT EXISTS ix_serie_valor_ano ON serie_valor(ano);
+
 -- -------------------------------------------------------------------- mudança
 
 -- Uma linha aqui é uma TRANSIÇÃO entre dois snapshots, não um fato do
