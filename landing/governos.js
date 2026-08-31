@@ -17,14 +17,17 @@
 
   // A ordem é editorial: começa pelo que a pessoa sente no bolso, no
   // supermercado, antes do que ela lê no jornal.
-  var ORDEM = ['ipca', 'pib', 'desemprego', 'esperanca_vida',
-               'mortalidade_infantil_antiga', 'mortalidade_infantil',
-               'ideb_anos_iniciais'];
+  var ORDEM = ['ipca', 'pib', 'desemprego', 'fome', 'pobreza', 'gini',
+               'esperanca_vida', 'mortalidade_infantil_antiga',
+               'mortalidade_infantil', 'ideb_anos_iniciais'];
 
   var CURTO = {
     ipca: 'Inflação',
     pib: 'Crescimento (PIB)',
     desemprego: 'Desemprego',
+    fome: 'Fome',
+    pobreza: 'Pobreza',
+    gini: 'Desigualdade (Gini)',
     esperanca_vida: 'Expectativa de vida',
     mortalidade_infantil_antiga: 'Mortalidade infantil (1990–2009)',
     mortalidade_infantil: 'Mortalidade infantil (2000–2016)',
@@ -37,6 +40,9 @@
     ipca: 'Quanto os preços subiram, em média, a cada ano do mandato.',
     pib: 'Quanto a economia do país cresceu, em média, a cada ano.',
     desemprego: 'De cada 100 pessoas procurando trabalho, quantas não acharam.',
+    fome: 'De cada 100 pessoas, quantas viviam em lares que passaram por falta real de comida (insegurança alimentar grave).',
+    pobreza: 'De cada 100 pessoas, quantas viviam abaixo da linha de pobreza.',
+    gini: 'Desigualdade de renda, de 0 a 1: quanto mais perto de 1, mais a renda do país está concentrada em poucos.',
     esperanca_vida: 'Quantos anos, em média, viveria quem nascesse naquele ano.',
     mortalidade_infantil_antiga: 'De cada mil bebês nascidos vivos, quantos morriam antes de completar 1 ano.',
     mortalidade_infantil: 'De cada mil bebês nascidos vivos, quantos morriam antes de completar 1 ano.',
@@ -47,6 +53,7 @@
   // mais é melhor — mas a página também não dá nota. A cor aqui serve só para
   // indicar a direção do indicador, e a legenda diz isso com todas as letras.
   var MENOS_E_MELHOR = { ipca: true, desemprego: true,
+                         fome: true, pobreza: true, gini: true,
                          mortalidade_infantil: true,
                          mortalidade_infantil_antiga: true };
 

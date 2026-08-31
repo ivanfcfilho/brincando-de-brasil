@@ -169,6 +169,16 @@ def conferir(con):
                       WHERE serie_id='desemprego' AND (valor < 0 OR valor > 40)""")
     checar("desemprego entre 0% e 40%", r["c"] == 0, f"{r['c']} fora da faixa")
 
+    # Faixas de sanidade das séries sociais: Gini nacional fora de 0,3–0,8
+    # nunca aconteceu na história da medição — se aparecer, é série trocada.
+    r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
+                      WHERE serie_id='gini' AND (valor < 0.3 OR valor > 0.8)""")
+    checar("Gini entre 0,3 e 0,8", r["c"] == 0, f"{r['c']} fora da faixa")
+    r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
+                      WHERE serie_id IN ('fome','pobreza')
+                        AND (valor <= 0 OR valor > 60)""")
+    checar("fome e pobreza entre 0% e 60%", r["c"] == 0, f"{r['c']} fora da faixa")
+
     # ---------------------------------------------------------------- Ideb
     #
     # A planilha do INEP tem 122 colunas e o ano mora no NOME da coluna. É

@@ -88,6 +88,9 @@ RESUMO = {
     "ipca": "media_geometrica",
     "pib": "media_geometrica",
     "desemprego": "media",
+    "fome": "inicio_fim",
+    "pobreza": "inicio_fim",
+    "gini": "inicio_fim",
     "mortalidade_infantil_antiga": "inicio_fim",
     "mortalidade_infantil": "inicio_fim",
     "esperanca_vida": "inicio_fim",
@@ -186,7 +189,8 @@ def quadro(con):
 
 
 def imprimir(q):
-    ordem = ["ipca", "pib", "desemprego", "esperanca_vida",
+    ordem = ["ipca", "pib", "desemprego", "fome", "pobreza", "gini",
+             "esperanca_vida",
              "mortalidade_infantil_antiga", "mortalidade_infantil",
              "ideb_anos_iniciais"]
     for sid in ordem:

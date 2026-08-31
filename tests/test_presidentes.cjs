@@ -36,6 +36,11 @@ global.window = { matchMedia: () => ({ matches: true }) };
 global.fetch = () => Promise.reject(new Error('sem rede no teste'));
 global.setTimeout = (f) => f();
 
+// A tabela usa a lista de indicadores do componente compartilhado
+// (window.BB.governos.ORDEM) — carregamos o componente antes da página,
+// exatamente como o navegador faz.
+eval(fs.readFileSync(path.join(raiz, 'landing', 'governos.js'), 'utf8'));
+
 const corte = js.lastIndexOf('})();');
 // O comparador de barras saiu daqui para landing/governos.js (compartilhado
 // com a home) e tem teste próprio, tests/test_governos.cjs. O que sobrou nesta

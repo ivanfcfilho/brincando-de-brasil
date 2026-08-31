@@ -15,6 +15,8 @@
             "indicadores": {
                 "desemprego": null,
                 "esperanca_vida": null,
+                "fome": null,
+                "gini": null,
                 "ipca": {
                     "anos_usados": [
                         1990,
@@ -44,6 +46,7 @@
                     "variacao": -3.7
                 },
                 "pib": null,
+                "pobreza": null,
                 "ideb_anos_iniciais": null
             }
         },
@@ -61,6 +64,8 @@
             "indicadores": {
                 "desemprego": null,
                 "esperanca_vida": null,
+                "fome": null,
+                "gini": null,
                 "ipca": {
                     "anos_usados": [
                         1993,
@@ -88,6 +93,7 @@
                     "variacao": -1.9
                 },
                 "pib": null,
+                "pobreza": null,
                 "ideb_anos_iniciais": null
             }
         },
@@ -124,6 +130,8 @@
                     "para": 70.7,
                     "variacao": 0.9
                 },
+                "fome": null,
+                "gini": null,
                 "ipca": {
                     "anos_usados": [
                         1995,
@@ -192,6 +200,7 @@
                     "min": 0.3,
                     "max": 4.4
                 },
+                "pobreza": null,
                 "ideb_anos_iniciais": null
             }
         },
@@ -233,6 +242,20 @@
                     "para": 73.9,
                     "variacao": 2.7
                 },
+                "fome": {
+                    "anos_usados": [
+                        2004,
+                        2009
+                    ],
+                    "cobertura": "2004\u20132009",
+                    "completo": false,
+                    "modo": "inicio_fim",
+                    "valor": 5.8,
+                    "de": 8.2,
+                    "para": 5.8,
+                    "variacao": -2.4
+                },
+                "gini": null,
                 "ipca": {
                     "anos_usados": [
                         2003,
@@ -306,6 +329,7 @@
                     "min": -0.1,
                     "max": 7.5
                 },
+                "pobreza": null,
                 "ideb_anos_iniciais": {
                     "anos_usados": [
                         2005,
@@ -369,6 +393,34 @@
                     "para": 75.7,
                     "variacao": 1.5
                 },
+                "fome": {
+                    "anos_usados": [
+                        2013
+                    ],
+                    "cobertura": "2013\u20132013",
+                    "completo": false,
+                    "modo": "inicio_fim",
+                    "valor": 3.6,
+                    "de": 3.6,
+                    "para": 3.6,
+                    "variacao": 0.0
+                },
+                "gini": {
+                    "anos_usados": [
+                        2012,
+                        2013,
+                        2014,
+                        2015,
+                        2016
+                    ],
+                    "cobertura": "2012\u20132016",
+                    "completo": false,
+                    "modo": "inicio_fim",
+                    "valor": 0.54,
+                    "de": 0.54,
+                    "para": 0.54,
+                    "variacao": -0.0
+                },
                 "ipca": {
                     "anos_usados": [
                         2011,
@@ -419,6 +471,22 @@
                     "min": -3.5,
                     "max": 4.0
                 },
+                "pobreza": {
+                    "anos_usados": [
+                        2012,
+                        2013,
+                        2014,
+                        2015,
+                        2016
+                    ],
+                    "cobertura": "2012\u20132016",
+                    "completo": false,
+                    "modo": "inicio_fim",
+                    "valor": 14.6,
+                    "de": 14.7,
+                    "para": 14.6,
+                    "variacao": -0.1
+                },
                 "ideb_anos_iniciais": {
                     "anos_usados": [
                         2011,
@@ -460,6 +528,31 @@
                     "max": 12.88
                 },
                 "esperanca_vida": null,
+                "fome": {
+                    "anos_usados": [
+                        2018
+                    ],
+                    "cobertura": "2018\u20132018",
+                    "completo": false,
+                    "modo": "inicio_fim",
+                    "valor": 5.0,
+                    "de": 5.0,
+                    "para": 5.0,
+                    "variacao": 0.0
+                },
+                "gini": {
+                    "anos_usados": [
+                        2017,
+                        2018
+                    ],
+                    "cobertura": "2017\u20132018",
+                    "completo": true,
+                    "modo": "inicio_fim",
+                    "valor": 0.55,
+                    "de": 0.54,
+                    "para": 0.55,
+                    "variacao": 0.01
+                },
                 "ipca": {
                     "anos_usados": [
                         2017,
@@ -485,6 +578,19 @@
                     "valor": 1.55,
                     "min": 1.3,
                     "max": 1.8
+                },
+                "pobreza": {
+                    "anos_usados": [
+                        2017,
+                        2018
+                    ],
+                    "cobertura": "2017\u20132018",
+                    "completo": true,
+                    "modo": "inicio_fim",
+                    "valor": 14.7,
+                    "de": 15.0,
+                    "para": 14.7,
+                    "variacao": -0.3
                 },
                 "ideb_anos_iniciais": {
                     "anos_usados": [
@@ -529,6 +635,22 @@
                     "max": 13.5
                 },
                 "esperanca_vida": null,
+                "fome": null,
+                "gini": {
+                    "anos_usados": [
+                        2019,
+                        2020,
+                        2021,
+                        2022
+                    ],
+                    "cobertura": "2019\u20132022",
+                    "completo": true,
+                    "modo": "inicio_fim",
+                    "valor": 0.52,
+                    "de": 0.54,
+                    "para": 0.52,
+                    "variacao": -0.03
+                },
                 "ipca": {
                     "anos_usados": [
                         2019,
@@ -558,6 +680,21 @@
                     "valor": 1.38,
                     "min": -3.3,
                     "max": 4.8
+                },
+                "pobreza": {
+                    "anos_usados": [
+                        2019,
+                        2020,
+                        2021,
+                        2022
+                    ],
+                    "cobertura": "2019\u20132022",
+                    "completo": true,
+                    "modo": "inicio_fim",
+                    "valor": 12.6,
+                    "de": 14.4,
+                    "para": 12.6,
+                    "variacao": -1.8
                 },
                 "ideb_anos_iniciais": {
                     "anos_usados": [
@@ -601,6 +738,33 @@
                     "max": 8.04
                 },
                 "esperanca_vida": null,
+                "fome": {
+                    "anos_usados": [
+                        2023,
+                        2024
+                    ],
+                    "cobertura": "2023\u20132024",
+                    "completo": false,
+                    "modo": "inicio_fim",
+                    "valor": 3.1,
+                    "de": 4.0,
+                    "para": 3.1,
+                    "variacao": -0.9
+                },
+                "gini": {
+                    "anos_usados": [
+                        2023,
+                        2024,
+                        2025
+                    ],
+                    "cobertura": "2023\u20132025",
+                    "completo": true,
+                    "modo": "inicio_fim",
+                    "valor": 0.51,
+                    "de": 0.52,
+                    "para": 0.51,
+                    "variacao": -0.01
+                },
                 "ipca": {
                     "anos_usados": [
                         2023,
@@ -628,6 +792,19 @@
                     "valor": 2.97,
                     "min": 2.3,
                     "max": 3.4
+                },
+                "pobreza": {
+                    "anos_usados": [
+                        2023,
+                        2024
+                    ],
+                    "cobertura": "2023\u20132024",
+                    "completo": false,
+                    "modo": "inicio_fim",
+                    "valor": 8.7,
+                    "de": 10.4,
+                    "para": 8.7,
+                    "variacao": -1.7
                 },
                 "ideb_anos_iniciais": {
                     "anos_usados": [
@@ -666,6 +843,28 @@
             "corte": "anual",
             "observacao": "Vai s\u00f3 at\u00e9 2016: \u00e9 o fim da s\u00e9rie publicada nesta tabela.",
             "url": "https://sidra.ibge.gov.br/tabela/3825"
+        },
+        "fome": {
+            "id": "fome",
+            "nome": "Fome (inseguran\u00e7a alimentar grave)",
+            "unidade": "%",
+            "fonte": "IBGE/SIDRA",
+            "tabela_sidra": "6665",
+            "variavel": "2133",
+            "corte": "anual",
+            "observacao": "Percentual de pessoas em lares com inseguran\u00e7a alimentar GRAVE \u2014 a defini\u00e7\u00e3o oficial de quem passou por falta real de comida. A pesquisa n\u00e3o \u00e9 anual: foi a campo em 2004, 2009, 2013, 2018, 2023 e 2024, e os anos sem medi\u00e7\u00e3o ficam vazios em vez de inventados.",
+            "url": "https://sidra.ibge.gov.br/tabela/6665"
+        },
+        "gini": {
+            "id": "gini",
+            "nome": "Desigualdade de renda (\u00edndice de Gini)",
+            "unidade": "\u00cdndice",
+            "fonte": "IBGE/SIDRA",
+            "tabela_sidra": "7435",
+            "variavel": "10681",
+            "corte": "anual",
+            "observacao": "De 0 a 1: quanto mais perto de 1, mais concentrada a renda. Calculado sobre o rendimento domiciliar per capita da PNAD Cont\u00ednua, que come\u00e7a em 2012.",
+            "url": "https://sidra.ibge.gov.br/tabela/7435"
         },
         "ipca": {
             "id": "ipca",
@@ -710,6 +909,17 @@
             "corte": "q4",
             "observacao": "Varia\u00e7\u00e3o real do volume do PIB, acumulada no ano, no 4\u00ba trimestre. Come\u00e7a em 1996: antes disso o IBGE n\u00e3o publica esta s\u00e9rie trimestral.",
             "url": "https://sidra.ibge.gov.br/tabela/5932"
+        },
+        "pobreza": {
+            "id": "pobreza",
+            "nome": "Pobreza",
+            "unidade": "%",
+            "fonte": "IBGE/SIDRA",
+            "tabela_sidra": "10660",
+            "variavel": "14137",
+            "corte": "anual",
+            "observacao": "Percentual da popula\u00e7\u00e3o abaixo da linha de pobreza regional (metodologia do painel ODS Brasil, calculada pelo IBGE sobre a PNAD Cont\u00ednua, que come\u00e7a em 2012).",
+            "url": "https://sidra.ibge.gov.br/tabela/10660"
         },
         "ideb_anos_iniciais": {
             "id": "ideb_anos_iniciais",
@@ -757,6 +967,30 @@
             "2014": 75.1,
             "2015": 75.4,
             "2016": 75.7
+        },
+        "fome": {
+            "2004": 8.2,
+            "2009": 5.8,
+            "2013": 3.6,
+            "2018": 5.0,
+            "2023": 4.0,
+            "2024": 3.1
+        },
+        "gini": {
+            "2012": 0.54,
+            "2013": 0.532,
+            "2014": 0.526,
+            "2015": 0.524,
+            "2016": 0.537,
+            "2017": 0.539,
+            "2018": 0.545,
+            "2019": 0.543,
+            "2020": 0.523,
+            "2021": 0.543,
+            "2022": 0.517,
+            "2023": 0.517,
+            "2024": 0.504,
+            "2025": 0.511
         },
         "ipca": {
             "1980": 99.25,
@@ -878,6 +1112,21 @@
             "2023": 3.2,
             "2024": 3.4,
             "2025": 2.3
+        },
+        "pobreza": {
+            "2012": 14.7,
+            "2013": 13.5,
+            "2014": 12.3,
+            "2015": 12.8,
+            "2016": 14.6,
+            "2017": 15.0,
+            "2018": 14.7,
+            "2019": 14.4,
+            "2020": 12.2,
+            "2021": 17.2,
+            "2022": 12.6,
+            "2023": 10.4,
+            "2024": 8.7
         },
         "ideb_anos_iniciais": {
             "2005": 3.5,

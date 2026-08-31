@@ -198,9 +198,13 @@
     <p class="dim maxw"><b>3. O que ficou de fora, de propósito.</b> O
     <b>PIB por habitante</b> existe na fonte, mas o IBGE o publica a preços de
     cada ano, sem corrigir a inflação: numa tabela assim ele sobe para todos os
-    governos e engana. E <b>segurança pública não entrou</b> porque o IBGE não
-    publica série de homicídios — o dado é do Ministério da Saúde (SIM), com
-    outra estrutura. Preferimos o buraco declarado ao número improvisado.</p>
+    governos e engana. E <b>segurança pública ainda não entrou</b>: o IBGE não
+    publica série de homicídios (o dado nacional é do Ministério da Saúde, o
+    SIM), e as três fontes oficiais que agregam essa série — o Ipeadata, o
+    Atlas da Violência e os dados abertos do Ministério da Justiça — estavam
+    <b>fora do ar</b> quando montamos esta página; qualquer um pode conferir
+    tentando abrir ipeadata.gov.br. Preferimos o buraco declarado ao número
+    improvisado, e a série entra quando a fonte voltar.</p>
 
     <div class="aviso neutro" style="margin-top:1.4rem">
       <b>Por que o desemprego só começa em 2013.</b> A pesquisa atual do IBGE
@@ -239,21 +243,19 @@
   // Inflação de 963% e PIB de 4% não cabem na mesma régua de casas decimais.
   function casas(v){ return Math.abs(Number(v))>=100 ? 0 : (Math.abs(Number(v))>=10?1:2); }
 
-  // A ordem é editorial: começa pelo que a pessoa sente no bolso.
-  var ORDEM=['ipca','pib','desemprego','esperanca_vida',
-             'mortalidade_infantil_antiga','mortalidade_infantil','ideb_anos_iniciais'];
-  var CURTO={ipca:'Inflação',pib:'PIB',desemprego:'Desemprego',
-             esperanca_vida:'Expectativa de vida',
-             mortalidade_infantil_antiga:'Mortalidade infantil (1990–2009)',
-             mortalidade_infantil:'Mortalidade infantil (2000–2016)',
-             ideb_anos_iniciais:'Ideb'};
+  // A ordem e os nomes curtos vêm do componente compartilhado
+  // (landing/governos.js): uma lista só para a home, o comparador e esta
+  // tabela. Uma cópia local aqui já divergiu uma vez — os índices de fome,
+  // pobreza e Gini entraram no componente e a tabela ficou para trás.
+  function ORDEM(){ return (window.BB && window.BB.governos) ? window.BB.governos.ORDEM : []; }
+  function CURTO(s){ var c=(window.BB && window.BB.governos) ? window.BB.governos.CURTO : {}; return c[s]; }
 
-  function series(){ return ORDEM.filter(function(s){return D.series[s]}); }
+  function series(){ return ORDEM().filter(function(s){return D.series[s]}); }
 
   function pintaTabela(){
     var ss=series();
     var h='<thead><tr><th>Governo</th>'
-      + ss.map(function(s){return '<th>'+esc(CURTO[s]||D.series[s].nome)+'</th>'}).join('')
+      + ss.map(function(s){return '<th>'+esc(CURTO(s)||D.series[s].nome)+'</th>'}).join('')
       + '</tr></thead><tbody>';
     D.presidentes.forEach(function(p){
       var per=p.inicio.slice(0,4)+'–'+(p.fim?p.fim.slice(0,4):'hoje');
@@ -311,12 +313,18 @@
     .then(function(r){
       if(!r.ok) throw new Error(r.corpo.erro||'erro');
       D=r.corpo;
-      atual=series()[0];
-      pintaTabela(); pintaProgramas(); pintaFontes();
-      if(window.BB && window.BB.governos){
+      // A resposta da API pode chegar antes de o governos.js (defer) ter
+      // executado — e a tabela depende da lista dele. Espera-se o componente
+      // em vez de renderizar uma tabela vazia por azar de milissegundos.
+      (function quando(fn){
+        if(window.BB && window.BB.governos) return fn();
+        setTimeout(function(){quando(fn)},30);
+      })(function(){
+        atual=series()[0];
+        pintaTabela(); pintaProgramas(); pintaFontes();
         window.BB.governos.montar(document.getElementById('gov-comparador'),
                                   {compacto:false});
-      }
+      });
       selo.textContent='DADOS OFICIAIS · IBGE + PLANALTO';
     })
     .catch(function(){

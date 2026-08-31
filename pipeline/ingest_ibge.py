@@ -86,6 +86,35 @@ SERIES = {
                    "as pesquisas anteriores usavam outra metodologia e outro "
                    "recorte, e encaixá-las na mesma linha seria comparar "
                    "coisas diferentes."),
+    # --------------------------------------------------------- fome e renda
+    "fome": Serie(
+        id="fome", nome="Fome (insegurança alimentar grave)", unidade="%",
+        tabela="6665", variavel="2133",
+        espera_nome="insegurança alimentar grave",
+        classificacao="/c12404/109102",
+        observacao="Percentual de pessoas em lares com insegurança alimentar "
+                   "GRAVE — a definição oficial de quem passou por falta real "
+                   "de comida. A pesquisa não é anual: foi a campo em 2004, "
+                   "2009, 2013, 2018, 2023 e 2024, e os anos sem medição ficam "
+                   "vazios em vez de inventados."),
+    # A tabela do ODS 1.1.1 (10443, linha internacional) publica só os
+    # recortes por sexo e por cor — o TOTAL do país vem vazio ('..') em todos
+    # os anos, inclusive forçando as categorias de total. Publicar o recorte
+    # de um grupo como se fosse o país seria número errado; usamos a linha de
+    # pobreza REGIONAL do painel ODS Brasil (10660), que traz o total.
+    "pobreza": Serie(
+        id="pobreza", nome="Pobreza", unidade="%",
+        tabela="10660", variavel="14137", espera_nome="linha de pobreza",
+        observacao="Percentual da população abaixo da linha de pobreza "
+                   "regional (metodologia do painel ODS Brasil, calculada "
+                   "pelo IBGE sobre a PNAD Contínua, que começa em 2012)."),
+    "gini": Serie(
+        id="gini", nome="Desigualdade de renda (índice de Gini)",
+        unidade="Índice",
+        tabela="7435", variavel="10681", espera_nome="Gini",
+        observacao="De 0 a 1: quanto mais perto de 1, mais concentrada a "
+                   "renda. Calculado sobre o rendimento domiciliar per capita "
+                   "da PNAD Contínua, que começa em 2012."),
     # ------------------------------------------------------------------ saúde
     "mortalidade_infantil_antiga": Serie(
         id="mortalidade_infantil_antiga",
@@ -120,13 +149,18 @@ def conferir_resposta(serie, dados):
     if not dados or len(dados) < 2:
         raise ValueError(f"{serie.id}: resposta vazia")
     linha = dados[1]
+    # O sentido de uma série pode morar na variável (D2N) OU numa categoria de
+    # classificação (D4N): na tabela da fome, a variável é só "Moradores em
+    # domicílios particulares" — quem diz "insegurança alimentar grave" é a
+    # categoria. Procuramos o nome esperado em todas as dimensões da linha.
+    dims = " | ".join(str(v) for k, v in linha.items() if k.endswith("N"))
     nome = (linha.get("D2N") or linha.get("D3N") or "")
     unidade = linha.get("MN") or ""
-    if serie.espera_nome.lower() not in nome.lower():
+    if serie.espera_nome.lower() not in dims.lower():
         raise ValueError(
             f"{serie.id}: a variável do IBGE mudou de sentido.\n"
             f"  esperado conter: {serie.espera_nome!r}\n"
-            f"  veio: {nome!r}\n"
+            f"  veio: {dims!r}\n"
             f"  Não ingerido — série trocada vira número errado publicado.")
     if unidade and serie.unidade not in unidade:
         raise ValueError(f"{serie.id}: unidade {unidade!r}, esperada {serie.unidade!r}")

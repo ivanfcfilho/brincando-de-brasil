@@ -183,8 +183,9 @@
       <div>
         <p class="sec-eyebrow">O Brasil, governo a governo</p>
         <h2>Oito presidentes desde 1990. <span class="hit">Os números de cada um.</span></h2>
-        <p class="sub">Inflação, crescimento, desemprego e educação, direto das
-        tabelas do IBGE. Clique para trocar o indicador.</p>
+        <p class="sub">Inflação, crescimento, desemprego, fome, pobreza,
+        desigualdade, saúde e educação — direto das tabelas do IBGE. Clique
+        para trocar o indicador.</p>
       </div>
       <div class="gov-ressalva">
         <b>Leia isto antes do gráfico.</b> Estes números mostram <b>o que
@@ -418,8 +419,11 @@
   // indicadores que qualquer pessoa reconhece.
   document.addEventListener('DOMContentLoaded', function () {
     if (window.BB && window.BB.governos) {
+      // Versão COMPLETA na home: o comparador é a estrela da página, e
+      // esconder fome, pobreza e desigualdade atrás de um clique seria
+      // esconder justamente o que mais diz respeito a quem visita.
       window.BB.governos.montar(document.getElementById('gov-comparador'),
-                                { compacto: true });
+                                { compacto: false });
     }
   });
   fetch('/api/saude').then(function (r) { return r.json(); }).then(function (s) {
