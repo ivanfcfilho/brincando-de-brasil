@@ -43,8 +43,22 @@ def main():
         n = bd.contar(con, tabela)
         caminho = os.path.join(DESTINO, f"{tabela}.csv.gz")
         print(f"  {tabela:20s} {n:>10,} linhas …", end="", flush=True)
+        # HEADER não é enfeite: é o que torna o arquivo auto-descritivo.
+        #
+        # `COPY` sem lista de colunas usa a ordem FÍSICA da tabela, e ela pode
+        # divergir entre dois bancos com o mesmo schema: uma coluna criada por
+        # `ALTER TABLE ADD COLUMN` fica no fim do banco antigo e no meio de um
+        # banco recriado do zero pelo `CREATE TABLE`. Foi o que aconteceu com
+        # `emenda_favorecido.cod_ibge_favorecido` na primeira carga.
+        #
+        # Ali o erro gritou (texto "1296.86" indo para uma coluna inteira),
+        # mas isso foi sorte: entre duas colunas numéricas, a carga teria
+        # sucedido com os valores TROCADOS, em silêncio. Com o cabeçalho, a
+        # importação monta a lista de colunas pelo nome e a ordem deixa de
+        # importar.
         with gzip.open(caminho, "wb", compresslevel=6) as saida, con.cursor() as cur:
-            cur.copy_expert(f"COPY {tabela} TO STDOUT WITH (FORMAT csv)", saida)
+            cur.copy_expert(
+                f"COPY {tabela} TO STDOUT WITH (FORMAT csv, HEADER)", saida)
         mb = os.path.getsize(caminho) / 1e6
         print(f" {mb:>7.1f} MB")
         total += n

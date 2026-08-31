@@ -37,7 +37,15 @@ def main():
             caminho = os.path.join(ORIGEM, f"{tabela}.csv.gz")
             print(f"  {tabela:20s} …", end="", flush=True)
             with gzip.open(caminho, "rb") as f:
-                cur.copy_expert(f"COPY {tabela} FROM STDIN WITH (FORMAT csv)", f)
+                # A primeira linha traz os nomes das colunas na ordem em que
+                # foram exportadas. Copiar NOMEANDO as colunas faz a carga
+                # independer da ordem física das duas pontas — que diverge
+                # sempre que uma coluna nasceu de `ALTER TABLE ADD COLUMN`
+                # num lado e de `CREATE TABLE` no outro.
+                cabecalho = f.readline().decode("utf-8").strip()
+                cols = ",".join(f'"{c.strip()}"' for c in cabecalho.split(","))
+                cur.copy_expert(
+                    f"COPY {tabela} ({cols}) FROM STDIN WITH (FORMAT csv)", f)
             cur.execute(f"SELECT COUNT(*) FROM {tabela}")
             print(f" {cur.fetchone()[0]:>10,} linhas")
 
