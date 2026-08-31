@@ -1,7 +1,7 @@
 # Serviço do site "Brincando de Brasil".
 #
 # Instalação (precisa de sudo):
-#   sudo cp deploy/brincandodebrasil.service /etc/systemd/system/
+#   sudo cp ~/brincandodebrasil/deploy/brincandodebrasil.service /etc/systemd/system/
 #   sudo systemctl daemon-reload
 #   sudo systemctl enable --now brincandodebrasil
 #
@@ -16,19 +16,21 @@ Wants=postgresql.service
 Type=simple
 User=kakashi
 Group=kakashi
-WorkingDirectory=/opt/brincandodebrasil
-EnvironmentFile=/opt/brincandodebrasil/.env
-ExecStart=/opt/brincandodebrasil/.venv/bin/python pipeline/api.py \
+WorkingDirectory=/home/kakashi/brincandodebrasil
+EnvironmentFile=/home/kakashi/brincandodebrasil/.env
+ExecStart=/home/kakashi/brincandodebrasil/.venv/bin/python pipeline/api.py \
     --host 127.0.0.1 --porta 8010 --prefixo /brincandodebrasil
 Restart=on-failure
 RestartSec=5
 
-# O serviço só lê dados e responde HTTP: não precisa de mais que isso.
+# O serviço só LÊ: consulta o banco e devolve HTTP, não escreve arquivo
+# nenhum. Por isso o home pode ficar somente-leitura e o resto do sistema,
+# inacessível. (O job diário que baixa e ingere é outro serviço, o
+# codigo-transicao-atualizar, e esse sim precisa escrever em data/.)
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=read-only
-ReadWritePaths=/opt/brincandodebrasil/data
 
 [Install]
 WantedBy=multi-user.target

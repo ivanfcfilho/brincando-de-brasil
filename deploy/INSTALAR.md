@@ -9,7 +9,9 @@ Endereço final, até existir DNS próprio:
 
 ## O que já está feito
 
-- código em `/opt/brincandodebrasil` (clone do GitHub);
+- código em `/home/kakashi/brincandodebrasil` (clone do GitHub).
+  Ficou no home e não em `/opt` porque `/opt` exige root: assim o app já
+  roda sem esperar por senha nenhuma;
 - `.venv` com `psycopg2-binary`;
 - `deploy/deploy.sh` atualiza tudo e **recusa publicar se as invariantes
   falharem**.
@@ -28,13 +30,13 @@ sudo -u postgres psql -c "CREATE DATABASE brincando OWNER brincando;"
 sudo -u postgres psql -d brincando -c "CREATE EXTENSION IF NOT EXISTS cube; CREATE EXTENSION IF NOT EXISTS earthdistance; CREATE EXTENSION IF NOT EXISTS unaccent; CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 ```
 
-Depois escreva a credencial em `/opt/brincandodebrasil/.env` (o arquivo **não**
+Depois escreva a credencial em `~/brincandodebrasil/.env` (o arquivo **não**
 vai para o git):
 
 ```bash
 echo "CT_DSN=postgresql://brincando:ESCOLHA_UMA_SENHA@127.0.0.1:5432/brincando" \
-  > /opt/brincandodebrasil/.env
-chmod 600 /opt/brincandodebrasil/.env
+  > ~/brincandodebrasil/.env
+chmod 600 ~/brincandodebrasil/.env
 ```
 
 ### 2. Carregar os dados
@@ -53,7 +55,7 @@ pg_restore --no-owner --no-acl -d brincando -U brincando -h 127.0.0.1 \
 **b) rodar o pipeline no servidor** (mais lento, ~40 min, baixa 850 MB):
 
 ```bash
-cd /opt/brincandodebrasil
+cd ~/brincandodebrasil
 ./.venv/bin/pip install curl_cffi
 ./.venv/bin/python pipeline/db.py --init
 # ... e a carga inicial do README, na ordem
@@ -62,7 +64,7 @@ cd /opt/brincandodebrasil
 ### 3. O serviço
 
 ```bash
-sudo cp /opt/brincandodebrasil/deploy/brincandodebrasil.service /etc/systemd/system/
+sudo cp ~/brincandodebrasil/deploy/brincandodebrasil.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now brincandodebrasil
 systemctl status brincandodebrasil --no-pager
@@ -85,7 +87,7 @@ studiocantare.com junto.
 ## Atualizar depois
 
 ```bash
-ssh kakashi@luisa 'bash /opt/brincandodebrasil/deploy/deploy.sh'
+ssh kakashi@luisa 'bash ~/brincandodebrasil/deploy/deploy.sh'
 ```
 
 ## Quando houver DNS próprio

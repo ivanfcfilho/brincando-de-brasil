@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Atualiza o site no servidor. Idempotente: pode rodar quantas vezes quiser.
 #
-#   ssh kakashi@luisa 'bash /opt/brincandodebrasil/deploy/deploy.sh'
+#   ssh kakashi@luisa 'bash ~/brincandodebrasil/deploy/deploy.sh'
 #
 # NÃO precisa de sudo, exceto para reiniciar o serviço — que ele tenta e,
 # se não puder, avisa em vez de fingir que deu certo.
 set -euo pipefail
 
-RAIZ="${RAIZ:-/opt/brincandodebrasil}"
+RAIZ="${RAIZ:-$HOME/brincandodebrasil}"
 cd "$RAIZ"
 
 echo "── código"
