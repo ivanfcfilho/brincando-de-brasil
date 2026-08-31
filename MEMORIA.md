@@ -210,13 +210,18 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
    1992–2011) mede só quem tem renda e dá 0,58 onde a PNAD Contínua dá 0,54.
    Detalhe de API: tabela da PME não existe no nível `n1`; é `n110`
    ("Total das áreas - PME"), e pedir n1 devolve HTTP 400.
-22. **A projeção da população do IBGE (t7362) preenche saúde até 2060 — e por
-   isso mesmo não entra.** Ela é a MESMA fonte das séries 3825/3834 já no
-   banco (conferido: zero divergência nos 17 anos em comum), só que estendida.
-   Mas é a revisão de 2018: crava expectativa de vida de 76,7 anos em 2020, o
-   ano em que a expectativa de vida do brasileiro CAIU. Publicar previsão
-   pré-covid como "o que aconteceu no mandato" é exatamente o erro que este
-   projeto existe para não cometer. Em vez disso entraram três indicadores
+22. **A projeção da população do IBGE vai até 2060 — e o corte fica em 2018.**
+   As séries 3825/3834, que estavam no banco, saem da **Revisão 2013** da
+   projeção (o rodapé do SIDRA diz isso; a API v3 NÃO devolve esse campo, só a
+   página) e param em 2016, sem atualização desde 05/06/2017. A t7362 é a
+   mesma série na **Revisão 2018**: duas casas decimais e dois anos a mais.
+   As duas concordam nos 17 anos em comum dentro do arredondamento — a maior
+   diferença é 0,05 ano —, então a troca não reescreve história: atualiza a
+   revisão e completa o mandato do Temer. Feita em 2026-08-31.
+   O que NÃO entra é o resto da t7362: ela segue até 2060, e a partir de 2019
+   é previsão feita antes da covid — crava 76,7 anos de expectativa de vida em
+   2020, o ano em que a expectativa CAIU. Virou invariante: nenhum ano depois
+   de 2018 nessas duas séries. Em vez disso entraram três indicadores
    MEDIDOS, do painel ODS: mortalidade de menores de 5 anos (t6695,
    2000–2023), neonatal (t6696, 1990–2022, a série de saúde medida mais longa
    que o IBGE publica) e materna (t6694, 2009–2023). A materna tem a covid

@@ -204,6 +204,17 @@ def conferir(con):
     checar("mortalidade materna entre 20 e 300 por 100 mil", r["c"] == 0,
            f"{r['c']} fora da faixa")
 
+    # As duas séries que saem da PROJEÇÃO da população não podem passar de
+    # 2018. A tabela do IBGE entrega até 2060 num único pedido, e o dia em que
+    # alguém tirar o corte o site vai publicar, com cara de dado oficial, uma
+    # previsão feita em 2018 que não sabe que a covid existiu — ela crava 76,7
+    # anos de expectativa de vida em 2020, o ano em que a expectativa CAIU.
+    r = bd.um(con, """SELECT COUNT(*) AS c FROM serie_valor
+                      WHERE serie_id IN ('esperanca_vida','mortalidade_infantil')
+                        AND ano > 2018""")
+    checar("projeção da população cortada em 2018 (previsão não é medição)",
+           r["c"] == 0, f"{r['c']} anos além do corte")
+
     # A covid tem que aparecer: em 2021 a mortalidade materna disparou porque
     # gestante não vacinada foi grupo de risco. Se essa marca sumir da série,
     # alguém trocou a fonte por uma versão suavizada — ou por uma projeção.

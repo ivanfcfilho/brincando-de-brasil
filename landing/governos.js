@@ -47,8 +47,8 @@
     mortalidade_menores5: 'Morte de crianças até 5 anos',
     mortalidade_neonatal: 'Morte de recém-nascidos',
     mortalidade_materna: 'Morte de mães no parto',
-    esperanca_vida: 'Expectativa de vida (até 2016)',
-    mortalidade_infantil: 'Mortalidade infantil (2000–2016)',
+    esperanca_vida: 'Expectativa de vida (até 2018)',
+    mortalidade_infantil: 'Mortalidade infantil (2000–2018)',
     mortalidade_infantil_antiga: 'Mortalidade infantil (1990–2009)',
     ideb_anos_iniciais: 'Ideb'
   };
@@ -62,7 +62,7 @@
     fome: 'De cada 100 pessoas, quantas viviam em lares que passaram por falta real de comida (insegurança alimentar grave).',
     pobreza: 'De cada 100 pessoas, quantas viviam abaixo da linha de pobreza.',
     gini: 'Desigualdade de renda, de 0 a 1: quanto mais perto de 1, mais a renda do país está concentrada em poucos.',
-    esperanca_vida: 'Quantos anos, em média, viveria quem nascesse naquele ano.',
+    esperanca_vida: 'Quantos anos, em média, viveria quem nascesse naquele ano. Vem da projeção da população do IBGE — modelo, não contagem —, e por isso para em 2018, antes da covid.',
     desemprego_pme: 'De cada 100 pessoas procurando trabalho nas seis maiores regiões metropolitanas, quantas não acharam. Não é o país inteiro.',
     desemprego_pme_antiga: 'A medida antiga, mais estreita: de cada 100 pessoas que procuraram trabalho na semana da entrevista, nas seis maiores regiões metropolitanas, quantas não acharam.',
     gini_pnad_antiga: 'A mesma ideia de desigualdade, mas medida na pesquisa antiga e só entre quem tinha alguma renda — por isso o número é mais alto que o da linha de cima.',

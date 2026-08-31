@@ -60,6 +60,19 @@ class Serie:
     # metropolitanas, e o SIDRA publica esse recorte no nível "n110"
     # ("Total das áreas - PME"). Pedir n1 numa tabela da PME devolve HTTP 400.
     nivel: str = "n1"
+    # Em que dimensão da resposta está o ANO.
+    #
+    # Normalmente o ano é o PERÍODO da tabela e o ingestor o acha sozinho. Nas
+    # tabelas de projeção, não: o período é a REVISÃO da projeção (uma só:
+    # "2018") e o ano de referência é uma classificação à parte. Ler o período
+    # ali daria 61 valores todos carimbados como 2018 — e o último a entrar
+    # sobrescreveria os outros, deixando a série inteira com o número de um
+    # ano só. Erro silencioso, do tipo que passa na conferência.
+    dim_ano: str = ""
+    # Último ano que pode entrar. Existe para as projeções: elas seguem até
+    # 2060, e a partir de certo ponto deixam de descrever o que aconteceu
+    # para descrever o que o modelo achava que ia acontecer.
+    ano_max: int = 0
 
 
 SERIES = {
@@ -177,9 +190,16 @@ SERIES = {
                    "Série encerrada pelo IBGE."),
     "mortalidade_infantil": Serie(
         id="mortalidade_infantil",
-        nome="Mortalidade infantil", unidade="‰",
-        tabela="3834", variavel="1940", espera_nome="mortalidade infantil",
-        observacao="Mortes de menores de 1 ano por mil nascidos vivos."),
+        nome="Mortalidade infantil (projeção, até 2018)", unidade="‰",
+        tabela="7362", variavel="1940", espera_nome="mortalidade infantil",
+        classificacao="/c2/6794/c1933/all", dim_ano="D5N", ano_max=2018,
+        observacao="Mortes de menores de 1 ano por mil nascidos vivos, na "
+                   "Projeção da População do IBGE, revisão de 2018. É modelo "
+                   "calibrado, não contagem — e por isso para em 2018: a "
+                   "projeção segue até 2060, mas foi feita antes da covid e "
+                   "não sabe o que aconteceu depois. Para os anos recentes, "
+                   "as linhas de mortalidade neonatal e até 5 anos são "
+                   "medidas, não projetadas."),
     # As duas linhas de mortalidade infantil acima param em 2009 e em 2016, e
     # as duas saem da PROJEÇÃO da população do IBGE (revisão de 2018) — ou
     # seja, de um modelo. A projeção continua até 2060, e seria fácil puxá-la
@@ -215,14 +235,29 @@ SERIES = {
                    "gravidez, ao parto ou ao pós-parto, por 100 mil crianças "
                    "nascidas vivas. Medida desde 2009. O salto de 2021 é a "
                    "covid: gestante não vacinada foi grupo de risco."),
+    # ESTA SÉRIE MUDOU DE TABELA EM 2026-08-31, e vale registrar por quê.
+    #
+    # Antes vinha da tabela 3825, que o SIDRA ainda publica mas cujo rodapé
+    # diz "Revisão 2013" — projeção da população de treze anos atrás, com uma
+    # casa decimal, congelada em 2016 (última atualização: 05/06/2017). A
+    # 7362 é a MESMA série, na revisão de 2018: duas casas decimais e dois
+    # anos a mais. As duas concordam nos 17 anos em comum dentro do
+    # arredondamento (a maior diferença é 0,05 ano), então trocar não reescreve
+    # a história — só a traz para a revisão vigente e completa o mandato do
+    # Temer, que antes ficava sem nenhum dado de saúde.
     "esperanca_vida": Serie(
-        id="esperanca_vida", nome="Expectativa de vida ao nascer", unidade="Anos",
-        tabela="3825", variavel="2503", espera_nome="esperança de vida",
-        observacao="Vai só até 2016: é o fim da série publicada nesta tabela. "
-                   "O IBGE tem números depois disso, mas dentro da PROJEÇÃO "
-                   "da população feita em 2018 — previsão, não medição, e "
-                   "feita antes da covid. Para os governos recentes, olhe as "
-                   "linhas de mortalidade, que são medidas."),
+        id="esperanca_vida",
+        nome="Expectativa de vida ao nascer (projeção, até 2018)",
+        unidade="Anos",
+        tabela="7362", variavel="2503", espera_nome="esperança de vida",
+        classificacao="/c2/6794/c1933/all", dim_ano="D5N", ano_max=2018,
+        observacao="Projeção da População do IBGE, revisão de 2018. É modelo "
+                   "calibrado nas estatísticas vitais, não contagem direta. "
+                   "Para em 2018 de propósito: a projeção segue até 2060, mas "
+                   "foi feita antes da covid e crava 76,7 anos para 2020 — o "
+                   "ano em que a expectativa de vida do brasileiro CAIU. "
+                   "Publicar essa previsão como 'o que aconteceu no mandato' "
+                   "seria número errado com cara de oficial."),
 }
 
 
@@ -280,7 +315,10 @@ def valores_por_ano(serie, dados):
             valor = float(v.replace(",", "."))
         except ValueError:
             continue
-        ano, chave = _ano_e_chave(linha.get("D3C") or linha.get("D2C") or "")
+        if serie.dim_ano:
+            ano, chave = int(linha[serie.dim_ano]), ""
+        else:
+            ano, chave = _ano_e_chave(linha.get("D3C") or linha.get("D2C") or "")
         bruto.setdefault(ano, []).append((chave, valor))
 
     # Quantos períodos tem um ano COMPLETO nesta série? Não dá para cravar:
@@ -309,6 +347,8 @@ def valores_por_ano(serie, dados):
                 saida[ano] = sum(v for _, v in pares) / len(pares)
         else:
             saida[ano] = pares[-1][1]
+    if serie.ano_max:
+        saida = {a: v for a, v in saida.items() if a <= serie.ano_max}
     return saida
 
 
