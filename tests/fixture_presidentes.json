@@ -1,1395 +1,1415 @@
 {
-    "presidentes": [
-        {
-            "id": "collor",
-            "nome": "Fernando Collor",
-            "partido": "PRN",
-            "inicio": "1990-03-15",
-            "fim": "1992-10-02",
-            "anos": [
-                1990,
-                1991,
-                1992
-            ],
-            "nota": "Afastado por impeachment em 1992. Governou 2 anos e meio.",
-            "indicadores": {
-                "desemprego": null,
-                "esperanca_vida": null,
-                "fome": null,
-                "gini": null,
-                "ipca": {
-                    "anos_usados": [
-                        1990,
-                        1991,
-                        1992
-                    ],
-                    "cobertura": "1990\u20131992",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 963.11,
-                    "min": 472.7,
-                    "max": 1620.97
-                },
-                "mortalidade_infantil": null,
-                "mortalidade_infantil_antiga": {
-                    "anos_usados": [
-                        1990,
-                        1991,
-                        1992
-                    ],
-                    "cobertura": "1990\u20131992",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 43.3,
-                    "de": 47.0,
-                    "para": 43.3,
-                    "variacao": -3.7
-                },
-                "pib": null,
-                "pobreza": null,
-                "ideb_anos_iniciais": null
-            }
-        },
-        {
-            "id": "itamar",
-            "nome": "Itamar Franco",
-            "partido": "PMDB",
-            "inicio": "1992-10-02",
-            "fim": "1995-01-01",
-            "anos": [
-                1993,
-                1994
-            ],
-            "nota": "Assumiu como vice. O Plano Real foi lan\u00e7ado no governo dele, em julho de 1994.",
-            "indicadores": {
-                "desemprego": null,
-                "esperanca_vida": null,
-                "fome": null,
-                "gini": null,
-                "ipca": {
-                    "anos_usados": [
-                        1993,
-                        1994
-                    ],
-                    "cobertura": "1993\u20131994",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 1518.51,
-                    "min": 916.46,
-                    "max": 2477.15
-                },
-                "mortalidade_infantil": null,
-                "mortalidade_infantil_antiga": {
-                    "anos_usados": [
-                        1993,
-                        1994
-                    ],
-                    "cobertura": "1993\u20131994",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 39.5,
-                    "de": 41.4,
-                    "para": 39.5,
-                    "variacao": -1.9
-                },
-                "pib": null,
-                "pobreza": null,
-                "ideb_anos_iniciais": null
-            }
-        },
-        {
-            "id": "fhc",
-            "nome": "Fernando Henrique Cardoso",
-            "partido": "PSDB",
-            "inicio": "1995-01-01",
-            "fim": "2003-01-01",
-            "anos": [
-                1995,
-                1996,
-                1997,
-                1998,
-                1999,
-                2000,
-                2001,
-                2002
-            ],
-            "nota": "Dois mandatos.",
-            "indicadores": {
-                "desemprego": null,
-                "esperanca_vida": {
-                    "anos_usados": [
-                        2000,
-                        2001,
-                        2002
-                    ],
-                    "cobertura": "2000\u20132002",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 70.7,
-                    "de": 69.8,
-                    "para": 70.7,
-                    "variacao": 0.9
-                },
-                "fome": null,
-                "gini": null,
-                "ipca": {
-                    "anos_usados": [
-                        1995,
-                        1996,
-                        1997,
-                        1998,
-                        1999,
-                        2000,
-                        2001,
-                        2002
-                    ],
-                    "cobertura": "1995\u20132002",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 9.09,
-                    "min": 1.65,
-                    "max": 22.41
-                },
-                "mortalidade_infantil": {
-                    "anos_usados": [
-                        2000,
-                        2001,
-                        2002
-                    ],
-                    "cobertura": "2000\u20132002",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 26.0,
-                    "de": 29.0,
-                    "para": 26.0,
-                    "variacao": -3.0
-                },
-                "mortalidade_infantil_antiga": {
-                    "anos_usados": [
-                        1995,
-                        1996,
-                        1997,
-                        1998,
-                        1999,
-                        2000,
-                        2001,
-                        2002
-                    ],
-                    "cobertura": "1995\u20132002",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 28.4,
-                    "de": 37.9,
-                    "para": 28.4,
-                    "variacao": -9.5
-                },
-                "pib": {
-                    "anos_usados": [
-                        1996,
-                        1997,
-                        1998,
-                        1999,
-                        2000,
-                        2001,
-                        2002
-                    ],
-                    "cobertura": "1996\u20132002",
-                    "completo": false,
-                    "modo": "media_geometrica",
-                    "valor": 2.18,
-                    "min": 0.3,
-                    "max": 4.4
-                },
-                "pobreza": null,
-                "ideb_anos_iniciais": null
-            }
-        },
-        {
-            "id": "lula12",
-            "nome": "Lula (1\u00ba e 2\u00ba)",
-            "partido": "PT",
-            "inicio": "2003-01-01",
-            "fim": "2011-01-01",
-            "anos": [
-                2003,
-                2004,
-                2005,
-                2006,
-                2007,
-                2008,
-                2009,
-                2010
-            ],
-            "nota": "Dois mandatos.",
-            "indicadores": {
-                "desemprego": null,
-                "esperanca_vida": {
-                    "anos_usados": [
-                        2003,
-                        2004,
-                        2005,
-                        2006,
-                        2007,
-                        2008,
-                        2009,
-                        2010
-                    ],
-                    "cobertura": "2003\u20132010",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 73.9,
-                    "de": 71.2,
-                    "para": 73.9,
-                    "variacao": 2.7
-                },
-                "fome": {
-                    "anos_usados": [
-                        2004,
-                        2009
-                    ],
-                    "cobertura": "2004\u20132009",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 5.8,
-                    "de": 8.2,
-                    "para": 5.8,
-                    "variacao": -2.4
-                },
-                "gini": null,
-                "ipca": {
-                    "anos_usados": [
-                        2003,
-                        2004,
-                        2005,
-                        2006,
-                        2007,
-                        2008,
-                        2009,
-                        2010
-                    ],
-                    "cobertura": "2003\u20132010",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 5.77,
-                    "min": 3.14,
-                    "max": 9.3
-                },
-                "mortalidade_infantil": {
-                    "anos_usados": [
-                        2003,
-                        2004,
-                        2005,
-                        2006,
-                        2007,
-                        2008,
-                        2009,
-                        2010
-                    ],
-                    "cobertura": "2003\u20132010",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 17.2,
-                    "de": 24.7,
-                    "para": 17.2,
-                    "variacao": -7.5
-                },
-                "mortalidade_infantil_antiga": {
-                    "anos_usados": [
-                        2003,
-                        2004,
-                        2005,
-                        2006,
-                        2007,
-                        2008,
-                        2009
-                    ],
-                    "cobertura": "2003\u20132009",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 22.5,
-                    "de": 27.5,
-                    "para": 22.5,
-                    "variacao": -5.0
-                },
-                "pib": {
-                    "anos_usados": [
-                        2003,
-                        2004,
-                        2005,
-                        2006,
-                        2007,
-                        2008,
-                        2009,
-                        2010
-                    ],
-                    "cobertura": "2003\u20132010",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 4.06,
-                    "min": -0.1,
-                    "max": 7.5
-                },
-                "pobreza": null,
-                "ideb_anos_iniciais": {
-                    "anos_usados": [
-                        2005,
-                        2007,
-                        2009
-                    ],
-                    "cobertura": "2005\u20132009",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 4.4,
-                    "de": 3.5,
-                    "para": 4.4,
-                    "variacao": 0.9
-                }
-            }
-        },
-        {
-            "id": "dilma",
-            "nome": "Dilma Rousseff",
-            "partido": "PT",
-            "inicio": "2011-01-01",
-            "fim": "2016-08-31",
-            "anos": [
-                2011,
-                2012,
-                2013,
-                2014,
-                2015,
-                2016
-            ],
-            "nota": "Afastada por impeachment em agosto de 2016.",
-            "indicadores": {
-                "desemprego": {
-                    "anos_usados": [
-                        2013,
-                        2014,
-                        2015,
-                        2016
-                    ],
-                    "cobertura": "2013\u20132016",
-                    "completo": false,
-                    "modo": "media",
-                    "valor": 8.47,
-                    "min": 6.86,
-                    "max": 11.37
-                },
-                "esperanca_vida": {
-                    "anos_usados": [
-                        2011,
-                        2012,
-                        2013,
-                        2014,
-                        2015,
-                        2016
-                    ],
-                    "cobertura": "2011\u20132016",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 75.7,
-                    "de": 74.2,
-                    "para": 75.7,
-                    "variacao": 1.5
-                },
-                "fome": {
-                    "anos_usados": [
-                        2013
-                    ],
-                    "cobertura": "2013\u20132013",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 3.6,
-                    "de": 3.6,
-                    "para": 3.6,
-                    "variacao": 0.0
-                },
-                "gini": {
-                    "anos_usados": [
-                        2012,
-                        2013,
-                        2014,
-                        2015,
-                        2016
-                    ],
-                    "cobertura": "2012\u20132016",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 0.54,
-                    "de": 0.54,
-                    "para": 0.54,
-                    "variacao": -0.0
-                },
-                "ipca": {
-                    "anos_usados": [
-                        2011,
-                        2012,
-                        2013,
-                        2014,
-                        2015,
-                        2016
-                    ],
-                    "cobertura": "2011\u20132016",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 6.92,
-                    "min": 5.84,
-                    "max": 10.67
-                },
-                "mortalidade_infantil": {
-                    "anos_usados": [
-                        2011,
-                        2012,
-                        2013,
-                        2014,
-                        2015,
-                        2016
-                    ],
-                    "cobertura": "2011\u20132016",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 13.3,
-                    "de": 16.4,
-                    "para": 13.3,
-                    "variacao": -3.1
-                },
-                "mortalidade_infantil_antiga": null,
-                "pib": {
-                    "anos_usados": [
-                        2011,
-                        2012,
-                        2013,
-                        2014,
-                        2015,
-                        2016
-                    ],
-                    "cobertura": "2011\u20132016",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 0.39,
-                    "min": -3.5,
-                    "max": 4.0
-                },
-                "pobreza": {
-                    "anos_usados": [
-                        2012,
-                        2013,
-                        2014,
-                        2015,
-                        2016
-                    ],
-                    "cobertura": "2012\u20132016",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 14.6,
-                    "de": 14.7,
-                    "para": 14.6,
-                    "variacao": -0.1
-                },
-                "ideb_anos_iniciais": {
-                    "anos_usados": [
-                        2011,
-                        2013,
-                        2015
-                    ],
-                    "cobertura": "2011\u20132015",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 5.4,
-                    "de": 4.8,
-                    "para": 5.4,
-                    "variacao": 0.6
-                }
-            }
-        },
-        {
-            "id": "temer",
-            "nome": "Michel Temer",
-            "partido": "PMDB",
-            "inicio": "2016-08-31",
-            "fim": "2019-01-01",
-            "anos": [
-                2017,
-                2018
-            ],
-            "nota": "Assumiu como vice, ap\u00f3s o impeachment.",
-            "indicadores": {
-                "desemprego": {
-                    "anos_usados": [
-                        2017,
-                        2018
-                    ],
-                    "cobertura": "2017\u20132018",
-                    "completo": true,
-                    "modo": "media",
-                    "valor": 12.62,
-                    "min": 12.37,
-                    "max": 12.88
-                },
-                "esperanca_vida": null,
-                "fome": {
-                    "anos_usados": [
-                        2018
-                    ],
-                    "cobertura": "2018\u20132018",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 5.0,
-                    "de": 5.0,
-                    "para": 5.0,
-                    "variacao": 0.0
-                },
-                "gini": {
-                    "anos_usados": [
-                        2017,
-                        2018
-                    ],
-                    "cobertura": "2017\u20132018",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 0.55,
-                    "de": 0.54,
-                    "para": 0.55,
-                    "variacao": 0.01
-                },
-                "ipca": {
-                    "anos_usados": [
-                        2017,
-                        2018
-                    ],
-                    "cobertura": "2017\u20132018",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 3.35,
-                    "min": 2.95,
-                    "max": 3.75
-                },
-                "mortalidade_infantil": null,
-                "mortalidade_infantil_antiga": null,
-                "pib": {
-                    "anos_usados": [
-                        2017,
-                        2018
-                    ],
-                    "cobertura": "2017\u20132018",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 1.55,
-                    "min": 1.3,
-                    "max": 1.8
-                },
-                "pobreza": {
-                    "anos_usados": [
-                        2017,
-                        2018
-                    ],
-                    "cobertura": "2017\u20132018",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 14.7,
-                    "de": 15.0,
-                    "para": 14.7,
-                    "variacao": -0.3
-                },
-                "ideb_anos_iniciais": {
-                    "anos_usados": [
-                        2017
-                    ],
-                    "cobertura": "2017\u20132017",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 5.6,
-                    "de": 5.6,
-                    "para": 5.6,
-                    "variacao": 0.0
-                }
-            }
-        },
-        {
-            "id": "bolsonaro",
-            "nome": "Jair Bolsonaro",
-            "partido": "PSL/sem partido",
-            "inicio": "2019-01-01",
-            "fim": "2023-01-01",
-            "anos": [
-                2019,
-                2020,
-                2021,
-                2022
-            ],
-            "nota": "A pandemia de covid-19 atravessa 2020 e 2021.",
-            "indicadores": {
-                "desemprego": {
-                    "anos_usados": [
-                        2019,
-                        2020,
-                        2021,
-                        2022
-                    ],
-                    "cobertura": "2019\u20132022",
-                    "completo": true,
-                    "modo": "media",
-                    "valor": 12.13,
-                    "min": 9.51,
-                    "max": 13.5
-                },
-                "esperanca_vida": null,
-                "fome": null,
-                "gini": {
-                    "anos_usados": [
-                        2019,
-                        2020,
-                        2021,
-                        2022
-                    ],
-                    "cobertura": "2019\u20132022",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 0.52,
-                    "de": 0.54,
-                    "para": 0.52,
-                    "variacao": -0.03
-                },
-                "ipca": {
-                    "anos_usados": [
-                        2019,
-                        2020,
-                        2021,
-                        2022
-                    ],
-                    "cobertura": "2019\u20132022",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 6.15,
-                    "min": 4.31,
-                    "max": 10.06
-                },
-                "mortalidade_infantil": null,
-                "mortalidade_infantil_antiga": null,
-                "pib": {
-                    "anos_usados": [
-                        2019,
-                        2020,
-                        2021,
-                        2022
-                    ],
-                    "cobertura": "2019\u20132022",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 1.38,
-                    "min": -3.3,
-                    "max": 4.8
-                },
-                "pobreza": {
-                    "anos_usados": [
-                        2019,
-                        2020,
-                        2021,
-                        2022
-                    ],
-                    "cobertura": "2019\u20132022",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 12.6,
-                    "de": 14.4,
-                    "para": 12.6,
-                    "variacao": -1.8
-                },
-                "ideb_anos_iniciais": {
-                    "anos_usados": [
-                        2019,
-                        2021
-                    ],
-                    "cobertura": "2019\u20132021",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 5.6,
-                    "de": 5.8,
-                    "para": 5.6,
-                    "variacao": -0.2
-                }
-            }
-        },
-        {
-            "id": "lula3",
-            "nome": "Lula (3\u00ba)",
-            "partido": "PT",
-            "inicio": "2023-01-01",
-            "fim": null,
-            "anos": [
-                2023,
-                2024,
-                2025
-            ],
-            "nota": "Mandato em curso \u2014 os anos de 2026 ainda n\u00e3o fecharam.",
-            "indicadores": {
-                "desemprego": {
-                    "anos_usados": [
-                        2023,
-                        2024,
-                        2025
-                    ],
-                    "cobertura": "2023\u20132025",
-                    "completo": true,
-                    "modo": "media",
-                    "valor": 6.97,
-                    "min": 5.95,
-                    "max": 8.04
-                },
-                "esperanca_vida": null,
-                "fome": {
-                    "anos_usados": [
-                        2023,
-                        2024
-                    ],
-                    "cobertura": "2023\u20132024",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 3.1,
-                    "de": 4.0,
-                    "para": 3.1,
-                    "variacao": -0.9
-                },
-                "gini": {
-                    "anos_usados": [
-                        2023,
-                        2024,
-                        2025
-                    ],
-                    "cobertura": "2023\u20132025",
-                    "completo": true,
-                    "modo": "inicio_fim",
-                    "valor": 0.51,
-                    "de": 0.52,
-                    "para": 0.51,
-                    "variacao": -0.01
-                },
-                "ipca": {
-                    "anos_usados": [
-                        2023,
-                        2024,
-                        2025
-                    ],
-                    "cobertura": "2023\u20132025",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 4.57,
-                    "min": 4.26,
-                    "max": 4.83
-                },
-                "mortalidade_infantil": null,
-                "mortalidade_infantil_antiga": null,
-                "pib": {
-                    "anos_usados": [
-                        2023,
-                        2024,
-                        2025
-                    ],
-                    "cobertura": "2023\u20132025",
-                    "completo": true,
-                    "modo": "media_geometrica",
-                    "valor": 2.97,
-                    "min": 2.3,
-                    "max": 3.4
-                },
-                "pobreza": {
-                    "anos_usados": [
-                        2023,
-                        2024
-                    ],
-                    "cobertura": "2023\u20132024",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 8.7,
-                    "de": 10.4,
-                    "para": 8.7,
-                    "variacao": -1.7
-                },
-                "ideb_anos_iniciais": {
-                    "anos_usados": [
-                        2023
-                    ],
-                    "cobertura": "2023\u20132023",
-                    "completo": false,
-                    "modo": "inicio_fim",
-                    "valor": 5.8,
-                    "de": 5.8,
-                    "para": 5.8,
-                    "variacao": 0.0
-                }
-            }
-        }
-    ],
-    "series": {
-        "desemprego": {
-            "id": "desemprego",
-            "nome": "Desemprego",
-            "unidade": "%",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "6381",
-            "variavel": "4099",
-            "corte": "media",
-            "observacao": "PNAD Cont\u00ednua, m\u00e9dia dos trimestres do ano. Come\u00e7a em 2012: as pesquisas anteriores usavam outra metodologia e outro recorte, e encaix\u00e1-las na mesma linha seria comparar coisas diferentes.",
-            "url": "https://sidra.ibge.gov.br/tabela/6381"
-        },
-        "esperanca_vida": {
-            "id": "esperanca_vida",
-            "nome": "Expectativa de vida ao nascer",
-            "unidade": "Anos",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "3825",
-            "variavel": "2503",
-            "corte": "anual",
-            "observacao": "Vai s\u00f3 at\u00e9 2016: \u00e9 o fim da s\u00e9rie publicada nesta tabela.",
-            "url": "https://sidra.ibge.gov.br/tabela/3825"
-        },
-        "fome": {
-            "id": "fome",
-            "nome": "Fome (inseguran\u00e7a alimentar grave)",
-            "unidade": "%",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "6665",
-            "variavel": "2133",
-            "corte": "anual",
-            "observacao": "Percentual de pessoas em lares com inseguran\u00e7a alimentar GRAVE \u2014 a defini\u00e7\u00e3o oficial de quem passou por falta real de comida. A pesquisa n\u00e3o \u00e9 anual: foi a campo em 2004, 2009, 2013, 2018, 2023 e 2024, e os anos sem medi\u00e7\u00e3o ficam vazios em vez de inventados.",
-            "url": "https://sidra.ibge.gov.br/tabela/6665"
-        },
-        "gini": {
-            "id": "gini",
-            "nome": "Desigualdade de renda (\u00edndice de Gini)",
-            "unidade": "\u00cdndice",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "7435",
-            "variavel": "10681",
-            "corte": "anual",
-            "observacao": "De 0 a 1: quanto mais perto de 1, mais concentrada a renda. Calculado sobre o rendimento domiciliar per capita da PNAD Cont\u00ednua, que come\u00e7a em 2012.",
-            "url": "https://sidra.ibge.gov.br/tabela/7435"
-        },
+  "presidentes": [
+    {
+      "id": "collor",
+      "nome": "Fernando Collor",
+      "partido": "PRN",
+      "inicio": "1990-03-15",
+      "fim": "1992-10-02",
+      "anos": [
+        1990,
+        1991,
+        1992
+      ],
+      "nota": "Afastado por impeachment em 1992. Governou 2 anos e meio.",
+      "indicadores": {
+        "desemprego": null,
+        "esperanca_vida": null,
+        "fome": null,
+        "gini": null,
         "ipca": {
-            "id": "ipca",
-            "nome": "Infla\u00e7\u00e3o no ano (IPCA)",
-            "unidade": "%",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "1737",
-            "variavel": "69",
-            "corte": "dezembro",
-            "observacao": "Varia\u00e7\u00e3o acumulada no ano, fechada em dezembro. \u00c9 o \u00edndice oficial de infla\u00e7\u00e3o do pa\u00eds.",
-            "url": "https://sidra.ibge.gov.br/tabela/1737"
+          "anos_usados": [
+            1990,
+            1991,
+            1992
+          ],
+          "cobertura": "1990–1992",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 963.11,
+          "min": 472.7,
+          "max": 1620.97
+        },
+        "mortalidade_infantil": null,
+        "mortalidade_infantil_antiga": {
+          "anos_usados": [
+            1990,
+            1991,
+            1992
+          ],
+          "cobertura": "1990–1992",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 43.3,
+          "de": 47.0,
+          "para": 43.3,
+          "variacao": -3.7
+        },
+        "pib": null,
+        "pobreza": null,
+        "ideb_anos_iniciais": null
+      }
+    },
+    {
+      "id": "itamar",
+      "nome": "Itamar Franco",
+      "partido": "PMDB",
+      "inicio": "1992-10-02",
+      "fim": "1995-01-01",
+      "anos": [
+        1993,
+        1994
+      ],
+      "nota": "Assumiu como vice. O Plano Real foi lançado no governo dele, em julho de 1994.",
+      "indicadores": {
+        "desemprego": null,
+        "esperanca_vida": null,
+        "fome": null,
+        "gini": null,
+        "ipca": {
+          "anos_usados": [
+            1993,
+            1994
+          ],
+          "cobertura": "1993–1994",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 1518.51,
+          "min": 916.46,
+          "max": 2477.15
+        },
+        "mortalidade_infantil": null,
+        "mortalidade_infantil_antiga": {
+          "anos_usados": [
+            1993,
+            1994
+          ],
+          "cobertura": "1993–1994",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 39.5,
+          "de": 41.4,
+          "para": 39.5,
+          "variacao": -1.9
+        },
+        "pib": null,
+        "pobreza": null,
+        "ideb_anos_iniciais": null
+      }
+    },
+    {
+      "id": "fhc",
+      "nome": "Fernando Henrique Cardoso",
+      "partido": "PSDB",
+      "inicio": "1995-01-01",
+      "fim": "2003-01-01",
+      "anos": [
+        1995,
+        1996,
+        1997,
+        1998,
+        1999,
+        2000,
+        2001,
+        2002
+      ],
+      "nota": "Dois mandatos.",
+      "indicadores": {
+        "desemprego": null,
+        "esperanca_vida": {
+          "anos_usados": [
+            2000,
+            2001,
+            2002
+          ],
+          "cobertura": "2000–2002",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 70.7,
+          "de": 69.8,
+          "para": 70.7,
+          "variacao": 0.9
+        },
+        "fome": null,
+        "gini": null,
+        "ipca": {
+          "anos_usados": [
+            1995,
+            1996,
+            1997,
+            1998,
+            1999,
+            2000,
+            2001,
+            2002
+          ],
+          "cobertura": "1995–2002",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 9.09,
+          "min": 1.65,
+          "max": 22.41
         },
         "mortalidade_infantil": {
-            "id": "mortalidade_infantil",
-            "nome": "Mortalidade infantil",
-            "unidade": "\u2030",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "3834",
-            "variavel": "1940",
-            "corte": "anual",
-            "observacao": "Mortes de menores de 1 ano por mil nascidos vivos.",
-            "url": "https://sidra.ibge.gov.br/tabela/3834"
+          "anos_usados": [
+            2000,
+            2001,
+            2002
+          ],
+          "cobertura": "2000–2002",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 26.0,
+          "de": 29.0,
+          "para": 26.0,
+          "variacao": -3.0
         },
         "mortalidade_infantil_antiga": {
-            "id": "mortalidade_infantil_antiga",
-            "nome": "Mortalidade infantil (s\u00e9rie 1990\u20132009)",
-            "unidade": "\u2030",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "1175",
-            "variavel": "1940",
-            "corte": "anual",
-            "observacao": "Mortes de menores de 1 ano por mil nascidos vivos. S\u00e9rie encerrada pelo IBGE.",
-            "url": "https://sidra.ibge.gov.br/tabela/1175"
+          "anos_usados": [
+            1995,
+            1996,
+            1997,
+            1998,
+            1999,
+            2000,
+            2001,
+            2002
+          ],
+          "cobertura": "1995–2002",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 28.4,
+          "de": 37.9,
+          "para": 28.4,
+          "variacao": -9.5
         },
         "pib": {
-            "id": "pib",
-            "nome": "Crescimento do PIB no ano",
-            "unidade": "%",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "5932",
-            "variavel": "6563",
-            "corte": "q4",
-            "observacao": "Varia\u00e7\u00e3o real do volume do PIB, acumulada no ano, no 4\u00ba trimestre. Come\u00e7a em 1996: antes disso o IBGE n\u00e3o publica esta s\u00e9rie trimestral.",
-            "url": "https://sidra.ibge.gov.br/tabela/5932"
+          "anos_usados": [
+            1996,
+            1997,
+            1998,
+            1999,
+            2000,
+            2001,
+            2002
+          ],
+          "cobertura": "1996–2002",
+          "completo": false,
+          "modo": "media_geometrica",
+          "valor": 2.18,
+          "min": 0.3,
+          "max": 4.4
         },
-        "pobreza": {
-            "id": "pobreza",
-            "nome": "Pobreza",
-            "unidade": "%",
-            "fonte": "IBGE/SIDRA",
-            "tabela_sidra": "10660",
-            "variavel": "14137",
-            "corte": "anual",
-            "observacao": "Percentual da popula\u00e7\u00e3o abaixo da linha de pobreza regional (metodologia do painel ODS Brasil, calculada pelo IBGE sobre a PNAD Cont\u00ednua, que come\u00e7a em 2012).",
-            "url": "https://sidra.ibge.gov.br/tabela/10660"
-        },
-        "ideb_anos_iniciais": {
-            "id": "ideb_anos_iniciais",
-            "nome": "Ideb \u2014 anos iniciais (mediana dos munic\u00edpios)",
-            "unidade": "nota de 0 a 10",
-            "fonte": "INEP/MEC",
-            "tabela_sidra": null,
-            "variavel": null,
-            "corte": "bienal",
-            "observacao": "\u00c9 a MEDIANA das notas municipais da rede municipal, calculada por n\u00f3s \u2014 n\u00e3o \u00e9 o Ideb nacional oficial, que o INEP calcula com outra pondera\u00e7\u00e3o. Serve para comparar anos entre si, n\u00e3o para citar como 'o Ideb do Brasil'. Sai a cada dois anos, desde 2005.",
-            "url": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb"
-        }
+        "pobreza": null,
+        "ideb_anos_iniciais": null
+      }
     },
-    "valores_por_ano": {
-        "desemprego": {
-            "2013": 7.2583,
-            "2014": 6.8583,
-            "2015": 8.4,
-            "2016": 11.3667,
-            "2017": 12.875,
-            "2018": 12.3667,
-            "2019": 12.0333,
-            "2020": 13.475,
-            "2021": 13.5,
-            "2022": 9.5083,
-            "2023": 8.0417,
-            "2024": 6.925,
-            "2025": 5.95
-        },
+    {
+      "id": "lula12",
+      "nome": "Lula (1º e 2º)",
+      "partido": "PT",
+      "inicio": "2003-01-01",
+      "fim": "2011-01-01",
+      "anos": [
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010
+      ],
+      "nota": "Dois mandatos.",
+      "indicadores": {
+        "desemprego": null,
         "esperanca_vida": {
-            "2000": 69.8,
-            "2001": 70.3,
-            "2002": 70.7,
-            "2003": 71.2,
-            "2004": 71.6,
-            "2005": 72.0,
-            "2006": 72.4,
-            "2007": 72.8,
-            "2008": 73.1,
-            "2009": 73.5,
-            "2010": 73.9,
-            "2011": 74.2,
-            "2012": 74.5,
-            "2013": 74.8,
-            "2014": 75.1,
-            "2015": 75.4,
-            "2016": 75.7
+          "anos_usados": [
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010
+          ],
+          "cobertura": "2003–2010",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 73.9,
+          "de": 71.2,
+          "para": 73.9,
+          "variacao": 2.7
         },
         "fome": {
-            "2004": 8.2,
-            "2009": 5.8,
-            "2013": 3.6,
-            "2018": 5.0,
-            "2023": 4.0,
-            "2024": 3.1
+          "anos_usados": [
+            2004,
+            2009
+          ],
+          "cobertura": "2004–2009",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 5.8,
+          "de": 8.2,
+          "para": 5.8,
+          "variacao": -2.4
         },
-        "gini": {
-            "2012": 0.54,
-            "2013": 0.532,
-            "2014": 0.526,
-            "2015": 0.524,
-            "2016": 0.537,
-            "2017": 0.539,
-            "2018": 0.545,
-            "2019": 0.543,
-            "2020": 0.523,
-            "2021": 0.543,
-            "2022": 0.517,
-            "2023": 0.517,
-            "2024": 0.504,
-            "2025": 0.511
-        },
+        "gini": null,
         "ipca": {
-            "1980": 99.25,
-            "1981": 95.62,
-            "1982": 104.79,
-            "1983": 164.01,
-            "1984": 215.26,
-            "1985": 242.23,
-            "1986": 79.66,
-            "1987": 363.41,
-            "1988": 980.21,
-            "1989": 1972.91,
-            "1990": 1620.97,
-            "1991": 472.7,
-            "1992": 1119.1,
-            "1993": 2477.15,
-            "1994": 916.46,
-            "1995": 22.41,
-            "1996": 9.56,
-            "1997": 5.22,
-            "1998": 1.65,
-            "1999": 8.94,
-            "2000": 5.97,
-            "2001": 7.67,
-            "2002": 12.53,
-            "2003": 9.3,
-            "2004": 7.6,
-            "2005": 5.69,
-            "2006": 3.14,
-            "2007": 4.46,
-            "2008": 5.9,
-            "2009": 4.31,
-            "2010": 5.91,
-            "2011": 6.5,
-            "2012": 5.84,
-            "2013": 5.91,
-            "2014": 6.41,
-            "2015": 10.67,
-            "2016": 6.29,
-            "2017": 2.95,
-            "2018": 3.75,
-            "2019": 4.31,
-            "2020": 4.52,
-            "2021": 10.06,
-            "2022": 5.79,
-            "2023": 4.62,
-            "2024": 4.83,
-            "2025": 4.26
+          "anos_usados": [
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010
+          ],
+          "cobertura": "2003–2010",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 5.77,
+          "min": 3.14,
+          "max": 9.3
         },
         "mortalidade_infantil": {
-            "2000": 29.0,
-            "2001": 27.5,
-            "2002": 26.0,
-            "2003": 24.7,
-            "2004": 23.4,
-            "2005": 22.2,
-            "2006": 21.0,
-            "2007": 20.0,
-            "2008": 19.0,
-            "2009": 18.1,
-            "2010": 17.2,
-            "2011": 16.4,
-            "2012": 15.7,
-            "2013": 15.0,
-            "2014": 14.4,
-            "2015": 13.8,
-            "2016": 13.3
+          "anos_usados": [
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010
+          ],
+          "cobertura": "2003–2010",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 17.2,
+          "de": 24.7,
+          "para": 17.2,
+          "variacao": -7.5
         },
         "mortalidade_infantil_antiga": {
-            "1990": 47.0,
-            "1991": 45.1,
-            "1992": 43.3,
-            "1993": 41.4,
-            "1994": 39.5,
-            "1995": 37.9,
-            "1996": 36.4,
-            "1997": 34.8,
-            "1998": 33.2,
-            "1999": 31.7,
-            "2000": 30.1,
-            "2001": 29.2,
-            "2002": 28.4,
-            "2003": 27.5,
-            "2004": 26.6,
-            "2005": 25.8,
-            "2006": 25.1,
-            "2007": 24.3,
-            "2008": 23.3,
-            "2009": 22.5
+          "anos_usados": [
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009
+          ],
+          "cobertura": "2003–2009",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 22.5,
+          "de": 27.5,
+          "para": 22.5,
+          "variacao": -5.0
         },
         "pib": {
-            "1996": 2.2,
-            "1997": 3.4,
-            "1998": 0.3,
-            "1999": 0.5,
-            "2000": 4.4,
-            "2001": 1.4,
-            "2002": 3.1,
-            "2003": 1.1,
-            "2004": 5.8,
-            "2005": 3.2,
-            "2006": 4.0,
-            "2007": 6.1,
-            "2008": 5.1,
-            "2009": -0.1,
-            "2010": 7.5,
-            "2011": 4.0,
-            "2012": 1.9,
-            "2013": 3.0,
-            "2014": 0.5,
-            "2015": -3.5,
-            "2016": -3.3,
-            "2017": 1.3,
-            "2018": 1.8,
-            "2019": 1.2,
-            "2020": -3.3,
-            "2021": 4.8,
-            "2022": 3.0,
-            "2023": 3.2,
-            "2024": 3.4,
-            "2025": 2.3
+          "anos_usados": [
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010
+          ],
+          "cobertura": "2003–2010",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 4.06,
+          "min": -0.1,
+          "max": 7.5
+        },
+        "pobreza": null,
+        "ideb_anos_iniciais": {
+          "anos_usados": [
+            2005,
+            2007,
+            2009
+          ],
+          "cobertura": "2005–2009",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 4.4,
+          "de": 3.5,
+          "para": 4.4,
+          "variacao": 0.9
+        }
+      }
+    },
+    {
+      "id": "dilma",
+      "nome": "Dilma Rousseff",
+      "partido": "PT",
+      "inicio": "2011-01-01",
+      "fim": "2016-08-31",
+      "anos": [
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016
+      ],
+      "nota": "Afastada por impeachment em agosto de 2016.",
+      "indicadores": {
+        "desemprego": {
+          "anos_usados": [
+            2013,
+            2014,
+            2015,
+            2016
+          ],
+          "cobertura": "2013–2016",
+          "completo": false,
+          "modo": "media",
+          "valor": 8.47,
+          "min": 6.86,
+          "max": 11.37
+        },
+        "esperanca_vida": {
+          "anos_usados": [
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ],
+          "cobertura": "2011–2016",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 75.7,
+          "de": 74.2,
+          "para": 75.7,
+          "variacao": 1.5
+        },
+        "fome": {
+          "anos_usados": [
+            2013
+          ],
+          "cobertura": "2013–2013",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 3.6,
+          "de": 3.6,
+          "para": 3.6,
+          "variacao": 0.0
+        },
+        "gini": {
+          "anos_usados": [
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ],
+          "cobertura": "2012–2016",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 0.54,
+          "de": 0.54,
+          "para": 0.54,
+          "variacao": -0.0
+        },
+        "ipca": {
+          "anos_usados": [
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ],
+          "cobertura": "2011–2016",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 6.92,
+          "min": 5.84,
+          "max": 10.67
+        },
+        "mortalidade_infantil": {
+          "anos_usados": [
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ],
+          "cobertura": "2011–2016",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 13.3,
+          "de": 16.4,
+          "para": 13.3,
+          "variacao": -3.1
+        },
+        "mortalidade_infantil_antiga": null,
+        "pib": {
+          "anos_usados": [
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ],
+          "cobertura": "2011–2016",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 0.39,
+          "min": -3.5,
+          "max": 4.0
         },
         "pobreza": {
-            "2012": 14.7,
-            "2013": 13.5,
-            "2014": 12.3,
-            "2015": 12.8,
-            "2016": 14.6,
-            "2017": 15.0,
-            "2018": 14.7,
-            "2019": 14.4,
-            "2020": 12.2,
-            "2021": 17.2,
-            "2022": 12.6,
-            "2023": 10.4,
-            "2024": 8.7
+          "anos_usados": [
+            2012,
+            2013,
+            2014,
+            2015,
+            2016
+          ],
+          "cobertura": "2012–2016",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 14.6,
+          "de": 14.7,
+          "para": 14.6,
+          "variacao": -0.1
         },
         "ideb_anos_iniciais": {
-            "2005": 3.5,
-            "2007": 3.9,
-            "2009": 4.4,
-            "2011": 4.8,
-            "2013": 5.0,
-            "2015": 5.4,
-            "2017": 5.6,
-            "2019": 5.8,
-            "2021": 5.6,
-            "2023": 5.8
+          "anos_usados": [
+            2011,
+            2013,
+            2015
+          ],
+          "cobertura": "2011–2015",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 5.4,
+          "de": 4.8,
+          "para": 5.4,
+          "variacao": 0.6
         }
+      }
     },
-    "fontes": [
-        {
-            "fonte_id": "cgu_emendas",
-            "baixado_em": "2026-08-29T15:32:33.107808+00:00",
-            "publicado_em": "Sat, 29 Aug 2026 04:39:07 GMT",
-            "sha256": "649220ce9bcd72675f41407dae9b4cfbbc86c105dde58470ffd291e7d4ec97ef",
-            "arquivo": "data/raw/EmendasParlamentares.zip",
-            "descricao": "Emendas parlamentares \u2014 CGU/Portal da Transpar\u00eancia",
-            "url": "https://dadosabertos-download.cgu.gov.br/PortalDaTransparencia/saida/emendas-parlamentares/EmendasParlamentares.zip"
+    {
+      "id": "temer",
+      "nome": "Michel Temer",
+      "partido": "PMDB",
+      "inicio": "2016-08-31",
+      "fim": "2019-01-01",
+      "anos": [
+        2017,
+        2018
+      ],
+      "nota": "Assumiu como vice, após o impeachment.",
+      "indicadores": {
+        "desemprego": {
+          "anos_usados": [
+            2017,
+            2018
+          ],
+          "cobertura": "2017–2018",
+          "completo": true,
+          "modo": "media",
+          "valor": 12.62,
+          "min": 12.37,
+          "max": 12.88
         },
-        {
-            "fonte_id": "inep_ideb_anos_finais",
-            "baixado_em": "2026-08-30T22:39:47.330086+00:00",
-            "publicado_em": "Tue, 07 Jan 2025 19:01:41 GMT",
-            "sha256": "bb3b7d8a176e89f1208c6277fceed2a79724c04c11513ef5ce083fb44a861986",
-            "arquivo": "data/raw/ideb_anos_finais_2023.zip",
-            "descricao": "Ideb \u2014 anos finais do fundamental (6\u00ba ao 9\u00ba), por munic\u00edpio \u2014 INEP/MEC",
-            "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_finais_municipios_2023.zip"
+        "esperanca_vida": null,
+        "fome": {
+          "anos_usados": [
+            2018
+          ],
+          "cobertura": "2018–2018",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 5.0,
+          "de": 5.0,
+          "para": 5.0,
+          "variacao": 0.0
         },
-        {
-            "fonte_id": "inep_ideb_anos_iniciais",
-            "baixado_em": "2026-08-30T22:39:22.298868+00:00",
-            "publicado_em": "Tue, 13 Aug 2024 21:42:00 GMT",
-            "sha256": "866c50e858e5f4d3d0b7b380c3adc05b56f6137360d7830e23dae72284e8c9f4",
-            "arquivo": "data/raw/ideb_anos_iniciais_2023.zip",
-            "descricao": "Ideb \u2014 anos iniciais do fundamental (1\u00ba ao 5\u00ba), por munic\u00edpio \u2014 INEP/MEC",
-            "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2023.zip"
+        "gini": {
+          "anos_usados": [
+            2017,
+            2018
+          ],
+          "cobertura": "2017–2018",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 0.55,
+          "de": 0.54,
+          "para": 0.55,
+          "variacao": 0.01
         },
-        {
-            "fonte_id": "inep_ideb_ensino_medio",
-            "baixado_em": "2026-08-30T22:40:09.529046+00:00",
-            "publicado_em": "Tue, 13 Aug 2024 21:42:00 GMT",
-            "sha256": "2ba873fca465dc75d2a8b64559c711cf5685c960e1c6a88c655d449f05f30afc",
-            "arquivo": "data/raw/ideb_ensino_medio_2023.zip",
-            "descricao": "Ideb \u2014 ensino m\u00e9dio, por munic\u00edpio \u2014 INEP/MEC",
-            "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_ensino_medio_municipios_2023.zip"
+        "ipca": {
+          "anos_usados": [
+            2017,
+            2018
+          ],
+          "cobertura": "2017–2018",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 3.35,
+          "min": 2.95,
+          "max": 3.75
         },
-        {
-            "fonte_id": "tse_munzona_2022",
-            "baixado_em": "2026-08-29T15:03:56.387238+00:00",
-            "publicado_em": null,
-            "sha256": "64dec552548377d9e958b72b2f9ef30a05aec331b04ec1368da4f1f5cababf21",
-            "arquivo": "data/raw/votacao_candidato_munzona_2022.zip",
-            "descricao": "Vota\u00e7\u00e3o nominal por munic\u00edpio/zona \u2014 TSE, elei\u00e7\u00e3o 2022",
-            "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_candidato_munzona/votacao_candidato_munzona_2022.zip"
+        "mortalidade_infantil": null,
+        "mortalidade_infantil_antiga": null,
+        "pib": {
+          "anos_usados": [
+            2017,
+            2018
+          ],
+          "cobertura": "2017–2018",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 1.55,
+          "min": 1.3,
+          "max": 1.8
+        },
+        "pobreza": {
+          "anos_usados": [
+            2017,
+            2018
+          ],
+          "cobertura": "2017–2018",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 14.7,
+          "de": 15.0,
+          "para": 14.7,
+          "variacao": -0.3
+        },
+        "ideb_anos_iniciais": {
+          "anos_usados": [
+            2017
+          ],
+          "cobertura": "2017–2017",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 5.6,
+          "de": 5.6,
+          "para": 5.6,
+          "variacao": 0.0
         }
-    ],
-    "programas": {
-        "collor": [
-            {
-                "nome": "C\u00f3digo de Defesa do Consumidor",
-                "ato": "Lei 8.078/1990",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm",
-                "texto": "Criou os direitos do consumidor: troca, garantia, propaganda enganosa."
-            },
-            {
-                "nome": "Programa Nacional de Desestatiza\u00e7\u00e3o",
-                "ato": "Lei 8.031/1990",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/l8031.htm",
-                "texto": "Deu in\u00edcio \u00e0s privatiza\u00e7\u00f5es de empresas estatais."
-            },
-            {
-                "nome": "Bloqueio da poupan\u00e7a (Plano Collor)",
-                "ato": "Lei 8.024/1990",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/l8024.htm",
-                "texto": "Reteve dep\u00f3sitos e poupan\u00e7a na tentativa de conter a hiperinfla\u00e7\u00e3o."
-            },
-            {
-                "nome": "Estatuto da Crian\u00e7a e do Adolescente",
-                "ato": "Lei 8.069/1990",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
-                "texto": "O ECA: regras de prote\u00e7\u00e3o a crian\u00e7as e adolescentes."
-            }
-        ],
-        "itamar": [
-            {
-                "nome": "Plano Real",
-                "ato": "Lei 9.069/1995",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/l9069.htm",
-                "texto": "A moeda que acabou com a hiperinfla\u00e7\u00e3o, lan\u00e7ada em julho de 1994."
-            },
-            {
-                "nome": "Lei de Licita\u00e7\u00f5es",
-                "ato": "Lei 8.666/1993",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/l8666cons.htm",
-                "texto": "Definiu como o governo compra e contrata. Valeu por quase 30 anos."
-            }
-        ],
-        "fhc": [
-            {
-                "nome": "Lei de Responsabilidade Fiscal",
-                "ato": "Lei Complementar 101/2000",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp101.htm",
-                "texto": "Limitou gasto e endividamento de prefeitos e governadores."
-            },
-            {
-                "nome": "Lei de Diretrizes e Bases da Educa\u00e7\u00e3o",
-                "ato": "Lei 9.394/1996",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/l9394.htm",
-                "texto": "A lei que organiza toda a educa\u00e7\u00e3o brasileira."
-            },
-            {
-                "nome": "Fundef (dinheiro para o ensino fundamental)",
-                "ato": "Emenda Constitucional 14/1996",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc14.htm",
-                "texto": "Fundo que passou a distribuir a verba da educa\u00e7\u00e3o por aluno matriculado."
-            },
-            {
-                "nome": "Estatuto da Cidade",
-                "ato": "Lei 10.257/2001",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10257.htm",
-                "texto": "Regras de uso do solo urbano e plano diretor das cidades."
-            }
-        ],
-        "lula12": [
-            {
-                "nome": "Bolsa Fam\u00edlia",
-                "ato": "Lei 10.836/2004",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.836.htm",
-                "texto": "Transfer\u00eancia mensal de renda para fam\u00edlias pobres, com condi\u00e7\u00e3o de escola e vacina."
-            },
-            {
-                "nome": "ProUni",
-                "ato": "Lei 11.096/2005",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/lei/l11096.htm",
-                "texto": "Bolsas em faculdades privadas para alunos de escola p\u00fablica."
-            },
-            {
-                "nome": "Lei Maria da Penha",
-                "ato": "Lei 11.340/2006",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11340.htm",
-                "texto": "Criou mecanismos para coibir a viol\u00eancia dom\u00e9stica contra a mulher."
-            },
-            {
-                "nome": "Fundeb",
-                "ato": "Emenda Constitucional 53/2006",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc53.htm",
-                "texto": "Ampliou o Fundef para toda a educa\u00e7\u00e3o b\u00e1sica, da creche ao ensino m\u00e9dio."
-            },
-            {
-                "nome": "Minha Casa, Minha Vida",
-                "ato": "Lei 11.977/2009",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/lei/l11977.htm",
-                "texto": "Financiamento de casa pr\u00f3pria com subs\u00eddio para renda baixa."
-            }
-        ],
-        "dilma": [
-            {
-                "nome": "Lei de Acesso \u00e0 Informa\u00e7\u00e3o",
-                "ato": "Lei 12.527/2011",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm",
-                "texto": "Obrigou o governo a entregar dado p\u00fablico a quem pedir. \u00c9 ela que sustenta este site."
-            },
-            {
-                "nome": "Lei de Cotas nas universidades federais",
-                "ato": "Lei 12.711/2012",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12711.htm",
-                "texto": "Reservou vagas em universidades federais por escola p\u00fablica, renda e ra\u00e7a."
-            },
-            {
-                "nome": "Mais M\u00e9dicos",
-                "ato": "Lei 12.871/2013",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12871.htm",
-                "texto": "Levou m\u00e9dicos para cidades do interior e periferias."
-            },
-            {
-                "nome": "Marco Civil da Internet",
-                "ato": "Lei 12.965/2014",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm",
-                "texto": "Definiu direitos e deveres de quem usa e de quem fornece internet."
-            }
-        ],
-        "temer": [
-            {
-                "nome": "Teto de gastos",
-                "ato": "Emenda Constitucional 95/2016",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc95.htm",
-                "texto": "Congelou o gasto federal por 20 anos, corrigido s\u00f3 pela infla\u00e7\u00e3o."
-            },
-            {
-                "nome": "Reforma trabalhista",
-                "ato": "Lei 13.467/2017",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13467.htm",
-                "texto": "Mudou a CLT: negociado sobre o legislado, trabalho intermitente, fim da contribui\u00e7\u00e3o sindical obrigat\u00f3ria."
-            },
-            {
-                "nome": "Reforma do ensino m\u00e9dio",
-                "ato": "Lei 13.415/2017",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13415.htm",
-                "texto": "Reorganizou o ensino m\u00e9dio em itiner\u00e1rios e ampliou a carga hor\u00e1ria."
-            },
-            {
-                "nome": "Lei Geral de Prote\u00e7\u00e3o de Dados",
-                "ato": "Lei 13.709/2018",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
-                "texto": "A LGPD: regras sobre o que empresas podem fazer com seus dados."
-            }
-        ],
-        "bolsonaro": [
-            {
-                "nome": "Reforma da Previd\u00eancia",
-                "ato": "Emenda Constitucional 103/2019",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc103.htm",
-                "texto": "Idade m\u00ednima para aposentadoria e mudan\u00e7a no c\u00e1lculo do benef\u00edcio."
-            },
-            {
-                "nome": "Aux\u00edlio Emergencial",
-                "ato": "Lei 13.982/2020",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2020/lei/l13982.htm",
-                "texto": "Pagamento mensal durante a pandemia para informais e desempregados."
-            },
-            {
-                "nome": "Novo marco do saneamento",
-                "ato": "Lei 14.026/2020",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2020/lei/l14026.htm",
-                "texto": "Abriu \u00e0 iniciativa privada a \u00e1gua e o esgoto antes s\u00f3 de estatais."
-            },
-            {
-                "nome": "Autonomia do Banco Central",
-                "ato": "Lei Complementar 179/2021",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp179.htm",
-                "texto": "Deu mandato fixo ao presidente do BC, desligado do mandato presidencial."
-            }
-        ],
-        "lula3": [
-            {
-                "nome": "Novo Bolsa Fam\u00edlia",
-                "ato": "Lei 14.601/2023",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14601.htm",
-                "texto": "Recriou o programa com valor por crian\u00e7a e piso por fam\u00edlia."
-            },
-            {
-                "nome": "Arcabou\u00e7o fiscal (no lugar do teto)",
-                "ato": "Lei Complementar 200/2023",
-                "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp200.htm",
-                "texto": "Substituiu o teto de gastos por uma regra que cresce conforme a receita."
-            },
-            {
-                "nome": "Reforma tribut\u00e1ria",
-                "ato": "Emenda Constitucional 132/2023",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc132.htm",
-                "texto": "Juntou cinco impostos sobre consumo em dois. A transi\u00e7\u00e3o vai at\u00e9 2033."
-            },
-            {
-                "nome": "P\u00e9-de-Meia",
-                "ato": "Lei 14.818/2024",
-                "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2024/lei/l14818.htm",
-                "texto": "Poupan\u00e7a para o aluno do ensino m\u00e9dio p\u00fablico que n\u00e3o abandona a escola."
-            }
-        ]
+      }
+    },
+    {
+      "id": "bolsonaro",
+      "nome": "Jair Bolsonaro",
+      "partido": "PSL/sem partido",
+      "inicio": "2019-01-01",
+      "fim": "2023-01-01",
+      "anos": [
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "nota": "A pandemia de covid-19 atravessa 2020 e 2021.",
+      "indicadores": {
+        "desemprego": {
+          "anos_usados": [
+            2019,
+            2020,
+            2021,
+            2022
+          ],
+          "cobertura": "2019–2022",
+          "completo": true,
+          "modo": "media",
+          "valor": 12.13,
+          "min": 9.51,
+          "max": 13.5
+        },
+        "esperanca_vida": null,
+        "fome": null,
+        "gini": {
+          "anos_usados": [
+            2019,
+            2020,
+            2021,
+            2022
+          ],
+          "cobertura": "2019–2022",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 0.52,
+          "de": 0.54,
+          "para": 0.52,
+          "variacao": -0.03
+        },
+        "ipca": {
+          "anos_usados": [
+            2019,
+            2020,
+            2021,
+            2022
+          ],
+          "cobertura": "2019–2022",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 6.15,
+          "min": 4.31,
+          "max": 10.06
+        },
+        "mortalidade_infantil": null,
+        "mortalidade_infantil_antiga": null,
+        "pib": {
+          "anos_usados": [
+            2019,
+            2020,
+            2021,
+            2022
+          ],
+          "cobertura": "2019–2022",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 1.38,
+          "min": -3.3,
+          "max": 4.8
+        },
+        "pobreza": {
+          "anos_usados": [
+            2019,
+            2020,
+            2021,
+            2022
+          ],
+          "cobertura": "2019–2022",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 12.6,
+          "de": 14.4,
+          "para": 12.6,
+          "variacao": -1.8
+        },
+        "ideb_anos_iniciais": {
+          "anos_usados": [
+            2019,
+            2021
+          ],
+          "cobertura": "2019–2021",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 5.6,
+          "de": 5.8,
+          "para": 5.6,
+          "variacao": -0.2
+        }
+      }
+    },
+    {
+      "id": "lula3",
+      "nome": "Lula (3º)",
+      "partido": "PT",
+      "inicio": "2023-01-01",
+      "fim": null,
+      "anos": [
+        2023,
+        2024,
+        2025
+      ],
+      "nota": "Mandato em curso — os anos de 2026 ainda não fecharam.",
+      "indicadores": {
+        "desemprego": {
+          "anos_usados": [
+            2023,
+            2024,
+            2025
+          ],
+          "cobertura": "2023–2025",
+          "completo": true,
+          "modo": "media",
+          "valor": 6.97,
+          "min": 5.95,
+          "max": 8.04
+        },
+        "esperanca_vida": null,
+        "fome": {
+          "anos_usados": [
+            2023,
+            2024
+          ],
+          "cobertura": "2023–2024",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 3.1,
+          "de": 4.0,
+          "para": 3.1,
+          "variacao": -0.9
+        },
+        "gini": {
+          "anos_usados": [
+            2023,
+            2024,
+            2025
+          ],
+          "cobertura": "2023–2025",
+          "completo": true,
+          "modo": "inicio_fim",
+          "valor": 0.51,
+          "de": 0.52,
+          "para": 0.51,
+          "variacao": -0.01
+        },
+        "ipca": {
+          "anos_usados": [
+            2023,
+            2024,
+            2025
+          ],
+          "cobertura": "2023–2025",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 4.57,
+          "min": 4.26,
+          "max": 4.83
+        },
+        "mortalidade_infantil": null,
+        "mortalidade_infantil_antiga": null,
+        "pib": {
+          "anos_usados": [
+            2023,
+            2024,
+            2025
+          ],
+          "cobertura": "2023–2025",
+          "completo": true,
+          "modo": "media_geometrica",
+          "valor": 2.97,
+          "min": 2.3,
+          "max": 3.4
+        },
+        "pobreza": {
+          "anos_usados": [
+            2023,
+            2024
+          ],
+          "cobertura": "2023–2024",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 8.7,
+          "de": 10.4,
+          "para": 8.7,
+          "variacao": -1.7
+        },
+        "ideb_anos_iniciais": {
+          "anos_usados": [
+            2023
+          ],
+          "cobertura": "2023–2023",
+          "completo": false,
+          "modo": "inicio_fim",
+          "valor": 5.8,
+          "de": 5.8,
+          "para": 5.8,
+          "variacao": 0.0
+        }
+      }
     }
+  ],
+  "series": {
+    "desemprego": {
+      "id": "desemprego",
+      "nome": "Desemprego",
+      "unidade": "%",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "6381",
+      "variavel": "4099",
+      "corte": "media",
+      "observacao": "PNAD Contínua, média dos trimestres do ano. Começa em 2012: as pesquisas anteriores usavam outra metodologia e outro recorte, e encaixá-las na mesma linha seria comparar coisas diferentes.",
+      "url": "https://sidra.ibge.gov.br/tabela/6381",
+      "fonte_oficial": "IBGE - Pesquisa Nacional por Amostra de Domicílios Contínua mensal",
+      "atualizada_em": "2026-08-27T09:00:00"
+    },
+    "esperanca_vida": {
+      "id": "esperanca_vida",
+      "nome": "Expectativa de vida ao nascer",
+      "unidade": "Anos",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "3825",
+      "variavel": "2503",
+      "corte": "anual",
+      "observacao": "Vai só até 2016: é o fim da série publicada nesta tabela.",
+      "url": "https://sidra.ibge.gov.br/tabela/3825",
+      "fonte_oficial": "IBGE - Projeção da População",
+      "atualizada_em": "2020-12-08T11:58:19"
+    },
+    "fome": {
+      "id": "fome",
+      "nome": "Fome (insegurança alimentar grave)",
+      "unidade": "%",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "6665",
+      "variavel": "2133",
+      "corte": "anual",
+      "observacao": "Percentual de pessoas em lares com insegurança alimentar GRAVE — a definição oficial de quem passou por falta real de comida. A pesquisa não é anual: foi a campo em 2004, 2009, 2013, 2018, 2023 e 2024, e os anos sem medição ficam vazios em vez de inventados.",
+      "url": "https://sidra.ibge.gov.br/tabela/6665",
+      "fonte_oficial": "IBGE/SIDRA",
+      "atualizada_em": "2026-08-31T00:00:00"
+    },
+    "gini": {
+      "id": "gini",
+      "nome": "Desigualdade de renda (índice de Gini)",
+      "unidade": "Índice",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "7435",
+      "variavel": "10681",
+      "corte": "anual",
+      "observacao": "De 0 a 1: quanto mais perto de 1, mais concentrada a renda. Calculado sobre o rendimento domiciliar per capita da PNAD Contínua, que começa em 2012.",
+      "url": "https://sidra.ibge.gov.br/tabela/7435",
+      "fonte_oficial": "IBGE/SIDRA",
+      "atualizada_em": "2026-08-31T00:00:00"
+    },
+    "ipca": {
+      "id": "ipca",
+      "nome": "Inflação no ano (IPCA)",
+      "unidade": "%",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "1737",
+      "variavel": "69",
+      "corte": "dezembro",
+      "observacao": "Variação acumulada no ano, fechada em dezembro. É o índice oficial de inflação do país.",
+      "url": "https://sidra.ibge.gov.br/tabela/1737",
+      "fonte_oficial": "IBGE - Índice Nacional de Preços ao Consumidor Amplo",
+      "atualizada_em": "2026-08-11T09:00:00"
+    },
+    "mortalidade_infantil": {
+      "id": "mortalidade_infantil",
+      "nome": "Mortalidade infantil",
+      "unidade": "‰",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "3834",
+      "variavel": "1940",
+      "corte": "anual",
+      "observacao": "Mortes de menores de 1 ano por mil nascidos vivos.",
+      "url": "https://sidra.ibge.gov.br/tabela/3834",
+      "fonte_oficial": "IBGE - Projeção da População",
+      "atualizada_em": "2020-12-08T11:58:19"
+    },
+    "mortalidade_infantil_antiga": {
+      "id": "mortalidade_infantil_antiga",
+      "nome": "Mortalidade infantil (série 1990–2009)",
+      "unidade": "‰",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "1175",
+      "variavel": "1940",
+      "corte": "anual",
+      "observacao": "Mortes de menores de 1 ano por mil nascidos vivos. Série encerrada pelo IBGE.",
+      "url": "https://sidra.ibge.gov.br/tabela/1175",
+      "fonte_oficial": "IBGE/SIDRA",
+      "atualizada_em": "2026-08-31T00:00:00"
+    },
+    "pib": {
+      "id": "pib",
+      "nome": "Crescimento do PIB no ano",
+      "unidade": "%",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "5932",
+      "variavel": "6563",
+      "corte": "q4",
+      "observacao": "Variação real do volume do PIB, acumulada no ano, no 4º trimestre. Começa em 1996: antes disso o IBGE não publica esta série trimestral.",
+      "url": "https://sidra.ibge.gov.br/tabela/5932",
+      "fonte_oficial": "IBGE - Contas Nacionais Trimestrais",
+      "atualizada_em": "2026-08-31T08:17:07"
+    },
+    "pobreza": {
+      "id": "pobreza",
+      "nome": "Pobreza",
+      "unidade": "%",
+      "fonte": "IBGE/SIDRA",
+      "tabela_sidra": "10660",
+      "variavel": "14137",
+      "corte": "anual",
+      "observacao": "Percentual da população abaixo da linha de pobreza regional (metodologia do painel ODS Brasil, calculada pelo IBGE sobre a PNAD Contínua, que começa em 2012).",
+      "url": "https://sidra.ibge.gov.br/tabela/10660",
+      "fonte_oficial": "IBGE/SIDRA",
+      "atualizada_em": "2026-08-31T00:00:00"
+    },
+    "ideb_anos_iniciais": {
+      "id": "ideb_anos_iniciais",
+      "nome": "Ideb — anos iniciais (mediana dos municípios)",
+      "unidade": "nota de 0 a 10",
+      "fonte": "INEP/MEC",
+      "tabela_sidra": null,
+      "variavel": null,
+      "corte": "bienal",
+      "observacao": "É a MEDIANA das notas municipais da rede municipal, calculada por nós — não é o Ideb nacional oficial, que o INEP calcula com outra ponderação. Serve para comparar anos entre si, não para citar como 'o Ideb do Brasil'. Sai a cada dois anos, desde 2005.",
+      "url": "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb",
+      "fonte_oficial": "IBGE/SIDRA",
+      "atualizada_em": "2026-08-31T00:00:00"
+    }
+  },
+  "valores_por_ano": {
+    "desemprego": {
+      "2013": 7.2583,
+      "2014": 6.8583,
+      "2015": 8.4,
+      "2016": 11.3667,
+      "2017": 12.875,
+      "2018": 12.3667,
+      "2019": 12.0333,
+      "2020": 13.475,
+      "2021": 13.5,
+      "2022": 9.5083,
+      "2023": 8.0417,
+      "2024": 6.925,
+      "2025": 5.95
+    },
+    "esperanca_vida": {
+      "2000": 69.8,
+      "2001": 70.3,
+      "2002": 70.7,
+      "2003": 71.2,
+      "2004": 71.6,
+      "2005": 72.0,
+      "2006": 72.4,
+      "2007": 72.8,
+      "2008": 73.1,
+      "2009": 73.5,
+      "2010": 73.9,
+      "2011": 74.2,
+      "2012": 74.5,
+      "2013": 74.8,
+      "2014": 75.1,
+      "2015": 75.4,
+      "2016": 75.7
+    },
+    "fome": {
+      "2004": 8.2,
+      "2009": 5.8,
+      "2013": 3.6,
+      "2018": 5.0,
+      "2023": 4.0,
+      "2024": 3.1
+    },
+    "gini": {
+      "2012": 0.54,
+      "2013": 0.532,
+      "2014": 0.526,
+      "2015": 0.524,
+      "2016": 0.537,
+      "2017": 0.539,
+      "2018": 0.545,
+      "2019": 0.543,
+      "2020": 0.523,
+      "2021": 0.543,
+      "2022": 0.517,
+      "2023": 0.517,
+      "2024": 0.504,
+      "2025": 0.511
+    },
+    "ipca": {
+      "1980": 99.25,
+      "1981": 95.62,
+      "1982": 104.79,
+      "1983": 164.01,
+      "1984": 215.26,
+      "1985": 242.23,
+      "1986": 79.66,
+      "1987": 363.41,
+      "1988": 980.21,
+      "1989": 1972.91,
+      "1990": 1620.97,
+      "1991": 472.7,
+      "1992": 1119.1,
+      "1993": 2477.15,
+      "1994": 916.46,
+      "1995": 22.41,
+      "1996": 9.56,
+      "1997": 5.22,
+      "1998": 1.65,
+      "1999": 8.94,
+      "2000": 5.97,
+      "2001": 7.67,
+      "2002": 12.53,
+      "2003": 9.3,
+      "2004": 7.6,
+      "2005": 5.69,
+      "2006": 3.14,
+      "2007": 4.46,
+      "2008": 5.9,
+      "2009": 4.31,
+      "2010": 5.91,
+      "2011": 6.5,
+      "2012": 5.84,
+      "2013": 5.91,
+      "2014": 6.41,
+      "2015": 10.67,
+      "2016": 6.29,
+      "2017": 2.95,
+      "2018": 3.75,
+      "2019": 4.31,
+      "2020": 4.52,
+      "2021": 10.06,
+      "2022": 5.79,
+      "2023": 4.62,
+      "2024": 4.83,
+      "2025": 4.26
+    },
+    "mortalidade_infantil": {
+      "2000": 29.0,
+      "2001": 27.5,
+      "2002": 26.0,
+      "2003": 24.7,
+      "2004": 23.4,
+      "2005": 22.2,
+      "2006": 21.0,
+      "2007": 20.0,
+      "2008": 19.0,
+      "2009": 18.1,
+      "2010": 17.2,
+      "2011": 16.4,
+      "2012": 15.7,
+      "2013": 15.0,
+      "2014": 14.4,
+      "2015": 13.8,
+      "2016": 13.3
+    },
+    "mortalidade_infantil_antiga": {
+      "1990": 47.0,
+      "1991": 45.1,
+      "1992": 43.3,
+      "1993": 41.4,
+      "1994": 39.5,
+      "1995": 37.9,
+      "1996": 36.4,
+      "1997": 34.8,
+      "1998": 33.2,
+      "1999": 31.7,
+      "2000": 30.1,
+      "2001": 29.2,
+      "2002": 28.4,
+      "2003": 27.5,
+      "2004": 26.6,
+      "2005": 25.8,
+      "2006": 25.1,
+      "2007": 24.3,
+      "2008": 23.3,
+      "2009": 22.5
+    },
+    "pib": {
+      "1996": 2.2,
+      "1997": 3.4,
+      "1998": 0.3,
+      "1999": 0.5,
+      "2000": 4.4,
+      "2001": 1.4,
+      "2002": 3.1,
+      "2003": 1.1,
+      "2004": 5.8,
+      "2005": 3.2,
+      "2006": 4.0,
+      "2007": 6.1,
+      "2008": 5.1,
+      "2009": -0.1,
+      "2010": 7.5,
+      "2011": 4.0,
+      "2012": 1.9,
+      "2013": 3.0,
+      "2014": 0.5,
+      "2015": -3.5,
+      "2016": -3.3,
+      "2017": 1.3,
+      "2018": 1.8,
+      "2019": 1.2,
+      "2020": -3.3,
+      "2021": 4.8,
+      "2022": 3.0,
+      "2023": 3.2,
+      "2024": 3.4,
+      "2025": 2.3
+    },
+    "pobreza": {
+      "2012": 14.7,
+      "2013": 13.5,
+      "2014": 12.3,
+      "2015": 12.8,
+      "2016": 14.6,
+      "2017": 15.0,
+      "2018": 14.7,
+      "2019": 14.4,
+      "2020": 12.2,
+      "2021": 17.2,
+      "2022": 12.6,
+      "2023": 10.4,
+      "2024": 8.7
+    },
+    "ideb_anos_iniciais": {
+      "2005": 3.5,
+      "2007": 3.9,
+      "2009": 4.4,
+      "2011": 4.8,
+      "2013": 5.0,
+      "2015": 5.4,
+      "2017": 5.6,
+      "2019": 5.8,
+      "2021": 5.6,
+      "2023": 5.8
+    }
+  },
+  "fontes": [
+    {
+      "fonte_id": "cgu_emendas",
+      "baixado_em": "2026-08-29T15:32:33.107808+00:00",
+      "publicado_em": "Sat, 29 Aug 2026 04:39:07 GMT",
+      "sha256": "649220ce9bcd72675f41407dae9b4cfbbc86c105dde58470ffd291e7d4ec97ef",
+      "arquivo": "data/raw/EmendasParlamentares.zip",
+      "descricao": "Emendas parlamentares — CGU/Portal da Transparência",
+      "url": "https://dadosabertos-download.cgu.gov.br/PortalDaTransparencia/saida/emendas-parlamentares/EmendasParlamentares.zip"
+    },
+    {
+      "fonte_id": "inep_ideb_anos_finais",
+      "baixado_em": "2026-08-30T22:39:47.330086+00:00",
+      "publicado_em": "Tue, 07 Jan 2025 19:01:41 GMT",
+      "sha256": "bb3b7d8a176e89f1208c6277fceed2a79724c04c11513ef5ce083fb44a861986",
+      "arquivo": "data/raw/ideb_anos_finais_2023.zip",
+      "descricao": "Ideb — anos finais do fundamental (6º ao 9º), por município — INEP/MEC",
+      "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_finais_municipios_2023.zip"
+    },
+    {
+      "fonte_id": "inep_ideb_anos_iniciais",
+      "baixado_em": "2026-08-30T22:39:22.298868+00:00",
+      "publicado_em": "Tue, 13 Aug 2024 21:42:00 GMT",
+      "sha256": "866c50e858e5f4d3d0b7b380c3adc05b56f6137360d7830e23dae72284e8c9f4",
+      "arquivo": "data/raw/ideb_anos_iniciais_2023.zip",
+      "descricao": "Ideb — anos iniciais do fundamental (1º ao 5º), por município — INEP/MEC",
+      "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_anos_iniciais_municipios_2023.zip"
+    },
+    {
+      "fonte_id": "inep_ideb_ensino_medio",
+      "baixado_em": "2026-08-30T22:40:09.529046+00:00",
+      "publicado_em": "Tue, 13 Aug 2024 21:42:00 GMT",
+      "sha256": "2ba873fca465dc75d2a8b64559c711cf5685c960e1c6a88c655d449f05f30afc",
+      "arquivo": "data/raw/ideb_ensino_medio_2023.zip",
+      "descricao": "Ideb — ensino médio, por município — INEP/MEC",
+      "url": "https://download.inep.gov.br/ideb/resultados/divulgacao_ensino_medio_municipios_2023.zip"
+    },
+    {
+      "fonte_id": "tse_munzona_2022",
+      "baixado_em": "2026-08-29T15:03:56.387238+00:00",
+      "publicado_em": null,
+      "sha256": "64dec552548377d9e958b72b2f9ef30a05aec331b04ec1368da4f1f5cababf21",
+      "arquivo": "data/raw/votacao_candidato_munzona_2022.zip",
+      "descricao": "Votação nominal por município/zona — TSE, eleição 2022",
+      "url": "https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_candidato_munzona/votacao_candidato_munzona_2022.zip"
+    }
+  ],
+  "programas": {
+    "collor": [
+      {
+        "nome": "Código de Defesa do Consumidor",
+        "ato": "Lei 8.078/1990",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm",
+        "texto": "Criou os direitos do consumidor: troca, garantia, propaganda enganosa."
+      },
+      {
+        "nome": "Programa Nacional de Desestatização",
+        "ato": "Lei 8.031/1990",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l8031.htm",
+        "texto": "Deu início às privatizações de empresas estatais."
+      },
+      {
+        "nome": "Bloqueio da poupança (Plano Collor)",
+        "ato": "Lei 8.024/1990",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l8024.htm",
+        "texto": "Reteve depósitos e poupança na tentativa de conter a hiperinflação."
+      },
+      {
+        "nome": "Estatuto da Criança e do Adolescente",
+        "ato": "Lei 8.069/1990",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
+        "texto": "O ECA: regras de proteção a crianças e adolescentes."
+      }
+    ],
+    "itamar": [
+      {
+        "nome": "Plano Real",
+        "ato": "Lei 9.069/1995",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l9069.htm",
+        "texto": "A moeda que acabou com a hiperinflação, lançada em julho de 1994."
+      },
+      {
+        "nome": "Lei de Licitações",
+        "ato": "Lei 8.666/1993",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l8666cons.htm",
+        "texto": "Definiu como o governo compra e contrata. Valeu por quase 30 anos."
+      }
+    ],
+    "fhc": [
+      {
+        "nome": "Lei de Responsabilidade Fiscal",
+        "ato": "Lei Complementar 101/2000",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp101.htm",
+        "texto": "Limitou gasto e endividamento de prefeitos e governadores."
+      },
+      {
+        "nome": "Lei de Diretrizes e Bases da Educação",
+        "ato": "Lei 9.394/1996",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l9394.htm",
+        "texto": "A lei que organiza toda a educação brasileira."
+      },
+      {
+        "nome": "Fundef (dinheiro para o ensino fundamental)",
+        "ato": "Emenda Constitucional 14/1996",
+        "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc14.htm",
+        "texto": "Fundo que passou a distribuir a verba da educação por aluno matriculado."
+      },
+      {
+        "nome": "Estatuto da Cidade",
+        "ato": "Lei 10.257/2001",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10257.htm",
+        "texto": "Regras de uso do solo urbano e plano diretor das cidades."
+      }
+    ],
+    "lula12": [
+      {
+        "nome": "Bolsa Família",
+        "ato": "Lei 10.836/2004",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.836.htm",
+        "texto": "Transferência mensal de renda para famílias pobres, com condição de escola e vacina."
+      },
+      {
+        "nome": "ProUni",
+        "ato": "Lei 11.096/2005",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/lei/l11096.htm",
+        "texto": "Bolsas em faculdades privadas para alunos de escola pública."
+      },
+      {
+        "nome": "Lei Maria da Penha",
+        "ato": "Lei 11.340/2006",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11340.htm",
+        "texto": "Criou mecanismos para coibir a violência doméstica contra a mulher."
+      },
+      {
+        "nome": "Fundeb",
+        "ato": "Emenda Constitucional 53/2006",
+        "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc53.htm",
+        "texto": "Ampliou o Fundef para toda a educação básica, da creche ao ensino médio."
+      },
+      {
+        "nome": "Minha Casa, Minha Vida",
+        "ato": "Lei 11.977/2009",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/lei/l11977.htm",
+        "texto": "Financiamento de casa própria com subsídio para renda baixa."
+      }
+    ],
+    "dilma": [
+      {
+        "nome": "Lei de Acesso à Informação",
+        "ato": "Lei 12.527/2011",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm",
+        "texto": "Obrigou o governo a entregar dado público a quem pedir. É ela que sustenta este site."
+      },
+      {
+        "nome": "Lei de Cotas nas universidades federais",
+        "ato": "Lei 12.711/2012",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12711.htm",
+        "texto": "Reservou vagas em universidades federais por escola pública, renda e raça."
+      },
+      {
+        "nome": "Mais Médicos",
+        "ato": "Lei 12.871/2013",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12871.htm",
+        "texto": "Levou médicos para cidades do interior e periferias."
+      },
+      {
+        "nome": "Marco Civil da Internet",
+        "ato": "Lei 12.965/2014",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm",
+        "texto": "Definiu direitos e deveres de quem usa e de quem fornece internet."
+      }
+    ],
+    "temer": [
+      {
+        "nome": "Teto de gastos",
+        "ato": "Emenda Constitucional 95/2016",
+        "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc95.htm",
+        "texto": "Congelou o gasto federal por 20 anos, corrigido só pela inflação."
+      },
+      {
+        "nome": "Reforma trabalhista",
+        "ato": "Lei 13.467/2017",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13467.htm",
+        "texto": "Mudou a CLT: negociado sobre o legislado, trabalho intermitente, fim da contribuição sindical obrigatória."
+      },
+      {
+        "nome": "Reforma do ensino médio",
+        "ato": "Lei 13.415/2017",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13415.htm",
+        "texto": "Reorganizou o ensino médio em itinerários e ampliou a carga horária."
+      },
+      {
+        "nome": "Lei Geral de Proteção de Dados",
+        "ato": "Lei 13.709/2018",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+        "texto": "A LGPD: regras sobre o que empresas podem fazer com seus dados."
+      }
+    ],
+    "bolsonaro": [
+      {
+        "nome": "Reforma da Previdência",
+        "ato": "Emenda Constitucional 103/2019",
+        "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc103.htm",
+        "texto": "Idade mínima para aposentadoria e mudança no cálculo do benefício."
+      },
+      {
+        "nome": "Auxílio Emergencial",
+        "ato": "Lei 13.982/2020",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2020/lei/l13982.htm",
+        "texto": "Pagamento mensal durante a pandemia para informais e desempregados."
+      },
+      {
+        "nome": "Novo marco do saneamento",
+        "ato": "Lei 14.026/2020",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2020/lei/l14026.htm",
+        "texto": "Abriu à iniciativa privada a água e o esgoto antes só de estatais."
+      },
+      {
+        "nome": "Autonomia do Banco Central",
+        "ato": "Lei Complementar 179/2021",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp179.htm",
+        "texto": "Deu mandato fixo ao presidente do BC, desligado do mandato presidencial."
+      }
+    ],
+    "lula3": [
+      {
+        "nome": "Novo Bolsa Família",
+        "ato": "Lei 14.601/2023",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14601.htm",
+        "texto": "Recriou o programa com valor por criança e piso por família."
+      },
+      {
+        "nome": "Arcabouço fiscal (no lugar do teto)",
+        "ato": "Lei Complementar 200/2023",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp200.htm",
+        "texto": "Substituiu o teto de gastos por uma regra que cresce conforme a receita."
+      },
+      {
+        "nome": "Reforma tributária",
+        "ato": "Emenda Constitucional 132/2023",
+        "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc132.htm",
+        "texto": "Juntou cinco impostos sobre consumo em dois. A transição vai até 2033."
+      },
+      {
+        "nome": "Pé-de-Meia",
+        "ato": "Lei 14.818/2024",
+        "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2024/lei/l14818.htm",
+        "texto": "Poupança para o aluno do ensino médio público que não abandona a escola."
+      }
+    ]
+  }
 }

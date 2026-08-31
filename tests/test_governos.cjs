@@ -101,7 +101,19 @@ setTimeout(function () {
   // Itamar de fora. Trocamos de aba para checar que a ausência é MOSTRADA em
   // vez de a linha ser omitida — sumir com o governo seria reescrever a
   // história por conveniência de layout.
-  const abas = alvo.filhos[0];
+  // Procurado pela classe, e não por posição: o componente ganhou uma linha
+  // de TEMAS acima das abas, e um teste que dependia de `filhos[0]` quebraria
+  // (quebrou) sem que nada de errado tivesse acontecido com o componente.
+  const abas = (alvo.filhos || []).filter(function (f) {
+    return f.className === 'bbg-abas';
+  })[0];
+  ok('as abas de indicador existem', !!abas);
+  const temas = (alvo.filhos || []).filter(function (f) {
+    return f.className === 'bbg-temas';
+  })[0];
+  ok('os indicadores estão agrupados por tema', !!temas);
+  ok('o tema Economia aparece', !!temas && /Economia/.test(temas._h || ''));
+
   abas.onclick({ target: { closest: () => ({ dataset: { s: 'pib' } }) } });
   const htmlPib = (alvo.filhos || []).map(function (f) {
     return (f._h || f.innerHTML || '');
@@ -110,8 +122,44 @@ setTimeout(function () {
   ok('mesmo sem dado, o governo continua na lista',
      htmlPib.indexOf('Fernando Collor') >= 0 && htmlPib.indexOf('Itamar') >= 0);
 
+  // A procedência que o IBGE declara — inclusive a REVISÃO da projeção, que é
+  // a diferença entre um número de 2013 e um de 2018 — tem que chegar à tela.
+  ok('mostra a fonte nas palavras do IBGE',
+     /Fonte, nas palavras do IBGE/.test(html));
+  ok('mostra quando o IBGE atualizou a tabela',
+     /atualizada pelo IBGE em \d{2}\/\d{2}\/\d{4}/.test(html));
+
   ok('sem undefined', !/undefined/.test(html));
   ok('sem NaN', !/NaN/.test(html));
+
+  // MODO COMPLETO — o que a home passou a usar quando o comparador virou o
+  // topo da página. É aqui que os dezesseis indicadores aparecem, e é aqui
+  // que o agrupamento por tema precisa funcionar de verdade.
+  const alvo2 = elemento('alvo2');
+  global.window.BB.governos.montar(alvo2, { compacto: false });
+  setTimeout(function () {
+    const temas2 = (alvo2.filhos || []).filter(function (f) {
+      return f.className === 'bbg-temas';
+    })[0];
+    const ht = (temas2 && temas2._h) || '';
+    ok('modo completo: tema Saúde aparece', /Sa&uacute;de|Saúde/.test(ht));
+    ok('modo completo: tema Renda e pobreza aparece', /Renda e pobreza/.test(ht));
+    // Trocar de tema tem que trocar o indicador mostrado, não só a pintura da
+    // aba: era o jeito mais fácil de o agrupamento parecer funcionar e não
+    // funcionar.
+    temas2.onclick({ target: { closest: () => ({ dataset: { g: 'saude' } }) } });
+    const depois = (alvo2.filhos || []).map(function (f) {
+      return (f._h || f.innerHTML || '');
+    }).join('\n');
+    // A explicação na tela tem que passar a ser a de um indicador de saúde.
+    ok('clicar num tema troca o indicador mostrado',
+       /viveria quem nascesse|mil beb|mil crian/.test(depois)
+       && !/Quanto os pre/.test(depois));
+
+    console.log(falhas ? `\n${falhas} FALHA(S)` : '\nTUDO OK');
+    process.exit(falhas ? 1 : 0);
+  }, 0);
+  return;
 
   console.log(falhas ? `\n${falhas} FALHA(S)` : '\nTUDO OK');
   process.exit(falhas ? 1 : 0);

@@ -17,13 +17,26 @@
 
   // A ordem é editorial: começa pelo que a pessoa sente no bolso, no
   // supermercado, antes do que ela lê no jornal.
-  var ORDEM = ['ipca', 'pib',
-               'desemprego', 'desemprego_pme', 'desemprego_pme_antiga',
-               'fome', 'pobreza', 'gini', 'gini_pnad_antiga',
-               'mortalidade_menores5', 'mortalidade_neonatal',
+  // Os indicadores em temas. Viraram dezesseis, e dezesseis botões numa
+  // fileira só é uma lista, não uma escolha: a pessoa varre tudo e não sabe
+  // por onde começar. Em cinco temas ela escolhe primeiro o ASSUNTO — que é
+  // como a pergunta nasce na cabeça dela ("e a saúde?") — e só depois o
+  // indicador. De quebra, as três medidas de desemprego passam a aparecer
+  // lado a lado, onde a diferença entre elas fica óbvia.
+  var GRUPOS = [
+    { id: 'economia', nome: 'Economia', series: ['ipca', 'pib'] },
+    { id: 'trabalho', nome: 'Trabalho',
+      series: ['desemprego', 'desemprego_pme', 'desemprego_pme_antiga'] },
+    { id: 'renda', nome: 'Renda e pobreza',
+      series: ['fome', 'pobreza', 'gini', 'gini_pnad_antiga'] },
+    { id: 'saude', nome: 'Saúde',
+      series: ['mortalidade_menores5', 'mortalidade_neonatal',
                'mortalidade_materna', 'esperanca_vida',
-               'mortalidade_infantil', 'mortalidade_infantil_antiga',
-               'ideb_anos_iniciais'];
+               'mortalidade_infantil', 'mortalidade_infantil_antiga'] },
+    { id: 'educacao', nome: 'Educação', series: ['ideb_anos_iniciais'] }
+  ];
+
+  var ORDEM = GRUPOS.reduce(function (a, g) { return a.concat(g.series); }, []);
 
   // O ANO NO NOME DA ABA NÃO É ENFEITE.
   //
@@ -92,6 +105,15 @@
     '  --bbg-tinta:#E9EEF4;--bbg-dim:#93A1B0;--bbg-fraco:#5C6B7A;--bbg-volt:#F5D90A;',
     '  --bbg-azul:#5AB2FF;--bbg-alerta:#FF5C5C;',
     '  --bbg-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}',
+    '.bbg-temas{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.7rem;',
+    '  padding-bottom:.7rem;border-bottom:1px solid var(--bbg-linha)}',
+    '.bbg-temas button{background:transparent;border:0;border-bottom:2px solid transparent;',
+    '  color:var(--bbg-fraco);font-family:var(--bbg-mono);font-size:.75rem;',
+    '  letter-spacing:.08em;text-transform:uppercase;padding:.35rem .1rem;',
+    '  margin-right:.9rem;cursor:pointer}',
+    '.bbg-temas button[aria-selected="true"]{color:var(--bbg-volt);',
+    '  border-bottom-color:var(--bbg-volt);font-weight:700}',
+    '.bbg-temas button:hover:not([aria-selected="true"]){color:var(--bbg-tinta)}',
     '.bbg-abas{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.1rem}',
     '.bbg-abas button{background:var(--bbg-painel);border:1px solid var(--bbg-linha);',
     '  color:var(--bbg-dim);font-family:var(--bbg-mono);font-size:.73rem;',
@@ -130,6 +152,10 @@
     '.bbg-val.bbg-sem{color:var(--bbg-fraco);font-size:.76rem}',
     '.bbg-legenda{margin-top:1rem;font-family:var(--bbg-mono);font-size:.68rem;',
     '  color:var(--bbg-fraco);line-height:1.8}',
+    '.bbg-proc{font-family:var(--bbg-mono);font-size:.66rem;color:var(--bbg-fraco);',
+    '  line-height:1.7;margin-top:.9rem;padding-top:.7rem;',
+    '  border-top:1px dashed var(--bbg-linha)}',
+    '.bbg-proc b{color:var(--bbg-dim);font-weight:600}',
     '.bbg-erro{color:var(--bbg-alerta);font-size:.92rem}'
   ].join('\n');
 
@@ -184,6 +210,13 @@
       });
   }
 
+  // "2020-12-08T11:58:19" → "08/12/2020"
+  function dataBR(t) {
+    if (!t) return '';
+    var m = String(t).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? m[3] + '/' + m[2] + '/' + m[1] : '';
+  }
+
   function desenhar(alvo, D, opcoes) {
     var disponiveis = ORDEM.filter(function (s) { return D.series[s]; });
     // Na home entram só os quatro que qualquer pessoa reconhece; a página
@@ -193,18 +226,42 @@
           return ['ipca', 'pib', 'desemprego', 'ideb_anos_iniciais'].indexOf(s) >= 0;
         })
       : disponiveis;
-    var atual = lista[0];
+    // Só entram os temas que sobraram com algum indicador — a versão compacta
+    // e uma série que falte no banco não podem deixar uma aba de tema vazia.
+    var temas = GRUPOS.map(function (g) {
+      return { id: g.id, nome: g.nome,
+               series: g.series.filter(function (s) { return lista.indexOf(s) >= 0; }) };
+    }).filter(function (g) { return g.series.length; });
 
+    var atual = lista[0];
+    function temaDe(s) {
+      for (var i = 0; i < temas.length; i++) {
+        if (temas[i].series.indexOf(s) >= 0) return temas[i];
+      }
+      return temas[0];
+    }
+
+    var linhaTemas = document.createElement('div');
+    linhaTemas.className = 'bbg-temas';
+    linhaTemas.setAttribute('role', 'tablist');
     var abas = document.createElement('div');
     abas.className = 'bbg-abas';
     abas.setAttribute('role', 'tablist');
     var corpo = document.createElement('div');
     alvo.innerHTML = '';
+    if (temas.length > 1) alvo.appendChild(linhaTemas);
     alvo.appendChild(abas);
     alvo.appendChild(corpo);
 
     function pinta() {
-      abas.innerHTML = lista.map(function (s) {
+      var tema = temaDe(atual);
+      linhaTemas.innerHTML = temas.map(function (g) {
+        return '<button type="button" role="tab" data-g="' + g.id + '"'
+          + ' aria-selected="' + (g.id === tema.id) + '">'
+          + esc(g.nome) + '</button>';
+      }).join('');
+
+      abas.innerHTML = tema.series.map(function (s) {
         return '<button type="button" role="tab" data-s="' + s + '"'
           + ' aria-selected="' + (s === atual) + '">'
           + esc(CURTO[s] || D.series[s].nome) + '</button>';
@@ -249,6 +306,16 @@
                  + 'rel="noopener">ver na fonte oficial →</a>' : '')
         + '</p>'
         + '<ul class="bbg-lista">' + linhas + '</ul>'
+        + (s.fonte_oficial
+            ? '<p class="bbg-proc"><b>Fonte, nas palavras do IBGE:</b> '
+              + esc(s.fonte_oficial)
+              + (s.atualizada_em
+                  ? '<br><b>Tabela ' + esc(s.tabela_sidra || '')
+                    + ' atualizada pelo IBGE em ' + esc(dataBR(s.atualizada_em))
+                    + '.</b>'
+                  : '')
+              + '</p>'
+            : '')
         + '<p class="bbg-legenda">Em ordem cronológica, nunca do maior para o '
         + 'menor: ordenar por valor criaria um ranking, e '
         + (inv ? 'neste indicador número menor é o desejável. '
@@ -261,6 +328,14 @@
       var b = e.target.closest && e.target.closest('button');
       if (!b || !b.dataset.s) return;
       atual = b.dataset.s;
+      pinta();
+    });
+    linhaTemas.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button');
+      if (!b || !b.dataset.g) return;
+      for (var i = 0; i < temas.length; i++) {
+        if (temas[i].id === b.dataset.g) { atual = temas[i].series[0]; break; }
+      }
       pinta();
     });
     pinta();

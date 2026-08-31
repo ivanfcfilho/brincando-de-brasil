@@ -228,7 +228,18 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
    visível — salta de 57,9 em 2019 para 117,4 em 2021 —, e virou invariante:
    se essa marca sumir, alguém trocou a fonte por uma versão suavizada.
    A expectativa de vida continua parando em 2016, e a página diz por quê.
-23. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
+23. **A fonte que o IBGE declara NÃO está na API de agregados — está noutra.**
+   A `servicodados.../v3/agregados/{id}/metadados` devolve `fonte: null`. Quem
+   sabe a revisão da projeção é o rodapé da página do SIDRA — e o HTML servido
+   vem com a `<div id="fonte-tabela">` VAZIA, preenchida por JavaScript.
+   Raspar a página com curl não funciona. O que funciona é o endpoint que o
+   próprio JS chama: `sidra.ibge.gov.br/Ajax/JSon/Tabela/1/{id}?versao=-1`
+   (o `?versao=-1` não é opcional — sem ele volta página de erro do ASP.NET;
+   e a resposta vem gzipada). Traz `Fonte`, `Notas` e `DataAtualizacao`.
+   Gravados em `serie.fonte_oficial` e `serie.atualizada_em`, e mostrados no
+   comparador. É assim que se vê que a PME parou em 2016-10-26 e que a
+   projeção da população não é tocada desde 2020-12-08.
+24. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
    vedado — CF art. 5º IV); zero disparo automatizado de WhatsApp (click-to-chat
    enviado pelo próprio cidadão); LGPD com opt-in explícito para CEP/contato.
 

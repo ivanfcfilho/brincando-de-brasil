@@ -247,6 +247,21 @@ CREATE TABLE IF NOT EXISTS serie (
     url          TEXT
 );
 
+-- A linha de fonte que o PRÓPRIO IBGE imprime no rodapé da tabela, e a data
+-- em que ele a atualizou pela última vez.
+--
+-- Não é redundante com `fonte`: aquele campo diz de onde NÓS tiramos
+-- ("IBGE/SIDRA"), este diz o que o IBGE declara sobre o dado — inclusive a
+-- REVISÃO da projeção, que é a diferença entre um número de 2013 e um de
+-- 2018, e que não aparece em lugar nenhum da API de agregados. Vem do
+-- endpoint que a própria página do SIDRA usa para montar o rodapé
+-- (/Ajax/JSon/Tabela/1/{id}?versao=-1).
+--
+-- `atualizada_em` é o outro lado da mesma moeda: uma tabela parada desde 2016
+-- não está errada, mas quem lê merece saber que ela parou.
+ALTER TABLE serie ADD COLUMN IF NOT EXISTS fonte_oficial TEXT;
+ALTER TABLE serie ADD COLUMN IF NOT EXISTS atualizada_em TIMESTAMP;
+
 CREATE TABLE IF NOT EXISTS serie_valor (
     serie_id TEXT NOT NULL REFERENCES serie(id) ON DELETE CASCADE,
     ano      INTEGER NOT NULL,

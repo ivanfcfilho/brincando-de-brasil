@@ -17,6 +17,7 @@ trocada não passa: quebra a ingestão.
 """
 import argparse
 import gzip
+import html
 import json
 import os
 import sys
@@ -30,6 +31,14 @@ UA = {"User-Agent": "Mozilla/5.0 (compatible; brincando-de-brasil/1.0; +dados ab
       "Accept-Encoding": "gzip"}
 SIDRA = "https://apisidra.ibge.gov.br/values/t/{t}/{n}/all/v/{v}/p/all{c}"
 LINK = "https://sidra.ibge.gov.br/tabela/{t}"
+# O descritor da tabela — Fonte, Notas e data da última atualização.
+#
+# É o endpoint que a própria página do SIDRA chama para montar o rodapé: no
+# HTML servido, a <div id="fonte-tabela"> vem VAZIA e o JavaScript a preenche
+# com isto. Ou seja, "pegar da página" e "pegar da API" são a mesma coisa —
+# só que por aqui não precisa de navegador. O `?versao=-1` não é opcional:
+# sem ele o servidor devolve uma página de erro do ASP.NET, não JSON.
+DESCRITOR = "https://sidra.ibge.gov.br/Ajax/JSon/Tabela/1/{t}?versao=-1"
 
 
 @dataclass(frozen=True)
@@ -272,6 +281,32 @@ def baixar(serie):
     return json.loads(bruto.decode("utf-8"))
 
 
+def descritor(serie):
+    """A fonte declarada pelo IBGE e a data em que ele atualizou a tabela.
+
+    Isto responde a uma pergunta que a API de agregados NÃO responde: de qual
+    REVISÃO da projeção da população vem o número. A tabela 3825 e a 7362 têm
+    a mesma cara ali, e são a revisão de 2013 e a de 2018 — 5 anos de
+    diferença que só aparecem nesta linha de rodapé.
+
+    Se falhar, não derruba a ingestão: procedência é importante, mas perder o
+    rodapé não torna o valor errado. Devolve (None, None) e segue.
+    """
+    try:
+        req = urllib.request.Request(DESCRITOR.format(t=serie.tabela), headers=UA)
+        with urllib.request.urlopen(req, timeout=90) as r:
+            bruto = r.read()
+        # o UA do módulo pede gzip, e este endpoint atende
+        if bruto[:2] == b"\x1f\x8b":
+            bruto = gzip.decompress(bruto)
+        d = json.loads(bruto.decode("utf-8"))
+    except Exception as e:
+        print(f"  aviso: sem descritor da tabela {serie.tabela} ({e})")
+        return None, None
+    fonte = html.unescape((d.get("Fonte") or "").strip()) or None
+    return fonte, (d.get("DataAtualizacao") or None)
+
+
 def conferir_resposta(serie, dados):
     """A resposta do SIDRA descreve a si mesma. Conferimos antes de acreditar."""
     if not dados or len(dados) < 2:
@@ -361,18 +396,28 @@ def ingerir(con, serie):
     if not anos:
         raise ValueError(f"{serie.id}: nenhum valor após o corte {serie.corte!r}")
 
+    fonte_oficial, atualizada_em = descritor(serie)
+    if fonte_oficial:
+        print(f"  fonte do IBGE: {fonte_oficial[:70]!r}")
+
     with con.cursor() as cur:
         cur.execute("""
             INSERT INTO serie (id, nome, unidade, fonte, tabela_sidra, variavel,
-                               corte, observacao, url)
-            VALUES (%s,%s,%s,'IBGE/SIDRA',%s,%s,%s,%s,%s)
+                               corte, observacao, url, fonte_oficial,
+                               atualizada_em)
+            VALUES (%s,%s,%s,'IBGE/SIDRA',%s,%s,%s,%s,%s,%s,%s)
             ON CONFLICT (id) DO UPDATE SET
                 nome=EXCLUDED.nome, unidade=EXCLUDED.unidade,
                 tabela_sidra=EXCLUDED.tabela_sidra, variavel=EXCLUDED.variavel,
                 corte=EXCLUDED.corte, observacao=EXCLUDED.observacao,
-                url=EXCLUDED.url
+                url=EXCLUDED.url,
+                -- só sobrescreve se veio: uma falha de rede no descritor não
+                -- pode apagar a procedência que já estava gravada.
+                fonte_oficial=COALESCE(EXCLUDED.fonte_oficial, serie.fonte_oficial),
+                atualizada_em=COALESCE(EXCLUDED.atualizada_em, serie.atualizada_em)
         """, (serie.id, serie.nome, serie.unidade, serie.tabela, serie.variavel,
-              serie.corte, serie.observacao, LINK.format(t=serie.tabela)))
+              serie.corte, serie.observacao, LINK.format(t=serie.tabela),
+              fonte_oficial, atualizada_em))
         cur.executemany("""
             INSERT INTO serie_valor (serie_id, ano, valor)
             VALUES (%s,%s,%s)
