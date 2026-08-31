@@ -61,6 +61,29 @@ certs/                 o intermediário que o servidor do INEP omite (ver tls.py
 relatorio/             relatórios legíveis (Markdown)
 ```
 
+## No ar
+
+**https://studiocantare.com/brincandodebrasil/**
+
+O servidor já hospedava outro site; o projeto entrou como mais um `location`
+no nginx, na porta 8010 (8000 e 8001 são do Django e do websocket que já
+rodavam ali). Por isso `api.py` aceita `--prefixo`: as rotas não mudam (o
+nginx remove o prefixo antes de repassar), e o app reescreve os links do HTML
+na saída. Quando houver DNS próprio, basta tirar o `--prefixo` — ver
+`deploy/INSTALAR.md`.
+
+Dois serviços, separados de propósito: o que serve o site é somente-leitura;
+o que baixa e ingere escreve em `data/`. Juntar os dois obrigaria a afrouxar a
+proteção justamente do processo exposto à internet.
+
+```bash
+ssh kakashi@servidor 'bash ~/brincandodebrasil/deploy/deploy.sh'
+```
+
+O `deploy.sh` **recusa publicar se as invariantes falharem** — um número
+errado destrói a credibilidade de todos os certos, e isso vale mais ainda
+para o que está no ar.
+
 ## Instalação
 
 ```bash

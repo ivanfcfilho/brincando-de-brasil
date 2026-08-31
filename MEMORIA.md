@@ -19,6 +19,25 @@ O eixo editorial mudou de "plataforma de pressão" para **"ensinar política de
 um jeito fácil"**: o site é onde a pessoa vê o dado da vida dela e entende o
 mecanismo. A proposta de reforma continua, mas como destino, não como porta.
 
+## No ar
+
+**https://studiocantare.com/brincandodebrasil/** (servidor "luisa",
+`kakashi@89.167.115.24`, alias `sshluisa`). Repo público:
+**github.com/ivanfcfilho/brincando-de-brasil**.
+
+- Postgres 16 do servidor, banco/role `brincando`, senha gerada NO servidor e
+  gravada em `~/brincandodebrasil/.env` (chmod 600, fora do git).
+- Serviços: `brincandodebrasil` (site, porta 8010) e
+  `brincandodebrasil-atualizar.timer` (job diário, 09:00 SP). Os dois
+  `enabled`, sobem no boot.
+- Convive com studiocantare.com (Django na 8000, ws na 8001) e
+  `/inglescomagrazi/`. Backup do nginx foi movido para `/etc/nginx/backups/`:
+  arquivo `.bak` dentro de `sites-enabled/` É CARREGADO pelo nginx e gera
+  "conflicting server name".
+- Os dados foram levados por `deploy/exportar_dados.py` +
+  `importar_dados.py` (COPY em texto), não por `pg_dump` — dev roda PG18 e o
+  servidor PG16, e o pg_dump se recusa a falar com servidor mais novo.
+
 ## Estado atual
 
 Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
