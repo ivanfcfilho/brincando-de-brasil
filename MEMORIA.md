@@ -10,6 +10,11 @@ consumível **por CEP**. Duas ferramentas no ar:
 
 - **Ideia #01** (`landing/dinheiro.html`): origem do voto (TSE) × destino da
   emenda (CGU), com a distância em km.
+- **Quadro entre governos NA HOME** (`landing/governos.js`, componente
+  compartilhado): 10 séries — IPCA, PIB, desemprego, FOME, POBREZA, GINI,
+  expectativa de vida, 2× mortalidade infantil, Ideb — mais 31 programas/leis
+  conferidos contra o Planalto (`programas.py --conferir`). Sem ranking, ordem
+  cronológica travada por teste.
 - **Aula aberta** (`landing/como-funciona.html`): como o voto vira cadeira,
   com simulador interativo. É a porta de entrada nova do site.
 - **Ideia #02** (`landing/escola.html`): o **Ideb do INEP** da cidade, aberto
@@ -51,7 +56,7 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
 - **Distância em km funcionando** (o número da manchete): a consulta devolve,
   por deputado, a distância média do dinheiro até o CEP, ponderada por valor.
 - **500 dos 513 eleitos** com autoria de emenda identificada.
-- 26 testes (`tests/`) e 19 invariantes (`conferir.py`), rodando no fim do job.
+- 31 testes (`tests/`) e 24 invariantes (`conferir.py`), rodando no fim do job.
 - **Menu + duas propostas.** A landing ganhou navegação fixa e, ao lado da
   manchete, um resumo das duas PECs: Voto Distrital Misto e Novo Pacto
   Educacional (este veio de um HTML do Gemini, em `landing/propostas/`).
@@ -170,7 +175,24 @@ Saiu de "scripts que leem ZIP e cospem Markdown" para **banco + job diário**:
    só traz nominal. Um quociente sem legenda sai menor e com cara de oficial.
    Por isso o simulador da página usa eleição fictícia de números redondos, e
    o dado real só aparece onde é exato (quem teve mais voto e não entrou).
-17. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
+17. **A tabela do ODS 1.1.1 (10443) não publica o TOTAL do país** — só os
+   recortes por sexo e cor, e o total vem '..' em todos os anos, mesmo
+   forçando as categorias. Publicar recorte de grupo como se fosse o país
+   seria número errado; a pobreza do site usa a linha REGIONAL (10660).
+   E o sentido de uma série pode morar na CATEGORIA, não na variável: na
+   tabela da fome (6665), quem diz "insegurança alimentar grave" é a
+   classificação c12404/109102 — a conferência do ingest_ibge procura o nome
+   esperado em todas as dimensões da resposta.
+18. **Segurança pública segue sem fonte viva** (situação em 2026-08-31): o
+   Ipeadata está em timeout GLOBAL (testado do Brasil e da Finlândia), a API
+   do Atlas da Violência sumiu no site novo do IPEA e dados.mj.gov.br nem
+   resolve DNS. A página declara isso. Quando o Ipeadata voltar, a série é
+   THOMIC (taxa de homicídios, fonte SIM/MS) — retomar daí.
+19. **A fome de 2019–2022 não tem dado do IBGE** — a pesquisa não foi a
+   campo nesses anos; o número conhecido de 2022 (33 milhões) é da Rede
+   PENSSAN, não governamental, e NÃO entra numa base que promete só fonte
+   oficial. O "sem dado" na linha do Bolsonaro é fato, não descuido.
+20. **Estratégia**: transparência radical no lugar de anonimato (anonimato é
    vedado — CF art. 5º IV); zero disparo automatizado de WhatsApp (click-to-chat
    enviado pelo próprio cidadão); LGPD com opt-in explícito para CEP/contato.
 
